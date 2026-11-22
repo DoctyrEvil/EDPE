@@ -2,6 +2,7 @@
 #include "context_census.h"
 #include "log.h"
 #include "ngx_context.h"
+#include "amd_fsr4_engine.h"
 
 std::atomic<bool> g_is_evaluating_upscaler{false};
 std::atomic<int> g_evaluating_upscaler_depth{0};
@@ -829,6 +830,22 @@ bool AmdUpscalerBackend::initialize(ID3D11Device* device, ID3D11DeviceContext* /
     impl_->initialized = true;
     impl_->lastErrorReason[0] = L'\0';
     EdpeLog(L"EDPE: AMD FSR 3.1 D3D11 backend initialized successfully");
+
+    // Optional FSR 4 path through the D3D11/D3D12 bridge; the FSR 3.1 path above stays the fallback.
+    fsr4_ = std::make_unique<Fsr4Engine>();
+    fsr4Active_ = false;
+    fsr4FailLogged_ = false;
+    fsr4ConsecutiveFailures_ = 0;
+    if (Fsr4Engine::enabledByConfig()) {
+        if (fsr4_->initialize(device)) {
+            fsr4Active_ = true;
+            EdpeLog(L"EDPE: FSR 4 enabled ([Upscaler] Fsr4=1); the D3D11 FSR 3.1 path is the fallback");
+        } else {
+            wchar_t buf[320];
+            swprintf_s(buf, L"EDPE: FSR 4 requested but unavailable: %ls; using FSR 3.1", fsr4_->lastError());
+            EdpeLog(buf);
+        }
+    }
     return true;
 #else
     return false;
@@ -836,6 +853,8 @@ bool AmdUpscalerBackend::initialize(ID3D11Device* device, ID3D11DeviceContext* /
 }
 
 void AmdUpscalerBackend::shutdown() {
+    if (fsr4_) fsr4_->shutdown();
+    fsr4Active_ = false;
     if (!impl_) return;
     impl_->destroyFsrContext();
     impl_->outputTexture.Reset();
@@ -853,6 +872,25 @@ bool AmdUpscalerBackend::evaluate(ID3D11DeviceContext* context,
     ID3D11Texture2D* destinationTexture) {
 #if defined(EDPE_ENABLE_FSR)
     if (!isAvailable() || !context || !impl_) return false;
+
+    if (fsr4Active_ && fsr4_) {
+        ID3D11Texture2D* fsr4Dest = destinationTexture ? destinationTexture : inputs.color;
+        if (fsr4_->evaluate(context, inputs, fsr4Dest)) {
+            fsr4ConsecutiveFailures_ = 0;
+            return true;
+        }
+        if (!fsr4FailLogged_) {
+            fsr4FailLogged_ = true;
+            wchar_t buf[320];
+            swprintf_s(buf, L"EDPE: FSR 4 evaluate failed: %ls; falling back to FSR 3.1 for this frame", fsr4_->lastError());
+            EdpeLog(buf);
+        }
+        if (++fsr4ConsecutiveFailures_ >= 120) {
+            fsr4Active_ = false;
+            EdpeLog(L"EDPE: FSR 4 disabled after 120 consecutive failures; using FSR 3.1");
+        }
+        // fall through to the D3D11 FSR 3.1 path
+    }
 
     AmdFsrInputParams params{};
     const wchar_t* reason = nullptr;
@@ -982,6 +1020,7 @@ bool AmdUpscalerBackend::evaluate(ID3D11DeviceContext* context,
 }
 
 void AmdUpscalerBackend::resetHistory() {
+    if (fsr4_) fsr4_->resetHistory();
     if (impl_) {
         impl_->resetRequested = true;
         impl_->prevColorValid = false;

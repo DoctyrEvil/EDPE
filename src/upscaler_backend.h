@@ -117,8 +117,12 @@ private:
     bool ensureOutputTexture(ID3D11Device* device, uint32_t width, uint32_t height, DXGI_FORMAT format);
 };
 
+class Fsr4Engine;
+
 // AMD FidelityFX FSR backend implementation wrapper.
 // Governed by safety constraints in amd-fsr-input-contract.md.
+// Optional FSR 4 path ([Upscaler] Fsr4=1 in edpe.ini): official FidelityFX DX12 upscaler through the
+// D3D11/D3D12 bridge, tried first with fallback to the D3D11 FSR 3.1 path (proof of concept).
 class AmdUpscalerBackend : public IUpscalerBackend {
 public:
     AmdUpscalerBackend();
@@ -145,6 +149,10 @@ public:
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
+    std::unique_ptr<Fsr4Engine> fsr4_;
+    bool fsr4Active_ = false;       // FSR 4 engine initialized and enabled by config
+    bool fsr4FailLogged_ = false;   // log the first fallback only
+    int fsr4ConsecutiveFailures_ = 0; // disable the FSR 4 path after a long run of failures
 };
 
 // Native Direct3D 11 Temporal Anti-Aliasing (TAA) backend.
