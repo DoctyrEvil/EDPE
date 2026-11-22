@@ -12,6 +12,7 @@
 //   depth-r24g8      the second depth format seen in the game log works or fails cleanly
 //   reinit           shutdown and initialize three times with frames in between
 //   fail-open        invalid inputs return false with an error and do not break the next frame
+//   hdr-refused      HDR color input is refused with an explanation (FSR 4 does not support it yet)
 //   agility-fallback the bridge falls back to the system D3D12 runtime when the Agility SDK directory is bad
 //   agility-staged   the bridge uses the staged Agility SDK runtime (SKIP when it is not staged)
 #include "amd_fsr4_engine.h"
@@ -342,6 +343,23 @@ CaseOutcome caseFailOpen(Env& e) {
     return pass();
 }
 
+CaseOutcome caseHdrRefused(Env& e) {
+    Frame f;
+    if (!e.makeFrame(f, 960, 540, 1920, 1080)) return fail("test texture creation");
+    std::string err = e.runFlat(f, kFlat, kFlatRgb, 6);
+    if (!err.empty()) return fail(err);
+
+    TemporalFrameInputs hdr = e.inputs(f, 0, false);
+    hdr.colorIsHdr = true;
+    if (e.engine.evaluate(e.ctx.Get(), hdr, f.dest.Get())) return fail("HDR color input was accepted");
+    const std::string why = narrow(e.engine.lastError());
+    if (why.find("HDR") == std::string::npos) return fail("refusal does not mention HDR: " + why);
+
+    err = e.runFlat(f, kFlat, kFlatRgb, 6);
+    if (!err.empty()) return fail("engine did not recover after the HDR refusal: " + err);
+    return pass();
+}
+
 CaseOutcome caseAgilityFallback(Env& e) {
     D3D11D3D12Bridge bridge;
     // A directory without D3D12Core.dll: the bridge must fall back to the system runtime and still work.
@@ -413,6 +431,7 @@ int main() {
         {"depth-r24g8", caseDepthR24},
         {"reinit", caseReinit},
         {"fail-open", caseFailOpen},
+        {"hdr-refused", caseHdrRefused},
         {"agility-fallback", caseAgilityFallback},
         {"agility-staged", caseAgilityStaged},
     };
