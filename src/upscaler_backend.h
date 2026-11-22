@@ -167,6 +167,8 @@ public:
     bool isFsr4Wanted() const { return fsr4State_.wanted; }
     // True when FSR 4 is selected and its engine is initialized and not disabled by failures.
     bool isFsr4Running() const { return fsr4State_.running(); }
+    // The startup probe succeeded: this GPU and AMD's runtime offer a 4.x provider (selectable in the menu).
+    bool isFsr4Capable() const { return fsr4State_.capable; }
     // Writes the provider that actually runs now, e.g. "FSR 4.1.2", "FSR 3.1.2", or
     // "FSR 3.1.2 (FSR 4 unavailable)".
     void describeProvider(char* buffer, size_t size) const;

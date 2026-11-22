@@ -7,6 +7,9 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <initializer_list>
+#include <string>
+#include <vector>
 
 using namespace edpe;
 using namespace edpe::fsr4;
@@ -122,6 +125,94 @@ static void testProviderFailurePath() {
     CHECK(t.running());
 }
 
+static void testCapabilityState() {
+    ProviderState s;
+    CHECK(!s.probed && !s.capable);
+    s.onInitResult(false);  // startup probe on a GPU or runtime without FSR 4
+    CHECK(s.probed && !s.capable && !s.active);
+    s.onInitResult(true);   // a later successful initialization
+    CHECK(s.probed && s.capable && s.active);
+
+    // Disabling FSR 4 after repeated failures keeps the capability: the menu entry stays available and a retry works.
+    s.setWanted(true);
+    for (int i = 0; i < kMaxConsecutiveFailures; ++i) s.onEvaluateFailure();
+    CHECK(!s.active && s.capable);
+    CHECK(s.retry());
+
+    // A backend re-initialization or shutdown forgets the probe (the device may have changed).
+    s.onBackendInitialize();
+    CHECK(!s.probed && !s.capable);
+    s.onInitResult(true);
+    s.onShutdown();
+    CHECK(!s.probed && !s.capable && !s.active);
+}
+
+static std::vector<std::string> names(std::initializer_list<const char*> l) {
+    std::vector<std::string> v;
+    for (const char* s : l) v.emplace_back(s ? s : "");
+    return v;
+}
+
+static void testVersionParse() {
+    Version v;
+    CHECK(parseVersion("4.1.2", &v) && v.major == 4 && v.minor == 1 && v.patch == 2);
+    CHECK(parseVersion("3.1.6", &v) && v.major == 3 && v.minor == 1 && v.patch == 6);
+    CHECK(parseVersion("FSR 4.1", &v) && v.major == 4 && v.minor == 1 && v.patch == 0);
+    CHECK(parseVersion("AMD FSR v4.1.1 (ML)", &v) && v.major == 4 && v.minor == 1 && v.patch == 1);
+    CHECK(parseVersion("2.3.4", &v) && v.major == 2 && v.minor == 3 && v.patch == 4);
+    CHECK(parseVersion("v12.34.567-beta", &v) && v.major == 12 && v.minor == 34 && v.patch == 567);
+
+    // Not versions: false, and `out` is untouched.
+    Version keep{9, 9, 9};
+    CHECK(!parseVersion(nullptr, &keep));
+    CHECK(!parseVersion("", &keep));
+    CHECK(!parseVersion("unknown", &keep));
+    CHECK(!parseVersion("4", &keep));
+    CHECK(!parseVersion("1..2", &keep));
+    CHECK(!parseVersion("1234567.1.1", &keep));  // a number that long is not a version
+    CHECK(keep.major == 9 && keep.minor == 9 && keep.patch == 9);
+
+    CHECK(compareVersions({4, 1, 2}, {4, 1, 2}) == 0);
+    CHECK(compareVersions({4, 1, 2}, {4, 1, 10}) < 0);
+    CHECK(compareVersions({4, 2, 0}, {4, 1, 99}) > 0);
+    CHECK(compareVersions({3, 9, 9}, {4, 0, 0}) < 0);
+}
+
+static void testProviderPick() {
+    Version picked;
+    // The usual offer on a Radeon RX 7000 or 9000: FSR 4 first.
+    CHECK(pickFsr4Provider(names({"4.1.2", "3.1.6", "2.3.4"}), &picked) == 0);
+    CHECK(picked.major == 4 && picked.minor == 1 && picked.patch == 2);
+    // Order does not matter: the highest 4.x wins.
+    CHECK(pickFsr4Provider(names({"3.1.6", "4.0.3", "4.1.2", "2.3.4"}), &picked) == 2);
+    CHECK(picked.minor == 1 && picked.patch == 2);
+    // Equal versions: the first wins.
+    CHECK(pickFsr4Provider(names({"4.1.2", "4.1.2"})) == 0);
+    // Garbage entries are ignored.
+    CHECK(pickFsr4Provider(names({"", "unknown", "4.1.0"}), &picked) == 2);
+
+    // No 4.x provider (RDNA 2, another vendor's GPU, an old runtime): FSR 4 must not run a 3.x one.
+    Version untouched{7, 7, 7};
+    CHECK(pickFsr4Provider(names({"3.1.5", "2.3.4"}), &untouched) == -1);
+    CHECK(untouched.major == 7);
+    CHECK(pickFsr4Provider(names({"3.1.6"})) == -1);
+    CHECK(pickFsr4Provider(names({})) == -1);
+    CHECK(pickFsr4Provider(names({"", "unknown"})) == -1);
+}
+
+static void testProviderRefusalText() {
+    CHECK(formatProviderList(names({"4.1.2", "3.1.6", "2.3.4"})) == "4.1.2, 3.1.6, 2.3.4");
+    CHECK(formatProviderList(names({"FSR 3.1.5", "", "weird-name"})) == "3.1.5, ?, weird-name");
+    CHECK(formatProviderList(names({"0123456789012345678901234567890"})) == "012345678901234567890123");  // 24 chars
+
+    const std::string two = providerRefusalText(names({"3.1.5", "2.3.4"}));
+    CHECK(two.find("only FSR 3.1.5, 2.3.4") != std::string::npos);
+    CHECK(two.find("RX 7000 or 9000") != std::string::npos);
+    const std::string none = providerRefusalText(names({}));
+    CHECK(none.find("offers no FSR version") != std::string::npos);
+    CHECK(none.find("RX 7000 or 9000") != std::string::npos);
+}
+
 static void testProviderLabelText() {
     char buf[64];
     formatProviderLabel(ProviderLabel::Fsr4, "4.1.2", buf, sizeof(buf));
@@ -225,6 +316,10 @@ int main() {
     testProviderState();
     testProviderFailurePath();
     testProviderLabelText();
+    testCapabilityState();
+    testVersionParse();
+    testProviderPick();
+    testProviderRefusalText();
     testContextFlags();
     testDispatchPlan();
     if (g_failures) {

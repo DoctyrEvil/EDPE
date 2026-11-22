@@ -5,6 +5,7 @@
 // Feeds EDPE-style inputs: 8-bit typeless color, typeless depth/stencil with a float SRV, R16G16 motion vectors and
 // an 8-bit destination. One table of cases:
 //   basic            flat color survives the D3D12 bridge; the profiling summary appears and is sane
+//   provider         the context runs a 4.x provider (never a 3.x one under the FSR 4 name)
 //   resize           render/output size changes mid-run (context and shared textures are recreated)
 //   frame-order      a different flat color every frame with a history reset: the output must be the current
 //                    frame's color, across more frames than the 4-slot ring (fence and slot reuse ordering)
@@ -227,6 +228,19 @@ CaseOutcome caseBasic(Env& e) {
     return pass();
 }
 
+CaseOutcome caseProvider(Env& e) {
+    Frame f;
+    if (!e.makeFrame(f, 960, 540, 1920, 1080)) return fail("test texture creation");
+    const std::string err = e.runFlat(f, kFlat, kFlatRgb, 4);  // makes the context, which reports its provider
+    if (!err.empty()) return fail(err);
+    const std::string version = e.engine.providerVersion();
+    if (version.empty() || version[0] < '4' || version[0] > '9') {
+        return fail("the context reports provider '" + version + "', not a 4.x provider");
+    }
+    std::printf("      provider %s\n", version.c_str());
+    return pass();
+}
+
 CaseOutcome caseResize(Env& e) {
     struct Size { UINT rw, rh, ow, oh; };
     const Size sizes[] = {{960, 540, 1920, 1080}, {1280, 720, 1920, 1080}, {1280, 720, 2560, 1440},
@@ -393,6 +407,7 @@ int main() {
     struct Case { const char* name; std::function<CaseOutcome(Env&)> run; };
     const Case cases[] = {
         {"basic", caseBasic},
+        {"provider", caseProvider},
         {"resize", caseResize},
         {"frame-order", caseFrameOrder},
         {"depth-r24g8", caseDepthR24},
