@@ -544,6 +544,7 @@ struct Fsr4Engine::Impl {
         const wchar_t* reason = nullptr;
         if (!in.isValid(&reason)) { setError(reason ? reason : L"invalid temporal inputs"); return false; }
         if (!in.color || !in.motionVectors) { setError(L"color or motion vector texture missing"); return false; }
+        if (in.colorIsHdr) { setError(L"HDR color input is not supported by FSR 4 yet"); return false; }
 
         Microsoft::WRL::ComPtr<ID3D11Device> evalDevice;
         context->GetDevice(&evalDevice);

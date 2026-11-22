@@ -31,7 +31,7 @@ struct FailureGate {
     bool onFailure() { return ++consecutive >= kMaxConsecutiveFailures; }
 };
 
-enum class ProviderLabel { Fsr31, Fsr31FsrFourUnavailable, Fsr4 };
+enum class ProviderLabel { Fsr31, Fsr31FsrFourUnavailable, Fsr4, Fsr31HdrInput };
 
 struct ProviderState {
     bool wanted = false;      // selected: ini Fsr4=1 at startup, or the menu
@@ -40,6 +40,7 @@ struct ProviderState {
     bool failLogged = false;  // the first fallback has been logged
     bool probed = false;      // initialization has run at least once since the backend started
     bool capable = false;     // the last initialization succeeded: this GPU and runtime can run FSR 4
+    bool hdrFallback = false; // the current frames carry HDR color, which FSR 4 does not support yet
     FailureGate gate;
 
     bool running() const { return wanted && active; }
@@ -92,6 +93,14 @@ struct ProviderState {
 
     void onEvaluateSuccess() { gate.onSuccess(); }
 
+    // FSR 4 does not support HDR (linear) color input yet, so those frames use FSR 3.1. This is an unsupported input, not
+    // a failure: it does not count toward the failure gate. Returns true when HDR input starts, so it is logged once.
+    bool setHdrFallback(bool hdrInput) {
+        const bool started = hdrInput && !hdrFallback;
+        hdrFallback = hdrInput;
+        return started;
+    }
+
     struct FailureOutcome {
         bool logFirstFailure = false;  // log the "falling back" line (once per selection)
         bool disabled = false;         // the threshold was reached; FSR 4 is now off until reselected
@@ -111,8 +120,8 @@ struct ProviderState {
     }
 
     ProviderLabel label() const {
-        return running() ? ProviderLabel::Fsr4
-                         : (wanted ? ProviderLabel::Fsr31FsrFourUnavailable : ProviderLabel::Fsr31);
+        if (running()) return hdrFallback ? ProviderLabel::Fsr31HdrInput : ProviderLabel::Fsr4;
+        return wanted ? ProviderLabel::Fsr31FsrFourUnavailable : ProviderLabel::Fsr31;
     }
 };
 
@@ -125,6 +134,9 @@ inline void formatProviderLabel(ProviderLabel label, const char* fsr4Version, ch
         break;
     case ProviderLabel::Fsr31FsrFourUnavailable:
         std::snprintf(buffer, size, "FSR 3.1.2 (FSR 4 unavailable)");
+        break;
+    case ProviderLabel::Fsr31HdrInput:
+        std::snprintf(buffer, size, "FSR 3.1.2 (FSR 4 needs HdrInput=0)");
         break;
     default:
         std::snprintf(buffer, size, "FSR 3.1.2");

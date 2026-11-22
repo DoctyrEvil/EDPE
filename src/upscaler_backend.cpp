@@ -657,6 +657,14 @@ bool AmdUpscalerBackend::evaluate(ID3D11DeviceContext* context,
     if (fsr4State_.needsInit()) tryInitFsr4();
 
     if (fsr4State_.running() && fsr4_) {
+        // HDR (linear) color input is not supported by FSR 4 yet: use FSR 3.1 while HdrInput is on, without counting
+        // these frames as failures.
+        if (fsr4State_.setHdrFallback(inputs.colorIsHdr)) {
+            EdpeLog(L"EDPE: FSR 4 does not support HDR color input (HdrInput=1); using FSR 3.1 while it is on");
+        }
+    }
+
+    if (fsr4State_.running() && fsr4_ && !fsr4State_.hdrFallback) {
         ID3D11Texture2D* fsr4Dest = destinationTexture ? destinationTexture : inputs.color;
         if (fsr4_->evaluate(context, inputs, fsr4Dest)) {
             fsr4State_.onEvaluateSuccess();

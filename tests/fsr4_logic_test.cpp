@@ -213,6 +213,35 @@ static void testProviderRefusalText() {
     CHECK(none.find("RX 7000 or 9000") != std::string::npos);
 }
 
+static void testHdrFallback() {
+    ProviderState s;
+    s.setWanted(true);
+    s.onInitResult(true);
+    CHECK(s.running() && s.label() == ProviderLabel::Fsr4);
+
+    // HDR input starts: logged once, shown as FSR 3.1 with the reason, and not counted as failures.
+    CHECK(s.setHdrFallback(true));
+    CHECK(!s.setHdrFallback(true));
+    CHECK(s.label() == ProviderLabel::Fsr31HdrInput);
+    CHECK(s.running());
+    for (int i = 0; i < 2 * kMaxConsecutiveFailures; ++i) s.setHdrFallback(true);
+    CHECK(s.running() && s.gate.consecutive == 0);
+
+    // LDR input again: FSR 4 resumes, and a later HDR episode logs again.
+    CHECK(!s.setHdrFallback(false));
+    CHECK(s.label() == ProviderLabel::Fsr4);
+    CHECK(s.setHdrFallback(true));
+
+    // Not running (FSR 3.1.2 selected or FSR 4 unavailable): the label ignores the HDR flag.
+    s.setWanted(false);
+    CHECK(s.label() == ProviderLabel::Fsr31);
+    ProviderState u;
+    u.setWanted(true);
+    u.onInitResult(false);
+    u.setHdrFallback(true);
+    CHECK(u.label() == ProviderLabel::Fsr31FsrFourUnavailable);
+}
+
 static void testProviderLabelText() {
     char buf[64];
     formatProviderLabel(ProviderLabel::Fsr4, "4.1.2", buf, sizeof(buf));
@@ -223,6 +252,8 @@ static void testProviderLabelText() {
     CHECK(std::strcmp(buf, "FSR 3.1.2") == 0);
     formatProviderLabel(ProviderLabel::Fsr31FsrFourUnavailable, "4.1.2", buf, sizeof(buf));
     CHECK(std::strcmp(buf, "FSR 3.1.2 (FSR 4 unavailable)") == 0);
+    formatProviderLabel(ProviderLabel::Fsr31HdrInput, "4.1.2", buf, sizeof(buf));
+    CHECK(std::strcmp(buf, "FSR 3.1.2 (FSR 4 needs HdrInput=0)") == 0);
 
     char tiny[8];  // truncation must stay NUL terminated
     formatProviderLabel(ProviderLabel::Fsr31FsrFourUnavailable, nullptr, tiny, sizeof(tiny));
@@ -316,6 +347,7 @@ int main() {
     testProviderState();
     testProviderFailurePath();
     testProviderLabelText();
+    testHdrFallback();
     testCapabilityState();
     testVersionParse();
     testProviderPick();
