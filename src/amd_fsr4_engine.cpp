@@ -47,6 +47,13 @@ std::filesystem::path moduleDirectory() {
     return std::filesystem::path();
 }
 
+// Integer option from the environment (tests) or [Upscaler] in edpe.ini.
+int envOrIni(const wchar_t* envName, const wchar_t* key, int defaultValue) {
+    wchar_t buf[32]{};
+    if (GetEnvironmentVariableW(envName, buf, 32) > 0 && buf[0] != L'\0') return _wtoi(buf);
+    return static_cast<int>(GetPrivateProfileIntW(L"Upscaler", key, defaultValue, iniPathNextToExecutable().c_str()));
+}
+
 HMODULE loadSiblingDll(const wchar_t* dllName) {
     if (HMODULE already = GetModuleHandleW(dllName)) return already;
     const auto dir = moduleDirectory();
@@ -162,6 +169,138 @@ struct Fsr4Engine::Impl {
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> ownDepthSrv;
     ID3D11Texture2D* ownDepthSrvSource = nullptr;
     unsigned evalCount = 0;
+
+    // ---- optional profiling: [Upscaler] Fsr4Profile=1 (or env EDPE_FSR4_PROFILE=1) ----
+    // D3D12 side: GPU timestamps inside the command list. D3D11 side: timestamps around copy-in, the wait on
+    // the D3D12 queue and copy-out. Plus CPU time of evaluate and of beginCommandList. One summary line per
+    // `profileInterval` frames in edpe.log.
+    struct Stat {
+        double sum = 0.0, max = 0.0;
+        unsigned n = 0;
+        void add(double v) { sum += v; if (v > max) max = v; ++n; }
+        double avg() const { return n ? sum / n : 0.0; }
+        void clear() { sum = 0.0; max = 0.0; n = 0; }
+    };
+    struct D3D11Prof {
+        Microsoft::WRL::ComPtr<ID3D11Query> disjoint;
+        std::array<Microsoft::WRL::ComPtr<ID3D11Query>, 4> ts;
+        bool inFlight = false;
+    };
+    static constexpr size_t kProfRing = 8;
+    bool profile = false;
+    bool flushEachFrame = true;
+    unsigned profileInterval = 300;
+    std::array<D3D11Prof, kProfRing> d11prof;
+    size_t d11ProfWrite = 0;
+    Microsoft::WRL::ComPtr<ID3D12QueryHeap> qHeap;
+    Microsoft::WRL::ComPtr<ID3D12Resource> qReadback;
+    std::array<bool, D3D11D3D12Bridge::kAllocatorCount> slotHasTs{};
+    Stat sD11In, sD11Wait, sD11Out, sD11Total, sD12Total, sD12Fsr, sD12BarIn, sD12BarOut, sCpuEval, sCpuBegin;
+    unsigned cpuWaits = 0, profFrames = 0;
+
+    void initProfiling() {
+        profile = envOrIni(L"EDPE_FSR4_PROFILE", L"Fsr4Profile", 0) != 0;
+        profileInterval = static_cast<unsigned>(std::max(10, envOrIni(L"EDPE_FSR4_PROFILE_INTERVAL", L"Fsr4ProfileInterval", 300)));
+        flushEachFrame = envOrIni(L"EDPE_FSR4_FLUSH", L"Fsr4Flush", 1) != 0;
+        slotHasTs.fill(false);
+        if (!profile) return;
+        D3D11_QUERY_DESC dq{D3D11_QUERY_TIMESTAMP_DISJOINT, 0};
+        D3D11_QUERY_DESC tq{D3D11_QUERY_TIMESTAMP, 0};
+        for (auto& p : d11prof) {
+            p = D3D11Prof{};
+            device->CreateQuery(&dq, &p.disjoint);
+            for (auto& t : p.ts) device->CreateQuery(&tq, &t);
+        }
+        D3D12_QUERY_HEAP_DESC hd{};
+        hd.Type = D3D12_QUERY_HEAP_TYPE_TIMESTAMP;
+        hd.Count = D3D11D3D12Bridge::kAllocatorCount * 4;
+        if (FAILED(bridge.d3d12Device()->CreateQueryHeap(&hd, IID_PPV_ARGS(&qHeap)))) {
+            profile = false;
+            setError(L"profiling disabled: CreateQueryHeap failed");
+            return;
+        }
+        D3D12_HEAP_PROPERTIES hp{};
+        hp.Type = D3D12_HEAP_TYPE_READBACK;
+        D3D12_RESOURCE_DESC rd{};
+        rd.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+        rd.Width = static_cast<UINT64>(hd.Count) * sizeof(uint64_t);
+        rd.Height = 1; rd.DepthOrArraySize = 1; rd.MipLevels = 1;
+        rd.SampleDesc.Count = 1;
+        rd.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+        if (FAILED(bridge.d3d12Device()->CreateCommittedResource(&hp, D3D12_HEAP_FLAG_NONE, &rd,
+                                                                  D3D12_RESOURCE_STATE_COPY_DEST, nullptr,
+                                                                  IID_PPV_ARGS(&qReadback)))) {
+            profile = false;
+            qHeap.Reset();
+            setError(L"profiling disabled: readback buffer creation failed");
+            return;
+        }
+        wchar_t buf[200]{};
+        std::swprintf(buf, 200, L"EDPE FSR4: profiling on (summary every %u frames, flush=%d)", profileInterval,
+                      flushEachFrame ? 1 : 0);
+        EdpeLog(buf);
+    }
+
+    void pollD3D11Profile(ID3D11DeviceContext* ctx) {
+        for (auto& p : d11prof) {
+            if (!p.inFlight) continue;
+            D3D11_QUERY_DATA_TIMESTAMP_DISJOINT dj{};
+            UINT64 t[4]{};
+            if (ctx->GetData(p.disjoint.Get(), &dj, sizeof(dj), D3D11_ASYNC_GETDATA_DONOTFLUSH) != S_OK) continue;
+            bool ok = true;
+            for (int i = 0; i < 4; ++i) {
+                if (ctx->GetData(p.ts[i].Get(), &t[i], sizeof(UINT64), D3D11_ASYNC_GETDATA_DONOTFLUSH) != S_OK) { ok = false; break; }
+            }
+            if (!ok) continue;
+            p.inFlight = false;
+            if (dj.Disjoint || dj.Frequency == 0 || t[1] < t[0] || t[2] < t[1] || t[3] < t[2]) continue;
+            const double toMs = 1000.0 / static_cast<double>(dj.Frequency);
+            sD11In.add(static_cast<double>(t[1] - t[0]) * toMs);
+            sD11Wait.add(static_cast<double>(t[2] - t[1]) * toMs);
+            sD11Out.add(static_cast<double>(t[3] - t[2]) * toMs);
+            sD11Total.add(static_cast<double>(t[3] - t[0]) * toMs);
+        }
+    }
+
+    void readD3D12Slot(uint32_t slot) {
+        if (!profile || !qReadback || slot >= slotHasTs.size() || !slotHasTs[slot]) return;
+        const UINT64 freq = bridge.timestampFrequency();
+        if (!freq) return;
+        const D3D12_RANGE range{static_cast<SIZE_T>(slot) * 4 * sizeof(uint64_t),
+                                static_cast<SIZE_T>(slot + 1) * 4 * sizeof(uint64_t)};
+        uint64_t* data = nullptr;
+        if (FAILED(qReadback->Map(0, &range, reinterpret_cast<void**>(&data))) || !data) return;
+        const uint64_t* q = data + static_cast<size_t>(slot) * 4;
+        if (q[1] >= q[0] && q[2] >= q[1] && q[3] >= q[2]) {
+            const double toMs = 1000.0 / static_cast<double>(freq);
+            sD12BarIn.add(static_cast<double>(q[1] - q[0]) * toMs);
+            sD12Fsr.add(static_cast<double>(q[2] - q[1]) * toMs);
+            sD12BarOut.add(static_cast<double>(q[3] - q[2]) * toMs);
+            sD12Total.add(static_cast<double>(q[3] - q[0]) * toMs);
+        }
+        const D3D12_RANGE none{0, 0};
+        qReadback->Unmap(0, &none);
+    }
+
+    void maybeReport() {
+        if (!profile || ++profFrames < profileInterval) return;
+        profFrames = 0;
+        wchar_t buf[760]{};
+        std::swprintf(buf, 760,
+            L"EDPE FSR4 profile (avg/max ms, n=%u): d11 copyIn+depth %.3f/%.3f | d11 wait(d12+sync) %.3f/%.3f | "
+            L"d11 copyOut %.3f/%.3f | d11 total %.3f/%.3f | d12 total %.3f/%.3f (barriersIn %.3f, fsr %.3f, barriersOut %.3f) | "
+            L"sync gap %.3f | cpu evaluate %.3f/%.3f | cpu beginCmdList %.3f/%.3f (cpuWaits %u)",
+            sD11Total.n, sD11In.avg(), sD11In.max, sD11Wait.avg(), sD11Wait.max, sD11Out.avg(), sD11Out.max,
+            sD11Total.avg(), sD11Total.max, sD12Total.avg(), sD12Total.max, sD12BarIn.avg(), sD12Fsr.avg(),
+            sD12BarOut.avg(), sD11Wait.avg() - sD12Total.avg(), sCpuEval.avg(), sCpuEval.max, sCpuBegin.avg(),
+            sCpuBegin.max, cpuWaits);
+        EdpeLog(buf);
+        for (Stat* s : {&sD11In, &sD11Wait, &sD11Out, &sD11Total, &sD12Total, &sD12Fsr, &sD12BarIn, &sD12BarOut,
+                        &sCpuEval, &sCpuBegin}) {
+            s->clear();
+        }
+        cpuWaits = 0;
+    }
 
     void setError(const wchar_t* msg) {
         // Log only when the message changes so a persistent failure does not flood edpe.log.
@@ -359,12 +498,23 @@ struct Fsr4Engine::Impl {
         Microsoft::WRL::ComPtr<ID3D11DeviceContext4> ctx4;
         if (FAILED(context->QueryInterface(IID_PPV_ARGS(&ctx4)))) { setError(L"ID3D11DeviceContext4 unavailable"); return false; }
 
+        const auto cpuT0 = std::chrono::steady_clock::now();
+        if (profile) pollD3D11Profile(context);
+
         uint32_t slotIndex = 0;
-        ID3D12GraphicsCommandList* cl = bridge.beginCommandList(slotIndex);
+        bool didCpuWait = false;
+        const auto beginT0 = std::chrono::steady_clock::now();
+        ID3D12GraphicsCommandList* cl = bridge.beginCommandList(slotIndex, &didCpuWait);
+        if (profile) {
+            sCpuBegin.add(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - beginT0).count());
+            if (didCpuWait) ++cpuWaits;
+        }
         if (!cl) { setError(L"bridge command list unavailable"); return false; }
         Fsr4Slot& slot = slots[slotIndex];
+        readD3D12Slot(slotIndex);  // previous use of this slot has finished (allocator wait above)
 
         // ---- D3D12 recording ----
+        if (profile) cl->EndQuery(qHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP, slotIndex * 4 + 0);
         D3D11D3D12Bridge::transitionResource(cl, slot.color.d3d12.Get(), D3D12_RESOURCE_STATE_COMMON,
                                              D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
         D3D11D3D12Bridge::transitionResource(cl, slot.depth.d3d12.Get(), D3D12_RESOURCE_STATE_COMMON,
@@ -374,6 +524,7 @@ struct Fsr4Engine::Impl {
         D3D11D3D12Bridge::transitionResource(cl, slot.output.d3d12.Get(), D3D12_RESOURCE_STATE_COMMON,
                                              D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 
+        if (profile) cl->EndQuery(qHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP, slotIndex * 4 + 1);
         ffxDispatchDescUpscale du{};
         du.header.type = FFX_API_DISPATCH_DESC_TYPE_UPSCALE;
         du.commandList = cl;
@@ -404,6 +555,7 @@ struct Fsr4Engine::Impl {
             setErrorF(L"ffxDispatch(upscale) failed", static_cast<long>(rc));
             return false;
         }
+        if (profile) cl->EndQuery(qHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP, slotIndex * 4 + 2);
 
         D3D11D3D12Bridge::transitionResource(cl, slot.color.d3d12.Get(), D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
                                              D3D12_RESOURCE_STATE_COMMON);
@@ -414,7 +566,32 @@ struct Fsr4Engine::Impl {
         D3D11D3D12Bridge::transitionResource(cl, slot.output.d3d12.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                                              D3D12_RESOURCE_STATE_COMMON);
 
+        if (profile) {
+            cl->EndQuery(qHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP, slotIndex * 4 + 3);
+            cl->ResolveQueryData(qHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP, slotIndex * 4, 4, qReadback.Get(),
+                                 static_cast<UINT64>(slotIndex) * 4 * sizeof(uint64_t));
+            slotHasTs[slotIndex] = true;
+        }
+
         // ---- D3D11 side: fill the shared inputs (executed before the fence signal below) ----
+        D3D11Prof* pf = nullptr;
+        if (profile) {
+            D3D11Prof& cand = d11prof[d11ProfWrite];
+            if (!cand.inFlight && cand.disjoint) {
+                pf = &cand;
+                context->Begin(pf->disjoint.Get());
+                context->End(pf->ts[0].Get());
+            }
+        }
+        auto closeProf = [&](bool completed) {
+            if (!pf) return;
+            context->End(pf->disjoint.Get());
+            if (completed) {
+                pf->inFlight = true;
+                d11ProfWrite = (d11ProfWrite + 1) % kProfRing;
+            }
+            pf = nullptr;
+        };
         context->CopyResource(slot.color.d3d11.Get(), in.color);
         context->CopyResource(slot.motion.d3d11.Get(), in.motionVectors);
         {
@@ -446,12 +623,20 @@ struct Fsr4Engine::Impl {
             context->CSSetUnorderedAccessViews(0, 1, &restoreUav, &restoreInitial);
         }
 
-        const uint64_t done = bridge.submitAfterD3D11Signal(ctx4.Get(), slotIndex, true);
-        if (done == 0) { setError(L"bridge submit failed"); return false; }
-        if (!bridge.waitOnD3D11(ctx4.Get(), done)) { setError(L"D3D11 wait on D3D12 fence failed"); return false; }
+        if (pf) context->End(pf->ts[1].Get());
+        const uint64_t done = bridge.submitAfterD3D11Signal(ctx4.Get(), slotIndex, flushEachFrame);
+        if (done == 0) { closeProf(false); setError(L"bridge submit failed"); return false; }
+        if (!bridge.waitOnD3D11(ctx4.Get(), done)) { closeProf(false); setError(L"D3D11 wait on D3D12 fence failed"); return false; }
+        if (pf) context->End(pf->ts[2].Get());
 
         context->CopyResource(dest, slot.output.d3d11.Get());
+        if (pf) context->End(pf->ts[3].Get());
+        closeProf(true);
 
+        if (profile) {
+            sCpuEval.add(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - cpuT0).count());
+            maybeReport();
+        }
         resetPending = false;
         ++evalCount;
         if (evalCount == 1) {
@@ -488,6 +673,7 @@ bool Fsr4Engine::initialize(ID3D11Device* device) {
         return false;
     }
     impl_->ready = true;
+    impl_->initProfiling();
     wchar_t buf[256]{};
     std::swprintf(buf, 256, L"EDPE FSR4: engine initialized (agilitySdk=%d)", impl_->bridge.usingAgilitySdk() ? 1 : 0);
     EdpeLog(buf);
@@ -499,6 +685,10 @@ void Fsr4Engine::shutdown() {
     impl_->ready = false;
     impl_->destroyResources();
     impl_->depthCs.Reset();
+    impl_->qHeap.Reset();
+    impl_->qReadback.Reset();
+    for (auto& p : impl_->d11prof) p = Fsr4Engine::Impl::D3D11Prof{};
+    impl_->slotHasTs.fill(false);
     impl_->ownDepthSrv.Reset();
     impl_->ownDepthSrvSource = nullptr;
     impl_->bridge.shutdown();

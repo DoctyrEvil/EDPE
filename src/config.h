@@ -53,6 +53,10 @@ public:
         preserveNativeUi = GetPrivateProfileIntW(L"Upscaler", L"PreserveNativeUi", 1, path.c_str()) != 0;
         hdrInput = GetPrivateProfileIntW(L"Upscaler", L"HdrInput", 0, path.c_str()) != 0;
         fsr4 = GetPrivateProfileIntW(L"Upscaler", L"Fsr4", 0, path.c_str()) != 0;
+        fsr4Profile = GetPrivateProfileIntW(L"Upscaler", L"Fsr4Profile", 0, path.c_str()) != 0;
+        fsr4ProfileInterval = GetPrivateProfileIntW(L"Upscaler", L"Fsr4ProfileInterval", 300, path.c_str());
+        if (fsr4ProfileInterval < 10) fsr4ProfileInterval = 300;
+        fsr4Flush = GetPrivateProfileIntW(L"Upscaler", L"Fsr4Flush", 1, path.c_str()) != 0;
 
         wchar_t sharpnessBuf[64]{};
         GetPrivateProfileStringW(L"Upscaler", L"Sharpness", L"0.0", sharpnessBuf, 64, path.c_str());
@@ -237,6 +241,9 @@ public:
         appendBool("PreserveNativeUi", preserveNativeUi);
         appendBool("HdrInput", hdrInput);
         appendBool("Fsr4", fsr4);
+        appendBool("Fsr4Profile", fsr4Profile);
+        appendInt("Fsr4ProfileInterval", fsr4ProfileInterval);
+        appendBool("Fsr4Flush", fsr4Flush);
         appendFloat("Sharpness", "%.2f", sharpness);
 
         appendSection("FrameGeneration");
@@ -398,6 +405,9 @@ public:
     bool preserveNativeUi = true;
     bool hdrInput = false;
     bool fsr4 = false; // [Upscaler] Fsr4=1: try the FSR 4 (D3D12 bridge) path first in the AMD FSR backend
+    bool fsr4Profile = false;      // [Upscaler] Fsr4Profile=1: log a per-stage timing summary of the FSR 4 path
+    int fsr4ProfileInterval = 300; // frames per summary line
+    bool fsr4Flush = true;         // [Upscaler] Fsr4Flush=0: do not flush D3D11 after the bridge fence signal
 
     int frameGenBackend = 0; // 0=Off, 1=AMD FSR FG, 2=NVIDIA DLSS-G
     int frameGenMultiplier = 2; // 2..4 (clamped by backend capability)
