@@ -374,7 +374,7 @@ struct Fsr4Engine::Impl {
         const int index = fsr4::pickFsr4Provider(offered, &picked);
         const std::string list = fsr4::formatProviderList(offered);
         if (index < 0) {
-            const std::string text = fsr4::providerRefusalText(offered);
+            const std::string text = fsr4::providerRefusalText(offered, bridge.usingAgilitySdk());
             const std::wstring wide(text.begin(), text.end());
             setError(wide.c_str());
             return false;

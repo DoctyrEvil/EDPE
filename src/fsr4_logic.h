@@ -235,11 +235,14 @@ inline std::string formatProviderList(const std::vector<std::string>& names) {
 }
 
 // Why FSR 4 is unavailable when no 4.x provider is offered. Shown in the menu next to the greyed-out entry.
-inline std::string providerRefusalText(const std::vector<std::string>& offered) {
+// Without the side-loaded Agility SDK runtime the system D3D12 runtime may be the limit (seen on Windows 10), so
+// the text also names the optional file.
+inline std::string providerRefusalText(const std::vector<std::string>& offered, bool agilityInUse = true) {
     std::string text = offered.empty()
         ? std::string("AMD's runtime offers no FSR version for this GPU")
         : "AMD's runtime offers only FSR " + formatProviderList(offered) + " for this GPU";
     text += "; FSR 4 needs a Radeon RX 7000 or 9000 series GPU (use AMD FSR 3.1.2)";
+    if (!agilityInUse) text += ", or D3D12\D3D12Core.dll (Agility SDK 1.616.1) beside dxgi.dll on older Windows";
     return text;
 }
 
