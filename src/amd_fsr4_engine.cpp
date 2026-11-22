@@ -155,6 +155,7 @@ struct Fsr4Engine::Impl {
     bool resetPending = true;
     wchar_t error[256] = L"";
     char providerVer[64] = "unavailable";
+    uint64_t providerVersionId = 0;  // the 4.x provider chosen from those AMD's runtime offers (ffxOverrideVersion)
 
     // Active configuration; any change recreates the resources and the FFX context.
     uint32_t renderW = 0, renderH = 0, outputW = 0, outputH = 0;
@@ -339,6 +340,53 @@ struct Fsr4Engine::Impl {
         return true;
     }
 
+    // Asks AMD's runtime which upscaler providers it offers for this D3D12 device and picks the highest 4.x one.
+    // When there is none (RDNA 2, other vendors' GPUs, a runtime too old for the provider) FSR 4 is unavailable and
+    // the error says what was offered. It never runs a 3.x provider under the FSR 4 name.
+    bool selectProvider() {
+        providerVersionId = 0;
+        uint64_t count = 0;
+        ffxQueryDescGetVersions query{};
+        query.header.type = FFX_API_QUERY_DESC_TYPE_GET_VERSIONS;
+        query.createDescType = FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE;
+        query.device = bridge.d3d12Device();
+        query.outputCount = &count;
+        if (ffx.Query(nullptr, &query.header) != FFX_API_RETURN_OK) {
+            setError(L"querying the FSR versions AMD's runtime offers failed");
+            return false;
+        }
+        std::vector<uint64_t> ids(static_cast<size_t>(count));
+        std::vector<const char*> names(static_cast<size_t>(count));
+        if (count > 0) {
+            query.outputCount = &count;
+            query.versionIds = ids.data();
+            query.versionNames = names.data();
+            if (ffx.Query(nullptr, &query.header) != FFX_API_RETURN_OK) {
+                setError(L"reading the FSR versions AMD's runtime offers failed");
+                return false;
+            }
+        }
+        std::vector<std::string> offered;
+        for (size_t i = 0; i < static_cast<size_t>(count) && i < names.size(); ++i) {
+            offered.emplace_back(names[i] ? names[i] : "");
+        }
+        fsr4::Version picked;
+        const int index = fsr4::pickFsr4Provider(offered, &picked);
+        const std::string list = fsr4::formatProviderList(offered);
+        if (index < 0) {
+            const std::string text = fsr4::providerRefusalText(offered);
+            const std::wstring wide(text.begin(), text.end());
+            setError(wide.c_str());
+            return false;
+        }
+        providerVersionId = ids[static_cast<size_t>(index)];
+        wchar_t buf[256]{};
+        std::swprintf(buf, 256, L"EDPE FSR4: AMD's runtime offers FSR %hs; using %u.%u.%u", list.c_str(), picked.major,
+                      picked.minor, picked.patch);
+        EdpeLog(buf);
+        return true;
+    }
+
     bool ensureDepthShader() {
         if (depthCs) return true;
         Microsoft::WRL::ComPtr<ID3DBlob> blob, errors;
@@ -403,6 +451,12 @@ struct Fsr4Engine::Impl {
         backend.header.type = FFX_API_CREATE_CONTEXT_DESC_TYPE_BACKEND_DX12;
         backend.device = bridge.d3d12Device();
 
+        // Select the 4.x provider chosen at initialization instead of the runtime's default.
+        ffxOverrideVersion providerOverride{};
+        providerOverride.header.type = FFX_API_DESC_TYPE_OVERRIDE_VERSION;
+        providerOverride.versionId = providerVersionId;
+        backend.header.pNext = providerVersionId ? &providerOverride.header : nullptr;
+
         ffxCreateContextDescUpscaleVersion ver{};
         ver.header.type = FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE_VERSION;
         ver.header.pNext = &backend.header;
@@ -435,6 +489,16 @@ struct Fsr4Engine::Impl {
         pv.header.type = FFX_API_QUERY_DESC_TYPE_GET_PROVIDER_VERSION;
         if (ffx.Query(&upscaleCtx, &pv.header) == FFX_API_RETURN_OK && pv.versionName) {
             std::snprintf(providerVer, sizeof(providerVer), "%s", pv.versionName);
+        }
+        // Belt and braces after the override: a context that reports anything but a 4.x provider is not FSR 4.
+        fsr4::Version reported;
+        if (!fsr4::parseVersion(providerVer, &reported) || reported.major < 4) {
+            wchar_t msg[200]{};
+            std::swprintf(msg, 200, L"AMD's runtime created a non-FSR 4 provider (%hs); FSR 4 is unavailable", providerVer);
+            destroyContext();
+            setError(msg);
+            destroyResources();
+            return false;
         }
 
         renderW = in.renderWidth; renderH = in.renderHeight;
@@ -680,6 +744,11 @@ bool Fsr4Engine::initialize(ID3D11Device* device) {
     }
     if (!impl_->bridge.initialize(device, agilityDir.empty() ? nullptr : agilityDir.c_str())) {
         impl_->setError(L"D3D11/D3D12 bridge initialization failed");
+        return false;
+    }
+    if (!impl_->selectProvider()) {
+        impl_->bridge.shutdown();
+        impl_->device.Reset();
         return false;
     }
     impl_->ready = true;

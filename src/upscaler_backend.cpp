@@ -838,7 +838,9 @@ bool AmdUpscalerBackend::initialize(ID3D11Device* device, ID3D11DeviceContext* /
     fsr4_ = std::make_unique<Fsr4Engine>();
     fsr4Device_ = device;
     fsr4State_.onBackendInitialize();
-    if (fsr4State_.wanted) tryInitFsr4();
+    // Probe FSR 4 once at startup when its files are present, so the menu can show it as unavailable (with the
+    // reason) the way DLSS is, instead of discovering a refusal only after it was selected.
+    if (Fsr4Engine::filesPresent()) tryInitFsr4();
     return true;
 #else
     return false;
@@ -851,11 +853,11 @@ bool AmdUpscalerBackend::tryInitFsr4() {
     const bool ok = fsr4_->initialize(fsr4Device_);
     fsr4State_.onInitResult(ok);
     if (ok) {
-        EdpeLog(L"EDPE: FSR 4 selected; the D3D11 FSR 3.1 path is the fallback");
+        EdpeLog(L"EDPE: FSR 4 available; the D3D11 FSR 3.1 path stays the fallback");
         return true;
     }
     wchar_t buf[320];
-    swprintf_s(buf, L"EDPE: FSR 4 requested but unavailable: %ls; using FSR 3.1", fsr4_->lastError());
+    swprintf_s(buf, L"EDPE: FSR 4 unavailable: %ls; using FSR 3.1", fsr4_->lastError());
     EdpeLog(buf);
     return false;
 }
@@ -1246,7 +1248,7 @@ void UpscalerManager::setFsr4Enabled(bool enabled) {
 }
 
 bool UpscalerManager::isFsr4Available() const {
-    return amdBackend_.isAvailable() && Fsr4Engine::filesPresent();
+    return amdBackend_.isAvailable() && Fsr4Engine::filesPresent() && amdBackend_.isFsr4Capable();
 }
 
 const wchar_t* UpscalerManager::getFsr4UnavailableReason() const {
@@ -1254,7 +1256,9 @@ const wchar_t* UpscalerManager::getFsr4UnavailableReason() const {
     if (!Fsr4Engine::filesPresent()) {
         return L"amd_fidelityfx_loader_dx12.dll / amd_fidelityfx_upscaler_dx12.dll not found beside dxgi.dll (or FSR 4 not compiled in)";
     }
-    if (amdBackend_.isFsr4Wanted() && !amdBackend_.isFsr4Running()) return amdBackend_.fsr4LastError();
+    if (!amdBackend_.isFsr4Capable() || (amdBackend_.isFsr4Wanted() && !amdBackend_.isFsr4Running())) {
+        return amdBackend_.fsr4LastError();
+    }
     return L"";
 }
 

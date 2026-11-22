@@ -10,6 +10,8 @@
 #include <cfloat>
 #include <cmath>
 #include <cstdio>
+#include <string>
+#include <vector>
 
 namespace edpe {
 namespace fsr4 {
@@ -36,6 +38,8 @@ struct ProviderState {
     bool active = false;      // the FSR 4 engine initialized and has not been disabled by failures
     bool initTried = false;   // initialization attempted since the last selection or retry
     bool failLogged = false;  // the first fallback has been logged
+    bool probed = false;      // initialization has run at least once since the backend started
+    bool capable = false;     // the last initialization succeeded: this GPU and runtime can run FSR 4
     FailureGate gate;
 
     bool running() const { return wanted && active; }
@@ -64,6 +68,8 @@ struct ProviderState {
 
     void onInitResult(bool ok) {
         initTried = true;
+        probed = true;
+        capable = ok;
         active = ok;
     }
 
@@ -72,12 +78,16 @@ struct ProviderState {
         active = false;
         initTried = false;
         failLogged = false;
+        probed = false;
+        capable = false;
         gate.reset();
     }
 
     void onShutdown() {
         active = false;
         initTried = false;
+        probed = false;
+        capable = false;
     }
 
     void onEvaluateSuccess() { gate.onSuccess(); }
@@ -120,6 +130,105 @@ inline void formatProviderLabel(ProviderLabel label, const char* fsr4Version, ch
         std::snprintf(buffer, size, "FSR 3.1.2");
         break;
     }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Provider versions: FSR 4 runs only on a 4.x provider (Fsr4Engine)
+// ---------------------------------------------------------------------------------------------------------------
+
+// AMD's runtime offers a list of upscaler providers for a device (for example "4.1.2", "3.1.6", "2.3.4"). FSR 4 must
+// never run a 3.x or 2.x provider under its name, so the engine picks the highest 4.x one and refuses otherwise.
+
+struct Version {
+    unsigned major = 0, minor = 0, patch = 0;
+};
+
+inline bool isDigit(char c) { return c >= '0' && c <= '9'; }
+
+// Reads the first "digits.digits[.digits]" run in `name` ("4.1.2", "FSR 4.1", "AMD FSR v4.1.1 (ML)"), whatever precedes
+// it. A missing patch reads as 0. Returns false, leaving `out` untouched, for names with no such run (null, "", "4",
+// "unknown", numbers longer than six digits).
+inline bool parseVersion(const char* name, Version* out = nullptr) {
+    if (!name) return false;
+    for (const char* p = name; *p; ++p) {
+        if (!isDigit(*p)) continue;
+        // Skip the middle of a number and the tail of a dotted run that began earlier.
+        if (p > name && (isDigit(p[-1]) || p[-1] == '.')) continue;
+        unsigned parts[3] = {0, 0, 0};
+        int count = 0;
+        bool ok = true;
+        const char* q = p;
+        while (count < 3 && isDigit(*q)) {
+            unsigned n = 0;
+            int digits = 0;
+            while (isDigit(*q)) {
+                if (++digits > 6) { ok = false; break; }
+                n = n * 10u + static_cast<unsigned>(*q - '0');
+                ++q;
+            }
+            if (!ok) break;
+            parts[count++] = n;
+            if (*q == '.' && isDigit(q[1])) ++q; else break;
+        }
+        if (ok && count >= 2) {
+            if (out) { out->major = parts[0]; out->minor = parts[1]; out->patch = parts[2]; }
+            return true;
+        }
+    }
+    return false;
+}
+
+inline int compareVersions(const Version& a, const Version& b) {
+    if (a.major != b.major) return a.major < b.major ? -1 : 1;
+    if (a.minor != b.minor) return a.minor < b.minor ? -1 : 1;
+    if (a.patch != b.patch) return a.patch < b.patch ? -1 : 1;
+    return 0;
+}
+
+// Index of the highest offered provider whose major version is at least 4, or -1 when there is none. Names that do not
+// parse are ignored; of two equal versions the first wins. `picked` receives the winner when given.
+inline int pickFsr4Provider(const std::vector<std::string>& names, Version* picked = nullptr) {
+    int best = -1;
+    Version bestVersion;
+    for (size_t i = 0; i < names.size(); ++i) {
+        Version v;
+        if (!parseVersion(names[i].c_str(), &v) || v.major < 4) continue;
+        if (best < 0 || compareVersions(v, bestVersion) > 0) {
+            best = static_cast<int>(i);
+            bestVersion = v;
+        }
+    }
+    if (best >= 0 && picked) *picked = bestVersion;
+    return best;
+}
+
+// "4.1.2, 3.1.6, 2.3.4": each offered name as major.minor.patch in the order given. A name that is not a version is
+// shown as it came (at most 24 characters, "?" when empty) so a log never hides what the runtime said.
+inline std::string formatProviderList(const std::vector<std::string>& names) {
+    std::string text;
+    for (size_t i = 0; i < names.size(); ++i) {
+        if (i) text += ", ";
+        Version v;
+        if (parseVersion(names[i].c_str(), &v)) {
+            char buf[40];
+            std::snprintf(buf, sizeof(buf), "%u.%u.%u", v.major, v.minor, v.patch);
+            text += buf;
+        } else if (names[i].empty()) {
+            text += "?";
+        } else {
+            text += names[i].substr(0, 24);
+        }
+    }
+    return text;
+}
+
+// Why FSR 4 is unavailable when no 4.x provider is offered. Shown in the menu next to the greyed-out entry.
+inline std::string providerRefusalText(const std::vector<std::string>& offered) {
+    std::string text = offered.empty()
+        ? std::string("AMD's runtime offers no FSR version for this GPU")
+        : "AMD's runtime offers only FSR " + formatProviderList(offered) + " for this GPU";
+    text += "; FSR 4 needs a Radeon RX 7000 or 9000 series GPU (use AMD FSR 3.1.2)";
+    return text;
 }
 
 // ---------------------------------------------------------------------------------------------------------------
