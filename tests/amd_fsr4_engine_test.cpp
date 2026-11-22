@@ -5,6 +5,7 @@
 // Feeds EDPE-style inputs: 8-bit typeless color, typeless depth/stencil with a float SRV, R16G16 motion vectors,
 // and an 8-bit destination. A flat color must survive the round trip through the D3D12 bridge.
 #include "amd_fsr4_engine.h"
+#include "log.h"
 
 #include <d3d11.h>
 #include <wrl/client.h>
@@ -12,6 +13,8 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <filesystem>
+#include <fstream>
 #include <string>
 
 using Microsoft::WRL::ComPtr;
@@ -32,6 +35,10 @@ static float halton(int index, int base) {
 }
 
 int main() {
+    // Exercise the optional profiling path too (summary every 10 frames).
+    _putenv_s("EDPE_FSR4_PROFILE", "1");
+    _putenv_s("EDPE_FSR4_PROFILE_INTERVAL", "10");
+
     ComPtr<ID3D11Device> dev;
     ComPtr<ID3D11DeviceContext> ctx;
     D3D_FEATURE_LEVEL fl = D3D_FEATURE_LEVEL_11_1;
@@ -135,6 +142,21 @@ int main() {
                 engine.providerVersion(), r, g, b);
     REQUIRE(std::abs(r - 77) <= 10 && std::abs(g - 102) <= 10 && std::abs(b - 128) <= 10,
             "output center pixel does not match the flat input color");
+
+    // The profiling summary must have been written to edpe.log next to the executable.
+    EdpeLogFlush();
+    wchar_t exePath[MAX_PATH]{};
+    GetModuleFileNameW(nullptr, exePath, MAX_PATH);
+    std::ifstream logFile(std::filesystem::path(exePath).parent_path() / L"edpe.log", std::ios::binary);
+    std::string line, lastProfile;
+    while (std::getline(logFile, line)) {
+        // The log may be written as UTF-16; compare with embedded NULs removed.
+        std::string narrow;
+        for (char c : line) if (c != '\0') narrow += c;
+        if (narrow.find("EDPE FSR4 profile") != std::string::npos) lastProfile = narrow;
+    }
+    REQUIRE(!lastProfile.empty(), "profiling summary line not found in edpe.log");
+    std::printf("%s\n", lastProfile.c_str());
     std::printf("PASS\n");
     return 0;
 }
