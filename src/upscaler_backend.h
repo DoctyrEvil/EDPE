@@ -122,8 +122,6 @@ class Fsr4Engine;
 
 // AMD FidelityFX FSR backend implementation wrapper.
 // Governed by safety constraints in amd-fsr-input-contract.md.
-// Optional FSR 4 path ([Upscaler] Fsr4=1 in edpe.ini): official FidelityFX DX12 upscaler through the
-// D3D11/D3D12 bridge, tried first with fallback to the D3D11 FSR 3.1 path (proof of concept).
 class AmdUpscalerBackend : public IUpscalerBackend {
 public:
     AmdUpscalerBackend();
@@ -167,6 +165,8 @@ private:
 
     struct Impl;
     std::unique_ptr<Impl> impl_;
+    // Optional FSR 4 provider: the official FidelityFX D3D12 upscaler through the D3D11/D3D12 bridge. The D3D11
+    // FSR 3.1 path stays the fallback.
     std::unique_ptr<Fsr4Engine> fsr4_;
     ID3D11Device* fsr4Device_ = nullptr;
     fsr4::ProviderState fsr4State_;  // selection, init and failure-gate state (pure logic, see fsr4_logic.h)
@@ -224,7 +224,8 @@ public:
     void retryFsr4() { amdBackend_.retryFsr4(); pendingReset_ = true; }
     bool isFsr4Enabled() const { return amdBackend_.isFsr4Wanted(); }
     bool isFsr4Running() const { return amdBackend_.isFsr4Running(); }
-    // FSR 4 can be offered: FSR backend usable and the signed DLLs are present beside the proxy.
+    // FSR 4 can be offered: the FSR backend is usable, the signed DLLs are present beside the proxy and the
+    // startup probe found a 4.x provider.
     bool isFsr4Available() const;
     const wchar_t* getFsr4UnavailableReason() const;
     void describeAmdProvider(char* buffer, size_t size) const { amdBackend_.describeProvider(buffer, size); }

@@ -404,10 +404,10 @@ public:
     bool autoSyncEliteConfig = true;
     bool preserveNativeUi = true;
     bool hdrInput = false;
-    bool fsr4 = false; // [Upscaler] Fsr4=1: try the FSR 4 (D3D12 bridge) path first in the AMD FSR backend
-    bool fsr4Profile = false;      // [Upscaler] Fsr4Profile=1: log a per-stage timing summary of the FSR 4 path
-    int fsr4ProfileInterval = 300; // frames per summary line
-    bool fsr4Flush = true;         // [Upscaler] Fsr4Flush=0: do not flush D3D11 after the bridge fence signal
+    bool fsr4 = false; // [Upscaler] Fsr4=1: start on FSR 4 (D3D12 bridge) in the AMD FSR backend
+    bool fsr4Profile = false; // [Upscaler] Fsr4Profile=1: log per-stage FSR 4 timings to edpe.log
+    int fsr4ProfileInterval = 300; // frames per timing summary line
+    bool fsr4Flush = true; // [Upscaler] Fsr4Flush=0: skip the D3D11 flush after the bridge fence signal
 
     int frameGenBackend = 0; // 0=Off, 1=AMD FSR FG, 2=NVIDIA DLSS-G
     int frameGenMultiplier = 2; // 2..4 (clamped by backend capability)

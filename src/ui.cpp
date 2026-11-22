@@ -1877,6 +1877,7 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
                     if (fsr4_available) {
                         const bool was_fsr = (upscaler.getBackend() == edpe::UpscalerBackend::AmdFsr);
                         upscaler.setFsr4Enabled(true);
+                        // Reselecting FSR 4 while it is selected but not running retries its initialization.
                         if (was_fsr) upscaler.retryFsr4();
                         upscaler.setBackend(edpe::UpscalerBackend::AmdFsr);
                         if (!was_fsr) upscaler.setMode(edpe::UpscaleMode::NativeAA);
