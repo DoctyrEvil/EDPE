@@ -1,4 +1,5 @@
 #include "amd_fsr4_engine.h"
+#include "fsr4_logic.h"
 
 #include "d3d12_bridge.h"
 #include "log.h"
@@ -410,12 +411,14 @@ struct Fsr4Engine::Impl {
         ffxCreateContextDescUpscale desc{};
         desc.header.type = FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE;
         desc.header.pNext = &ver.header;
-        desc.flags = FFX_UPSCALE_ENABLE_AUTO_EXPOSURE;
-        if (in.depthInverted) desc.flags |= FFX_UPSCALE_ENABLE_DEPTH_INVERTED;
-        if (in.depthInfinite) desc.flags |= FFX_UPSCALE_ENABLE_DEPTH_INFINITE;
-        // FSR 4 wants linear color. HDR (linear, pre-tonemap) input uses the HDR flag; tonemapped LDR input
-        // is declared non-linear (sRGB), which the SDK documents as supported but possibly lower quality.
-        desc.flags |= in.colorIsHdr ? FFX_UPSCALE_ENABLE_HIGH_DYNAMIC_RANGE : FFX_UPSCALE_ENABLE_NON_LINEAR_COLORSPACE;
+        // Which flags the inputs need is decided in fsr4_logic.h (unit tested); this maps them to FidelityFX bits.
+        const fsr4::ContextFlagsPlan flagsPlan = fsr4::buildContextFlagsPlan(in);
+        desc.flags = 0;
+        if (flagsPlan.autoExposure) desc.flags |= FFX_UPSCALE_ENABLE_AUTO_EXPOSURE;
+        if (flagsPlan.depthInverted) desc.flags |= FFX_UPSCALE_ENABLE_DEPTH_INVERTED;
+        if (flagsPlan.depthInfinite) desc.flags |= FFX_UPSCALE_ENABLE_DEPTH_INFINITE;
+        if (flagsPlan.hdr) desc.flags |= FFX_UPSCALE_ENABLE_HIGH_DYNAMIC_RANGE;
+        if (flagsPlan.nonLinearColorspace) desc.flags |= FFX_UPSCALE_ENABLE_NON_LINEAR_COLORSPACE;
         desc.maxRenderSize = {in.renderWidth, in.renderHeight};
         desc.maxUpscaleSize = {in.outputWidth, in.outputHeight};
         desc.fpMessage = ffxMessageToLog;
@@ -532,22 +535,22 @@ struct Fsr4Engine::Impl {
         du.depth = ffxApiGetResourceDX12(slot.depth.d3d12.Get(), FFX_API_RESOURCE_STATE_COMPUTE_READ);
         du.motionVectors = ffxApiGetResourceDX12(slot.motion.d3d12.Get(), FFX_API_RESOURCE_STATE_COMPUTE_READ);
         du.output = ffxApiGetResourceDX12(slot.output.d3d12.Get(), FFX_API_RESOURCE_STATE_UNORDERED_ACCESS);
-        du.jitterOffset = {in.jitterX, in.jitterY};
-        du.motionVectorScale = {in.motionScaleX, in.motionScaleY};
+        // The values come from fsr4_logic.h (unit tested); the same arithmetic as before, in one place.
+        const fsr4::DispatchPlan plan = fsr4::buildDispatchPlan(in, resetPending);
+        du.jitterOffset = {plan.jitterX, plan.jitterY};
+        du.motionVectorScale = {plan.motionScaleX, plan.motionScaleY};
         du.renderSize = {in.renderWidth, in.renderHeight};
         du.upscaleSize = {in.outputWidth, in.outputHeight};
-        du.enableSharpening = in.sharpness > 0.0f;
-        du.sharpness = std::clamp(in.sharpness, 0.0f, 1.0f);
-        du.frameTimeDelta = in.frameTimeMs > 0.0f ? in.frameTimeMs : 16.6f;
-        du.preExposure = 1.0f;
-        du.reset = in.reset || resetPending;
-        const float nearPlane = (in.cameraNow.depthB > 0.0f) ? in.cameraNow.depthB : 0.025f;
-        du.cameraNear = in.depthInverted ? FLT_MAX : nearPlane;
-        du.cameraFar = in.depthInverted ? nearPlane : FLT_MAX;
-        du.cameraFovAngleVertical =
-            (in.cameraNow.scaleY > 0.0f) ? (2.0f * std::atan(1.0f / in.cameraNow.scaleY)) : 1.0f;
-        du.viewSpaceToMetersFactor = 1.0f;
-        du.flags = in.colorIsHdr ? 0u : static_cast<uint32_t>(FFX_UPSCALE_FLAG_NON_LINEAR_COLOR_SRGB);
+        du.enableSharpening = plan.enableSharpening;
+        du.sharpness = plan.sharpness;
+        du.frameTimeDelta = plan.frameTimeMs;
+        du.preExposure = plan.preExposure;
+        du.reset = plan.reset;
+        du.cameraNear = plan.cameraNear;
+        du.cameraFar = plan.cameraFar;
+        du.cameraFovAngleVertical = plan.fovVertical;
+        du.viewSpaceToMetersFactor = plan.viewSpaceToMeters;
+        du.flags = plan.nonLinearSrgb ? static_cast<uint32_t>(FFX_UPSCALE_FLAG_NON_LINEAR_COLOR_SRGB) : 0u;
 
         const ffxReturnCode_t rc = ffx.Dispatch(&upscaleCtx, &du.header);
         if (rc != FFX_API_RETURN_OK) {
@@ -710,7 +713,9 @@ const char* Fsr4Engine::providerVersion() const { return impl_ ? impl_->provider
 
 bool Fsr4Engine::evaluate(ID3D11DeviceContext* context, const TemporalFrameInputs& inputs,
                           ID3D11Texture2D* destination) {
-    if (!impl_ || !context || !destination) return false;
+    if (!impl_) return false;
+    if (!context) { impl_->setError(L"D3D11 device context is null"); return false; }
+    if (!destination) { impl_->setError(L"destination texture is null"); return false; }
     return impl_->evaluate(context, inputs, destination);
 }
 

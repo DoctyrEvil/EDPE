@@ -1,6 +1,7 @@
 #pragma once
 
 #include "temporal_inputs.h"
+#include "fsr4_logic.h"
 #include "taa_pass.h"
 #include "sharpen_pass.h"
 
@@ -163,9 +164,9 @@ public:
     void setFsr4Wanted(bool wanted);
     // Explicit user retry after FSR 4 failed to initialize or was disabled by failures.
     void retryFsr4();
-    bool isFsr4Wanted() const { return fsr4Wanted_; }
+    bool isFsr4Wanted() const { return fsr4State_.wanted; }
     // True when FSR 4 is selected and its engine is initialized and not disabled by failures.
-    bool isFsr4Running() const { return fsr4Wanted_ && fsr4Active_; }
+    bool isFsr4Running() const { return fsr4State_.running(); }
     // Writes the provider that actually runs now, e.g. "FSR 4.1.2", "FSR 3.1.2", or
     // "FSR 3.1.2 (FSR 4 unavailable)".
     void describeProvider(char* buffer, size_t size) const;
@@ -178,11 +179,7 @@ private:
     std::unique_ptr<Impl> impl_;
     std::unique_ptr<Fsr4Engine> fsr4_;
     ID3D11Device* fsr4Device_ = nullptr;
-    bool fsr4Wanted_ = false;       // selected (ini Fsr4=1 at startup, or the menu)
-    bool fsr4Active_ = false;       // FSR 4 engine initialized and usable
-    bool fsr4InitTried_ = false;    // initialization attempted since the last selection
-    bool fsr4FailLogged_ = false;   // log the first fallback only
-    int fsr4ConsecutiveFailures_ = 0; // disable the FSR 4 path after a long run of failures
+    fsr4::ProviderState fsr4State_;  // selection, init and failure-gate state (pure logic, see fsr4_logic.h)
 };
 
 // Native Direct3D 11 Temporal Anti-Aliasing (TAA) backend.
