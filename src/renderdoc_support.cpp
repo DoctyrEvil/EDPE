@@ -55,6 +55,7 @@ const char* backendLabel(int backend) {
     case 1: return "NVIDIA DLSS/DLAA";
     case 2: return "AMD FSR";
     case 3: return "Native TAA";
+    case 4: return "AMD FSR 4.1.2";
     default: return "Native (Bypass)";
     }
 }
