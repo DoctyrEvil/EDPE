@@ -772,8 +772,9 @@ void cs_main(uint3 id : SV_DispatchThreadID) {
 };
 
 AmdUpscalerBackend::AmdUpscalerBackend()
-    : impl_(std::make_unique<Impl>()),
-      fsr4Wanted_(Fsr4Engine::enabledByConfig()) {}
+    : impl_(std::make_unique<Impl>()) {
+    fsr4State_.wanted = Fsr4Engine::enabledByConfig();
+}
 
 AmdUpscalerBackend::~AmdUpscalerBackend() {
     shutdown();
@@ -836,11 +837,8 @@ bool AmdUpscalerBackend::initialize(ID3D11Device* device, ID3D11DeviceContext* /
     // The engine is created here and initialized when FSR 4 is selected (startup ini or the menu).
     fsr4_ = std::make_unique<Fsr4Engine>();
     fsr4Device_ = device;
-    fsr4Active_ = false;
-    fsr4InitTried_ = false;
-    fsr4FailLogged_ = false;
-    fsr4ConsecutiveFailures_ = 0;
-    if (fsr4Wanted_) tryInitFsr4();
+    fsr4State_.onBackendInitialize();
+    if (fsr4State_.wanted) tryInitFsr4();
     return true;
 #else
     return false;
@@ -848,11 +846,11 @@ bool AmdUpscalerBackend::initialize(ID3D11Device* device, ID3D11DeviceContext* /
 }
 
 bool AmdUpscalerBackend::tryInitFsr4() {
-    if (fsr4Active_) return true;
+    if (fsr4State_.active) return true;
     if (!fsr4_ || !fsr4Device_) return false;
-    fsr4InitTried_ = true;
-    if (fsr4_->initialize(fsr4Device_)) {
-        fsr4Active_ = true;
+    const bool ok = fsr4_->initialize(fsr4Device_);
+    fsr4State_.onInitResult(ok);
+    if (ok) {
         EdpeLog(L"EDPE: FSR 4 selected; the D3D11 FSR 3.1 path is the fallback");
         return true;
     }
@@ -863,33 +861,20 @@ bool AmdUpscalerBackend::tryInitFsr4() {
 }
 
 void AmdUpscalerBackend::setFsr4Wanted(bool wanted) {
-    if (wanted == fsr4Wanted_) return;
-    fsr4Wanted_ = wanted;
-    fsr4FailLogged_ = false;
-    fsr4ConsecutiveFailures_ = 0;
-    if (wanted) fsr4InitTried_ = false;  // a fresh selection retries a failed initialization
+    if (!fsr4State_.setWanted(wanted)) return;  // a fresh selection of FSR 4 retries a failed initialization
     EdpeLog(wanted ? L"EDPE: AMD FSR provider switched to FSR 4" : L"EDPE: AMD FSR provider switched to FSR 3.1.2");
     resetHistory();  // the two providers keep separate histories
 }
 
 void AmdUpscalerBackend::retryFsr4() {
-    if (!fsr4Wanted_ || fsr4Active_) return;
-    fsr4InitTried_ = false;
-    fsr4FailLogged_ = false;
-    fsr4ConsecutiveFailures_ = 0;
+    if (!fsr4State_.retry()) return;
     EdpeLog(L"EDPE: retrying FSR 4 initialization");
     resetHistory();
 }
 
 void AmdUpscalerBackend::describeProvider(char* buffer, size_t size) const {
     if (!buffer || size == 0) return;
-    if (isFsr4Running()) {
-        snprintf(buffer, size, "FSR %s", fsr4_ ? fsr4_->providerVersion() : "4");
-    } else if (fsr4Wanted_) {
-        snprintf(buffer, size, "FSR 3.1.2 (FSR 4 unavailable)");
-    } else {
-        snprintf(buffer, size, "FSR 3.1.2");
-    }
+    fsr4::formatProviderLabel(fsr4State_.label(), fsr4_ ? fsr4_->providerVersion() : "4", buffer, size);
 }
 
 const wchar_t* AmdUpscalerBackend::fsr4LastError() const {
@@ -898,8 +883,7 @@ const wchar_t* AmdUpscalerBackend::fsr4LastError() const {
 
 void AmdUpscalerBackend::shutdown() {
     if (fsr4_) fsr4_->shutdown();
-    fsr4Active_ = false;
-    fsr4InitTried_ = false;
+    fsr4State_.onShutdown();
     fsr4Device_ = nullptr;
     if (!impl_) return;
     impl_->destroyFsrContext();
@@ -920,23 +904,21 @@ bool AmdUpscalerBackend::evaluate(ID3D11DeviceContext* context,
     if (!isAvailable() || !context || !impl_) return false;
 
     // Lazy initialization on first use after selection (render thread, same as evaluate).
-    if (fsr4Wanted_ && !fsr4Active_ && !fsr4InitTried_) tryInitFsr4();
+    if (fsr4State_.needsInit()) tryInitFsr4();
 
-    if (fsr4Wanted_ && fsr4Active_ && fsr4_) {
+    if (fsr4State_.running() && fsr4_) {
         ID3D11Texture2D* fsr4Dest = destinationTexture ? destinationTexture : inputs.color;
         if (fsr4_->evaluate(context, inputs, fsr4Dest)) {
-            fsr4ConsecutiveFailures_ = 0;
+            fsr4State_.onEvaluateSuccess();
             return true;
         }
-        if (!fsr4FailLogged_) {
-            fsr4FailLogged_ = true;
+        const auto failure = fsr4State_.onEvaluateFailure();
+        if (failure.logFirstFailure) {
             wchar_t buf[320];
             swprintf_s(buf, L"EDPE: FSR 4 evaluate failed: %ls; falling back to FSR 3.1 for this frame", fsr4_->lastError());
             EdpeLog(buf);
         }
-        if (++fsr4ConsecutiveFailures_ >= 120) {
-            fsr4Active_ = false;
-            fsr4InitTried_ = true;  // do not retry until FSR 4 is selected again
+        if (failure.disabled) {
             EdpeLog(L"EDPE: FSR 4 disabled after 120 consecutive failures; using FSR 3.1");
         }
         // fall through to the D3D11 FSR 3.1 path
