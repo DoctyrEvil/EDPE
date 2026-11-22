@@ -28,6 +28,10 @@ public:
     // True when [Upscaler] Fsr4=1 is set in the edpe.ini next to the game executable.
     static bool enabledByConfig();
 
+    // True when this build includes the FSR 4 engine and the signed FidelityFX loader and upscaler DLLs
+    // sit beside the proxy DLL. Cheap (two file checks); does not prove the GPU or driver offers FSR 4.
+    static bool filesPresent();
+
     // Loads the FidelityFX DLLs and creates the D3D12 bridge on the adapter backing `device`.
     // The FFX upscaler context itself is created lazily on the first evaluate (sizes are not known yet).
     bool initialize(ID3D11Device* device);

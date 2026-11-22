@@ -653,6 +653,13 @@ bool Fsr4Engine::enabledByConfig() {
     return GetPrivateProfileIntW(L"Upscaler", L"Fsr4", 0, iniPathNextToExecutable().c_str()) != 0;
 }
 
+bool Fsr4Engine::filesPresent() {
+    const auto dir = moduleDirectory();
+    std::error_code ec;
+    return std::filesystem::exists(dir / L"amd_fidelityfx_loader_dx12.dll", ec) &&
+           std::filesystem::exists(dir / L"amd_fidelityfx_upscaler_dx12.dll", ec);
+}
+
 bool Fsr4Engine::initialize(ID3D11Device* device) {
     if (!impl_) impl_ = std::make_unique<Impl>();
     shutdown();
@@ -719,6 +726,7 @@ struct Fsr4Engine::Impl {
 Fsr4Engine::Fsr4Engine() : impl_(std::make_unique<Impl>()) {}
 Fsr4Engine::~Fsr4Engine() = default;
 bool Fsr4Engine::enabledByConfig() { return false; }
+bool Fsr4Engine::filesPresent() { return false; }
 bool Fsr4Engine::initialize(ID3D11Device*) { return false; }
 void Fsr4Engine::shutdown() {}
 bool Fsr4Engine::isReady() const { return false; }
