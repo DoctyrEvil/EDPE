@@ -583,7 +583,6 @@ bool AmdUpscalerBackend::initialize(ID3D11Device* device, ID3D11DeviceContext* /
     EdpeLog(L"EDPE: AMD FSR 3.1 D3D11 backend initialized successfully");
 
     // Optional FSR 4 path through the D3D11/D3D12 bridge; the FSR 3.1 path above stays the fallback.
-    // The engine is created here and initialized when FSR 4 is selected (startup ini or the menu).
     fsr4_ = std::make_unique<Fsr4Engine>();
     fsr4Device_ = device;
     fsr4State_.onBackendInitialize();
@@ -654,7 +653,7 @@ bool AmdUpscalerBackend::evaluate(ID3D11DeviceContext* context,
 #if defined(EDPE_ENABLE_FSR)
     if (!isAvailable() || !context || !impl_) return false;
 
-    // Lazy initialization on first use after selection (render thread, same as evaluate).
+    // Initialize on first use when the startup probe did not leave the engine active (for example after a retry).
     if (fsr4State_.needsInit()) tryInitFsr4();
 
     if (fsr4State_.running() && fsr4_) {

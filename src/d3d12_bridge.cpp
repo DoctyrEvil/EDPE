@@ -1,5 +1,5 @@
-// Define the Direct3D GUIDs used here (CLSID_D3D12SDKConfiguration) in this translation unit so targets that
-// do not link dxguid.lib still resolve them. DEFINE_GUID is selectany under MSVC, so duplicates are harmless.
+// CLSID_D3D12SDKConfiguration is defined here so test targets that do not link dxguid.lib resolve it
+// (DEFINE_GUID is selectany under MSVC, so duplicate definitions are harmless).
 #ifndef INITGUID
 #define INITGUID
 #endif

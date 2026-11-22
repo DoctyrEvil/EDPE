@@ -419,6 +419,7 @@ struct Fsr4Engine::Impl {
         colorFmt = motionFmt = outputFmt = DXGI_FORMAT_UNKNOWN;
     }
 
+    // Recreates the shared textures and the FFX context when sizes, formats or depth flags change.
     bool ensureResources(const TemporalFrameInputs& in, const D3D11_TEXTURE2D_DESC& colorDesc,
                          const D3D11_TEXTURE2D_DESC& motionDesc, const D3D11_TEXTURE2D_DESC& destDesc) {
         const DXGI_FORMAT cf = concreteColorFormat(colorDesc.Format);
@@ -465,7 +466,7 @@ struct Fsr4Engine::Impl {
         ffxCreateContextDescUpscale desc{};
         desc.header.type = FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE;
         desc.header.pNext = &ver.header;
-        // Which flags the inputs need is decided in fsr4_logic.h (unit tested); this maps them to FidelityFX bits.
+        // fsr4_logic.h (unit tested) decides which flags the inputs need; this maps them to FidelityFX bits.
         const fsr4::ContextFlagsPlan flagsPlan = fsr4::buildContextFlagsPlan(in);
         desc.flags = 0;
         if (flagsPlan.autoExposure) desc.flags |= FFX_UPSCALE_ENABLE_AUTO_EXPOSURE;
@@ -517,6 +518,7 @@ struct Fsr4Engine::Impl {
         return true;
     }
 
+    // The caller's depth SRV, or one created over the depth texture when none was provided.
     ID3D11ShaderResourceView* depthSrvFor(const TemporalFrameInputs& in) {
         if (in.depthSrv) return in.depthSrv;
         if (!in.depth) return nullptr;
@@ -535,6 +537,8 @@ struct Fsr4Engine::Impl {
         return ownDepthSrv.Get();
     }
 
+    // One frame: validates the inputs, copies them into the slot's shared textures, dispatches FSR 4 on the D3D12
+    // queue and copies the result into `dest`. Returns false, with an error message, without touching `dest`.
     bool evaluate(ID3D11DeviceContext* context, const TemporalFrameInputs& in, ID3D11Texture2D* dest) {
         if (!ready) return false;
         const wchar_t* reason = nullptr;
@@ -599,7 +603,7 @@ struct Fsr4Engine::Impl {
         du.depth = ffxApiGetResourceDX12(slot.depth.d3d12.Get(), FFX_API_RESOURCE_STATE_COMPUTE_READ);
         du.motionVectors = ffxApiGetResourceDX12(slot.motion.d3d12.Get(), FFX_API_RESOURCE_STATE_COMPUTE_READ);
         du.output = ffxApiGetResourceDX12(slot.output.d3d12.Get(), FFX_API_RESOURCE_STATE_UNORDERED_ACCESS);
-        // The values come from fsr4_logic.h (unit tested); the same arithmetic as before, in one place.
+        // Dispatch values come from fsr4_logic.h (unit tested).
         const fsr4::DispatchPlan plan = fsr4::buildDispatchPlan(in, resetPending);
         du.jitterOffset = {plan.jitterX, plan.jitterY};
         du.motionVectorScale = {plan.motionScaleX, plan.motionScaleY};
