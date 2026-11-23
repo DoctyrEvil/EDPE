@@ -54,6 +54,11 @@ public:
         autoSyncEliteConfig = GetPrivateProfileIntW(L"Upscaler", L"AutoSyncEliteConfig", 1, path.c_str()) != 0;
         preserveNativeUi = GetPrivateProfileIntW(L"Upscaler", L"PreserveNativeUi", 1, path.c_str()) != 0;
         hdrInput = GetPrivateProfileIntW(L"Upscaler", L"HdrInput", 0, path.c_str()) != 0;
+        fsr4 = GetPrivateProfileIntW(L"Upscaler", L"Fsr4", 0, path.c_str()) != 0;
+        fsr4Profile = GetPrivateProfileIntW(L"Upscaler", L"Fsr4Profile", 0, path.c_str()) != 0;
+        fsr4ProfileInterval = GetPrivateProfileIntW(L"Upscaler", L"Fsr4ProfileInterval", 300, path.c_str());
+        if (fsr4ProfileInterval < 10) fsr4ProfileInterval = 300;
+        fsr4Flush = GetPrivateProfileIntW(L"Upscaler", L"Fsr4Flush", 1, path.c_str()) != 0;
 
         wchar_t sharpnessBuf[64]{};
         GetPrivateProfileStringW(L"Upscaler", L"Sharpness", L"0.0", sharpnessBuf, 64, path.c_str());
@@ -251,6 +256,10 @@ public:
         appendBool("AutoSyncEliteConfig", autoSyncEliteConfig);
         appendBool("PreserveNativeUi", preserveNativeUi);
         appendBool("HdrInput", hdrInput);
+        appendBool("Fsr4", fsr4);
+        appendBool("Fsr4Profile", fsr4Profile);
+        appendInt("Fsr4ProfileInterval", fsr4ProfileInterval);
+        appendBool("Fsr4Flush", fsr4Flush);
         appendFloat("Sharpness", "%.2f", sharpness);
         appendFloat("FsrVelocityFactor", "%.2f", fsrVelocityFactor);
         appendFloat("MipLodBiasOffset", "%.2f", mipLodBiasOffset);
@@ -458,6 +467,10 @@ public:
     bool autoSyncEliteConfig = true;
     bool preserveNativeUi = true;
     bool hdrInput = false;
+    bool fsr4 = false; // [Upscaler] Fsr4=1: start on FSR 4 (D3D12 bridge) in the AMD FSR backend
+    bool fsr4Profile = false; // [Upscaler] Fsr4Profile=1: log per-stage FSR 4 timings to edpe.log
+    int fsr4ProfileInterval = 300; // frames per timing summary line
+    bool fsr4Flush = true; // [Upscaler] Fsr4Flush=0: skip the D3D11 flush after the bridge fence signal
 
     int frameGenBackend = 0; // 0=Off, 1=AMD FSR FG, 2=NVIDIA DLSS-G
     int frameGenMultiplier = 2; // 2..4 (clamped by backend capability)

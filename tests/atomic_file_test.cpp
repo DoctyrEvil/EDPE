@@ -188,6 +188,10 @@ int main() {
         saved.renderDocAnnotations = false;
         saved.wrapDirectInputMouse = false;
         saved.wrapDirectInputKeyboard = true;
+        saved.fsr4 = true;
+        saved.fsr4Profile = true;
+        saved.fsr4ProfileInterval = 450;
+        saved.fsr4Flush = false;
 
         if (!saved.saveTo(iniPath.wstring())) return fail(23, "Config::saveTo failed");
 
@@ -211,6 +215,35 @@ int main() {
         if (loaded.renderDocAnnotations != saved.renderDocAnnotations) return fail(35, "renderDocAnnotations mismatch");
         if (loaded.wrapDirectInputMouse != saved.wrapDirectInputMouse) return fail(36, "wrapDirectInputMouse mismatch");
         if (loaded.wrapDirectInputKeyboard != saved.wrapDirectInputKeyboard) return fail(37, "wrapDirectInputKeyboard mismatch");
+        if (loaded.fsr4 != saved.fsr4) return fail(38, "fsr4 mismatch");
+        if (loaded.fsr4Profile != saved.fsr4Profile) return fail(39, "fsr4Profile mismatch");
+        if (loaded.fsr4ProfileInterval != saved.fsr4ProfileInterval) return fail(40, "fsr4ProfileInterval mismatch");
+        if (loaded.fsr4Flush != saved.fsr4Flush) return fail(41, "fsr4Flush mismatch");
+    }
+
+    // 7. The AMD FSR 4.1.2 menu entry persists as Backend=4, and defaults apply when the FSR 4 keys are absent.
+    {
+        const std::filesystem::path iniPath = std::filesystem::temp_directory_path() / L"edpe_config_fsr4_test.ini";
+        std::error_code ec;
+        std::filesystem::remove(iniPath, ec);
+
+        Config saved{};
+        saved.upscalerBackend = 4;
+        saved.upscaleMode = 4;
+        saved.fsr4 = true;
+        if (!saved.saveTo(iniPath.wstring())) return fail(42, "Config::saveTo (FSR 4 selection) failed");
+        Config loaded{};
+        loaded.loadFrom(iniPath.wstring());
+        if (loaded.upscalerBackend != 4 || !loaded.fsr4) return fail(43, "FSR 4 selection did not round trip");
+
+        // An ini without the FSR 4 keys (older files) must load with FSR 4 off, flush on and a sane interval.
+        std::ofstream(iniPath, std::ios::binary | std::ios::trunc) << "[Upscaler]\r\nBackend=2\r\nMode=4\r\n";
+        Config legacy{};
+        legacy.fsr4 = true;
+        legacy.fsr4Flush = false;
+        legacy.loadFrom(iniPath.wstring());
+        std::filesystem::remove(iniPath, ec);
+        if (legacy.fsr4 || !legacy.fsr4Flush || legacy.fsr4ProfileInterval != 300) return fail(44, "FSR 4 key defaults wrong");
     }
 
     // 7. SSAA XML parser and effective MipLODBias calculation tests.

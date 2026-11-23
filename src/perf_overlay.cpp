@@ -318,8 +318,10 @@ void PerfTracker::updateCachedStats() {
         if (isTaa) {
             snprintf(cachedStats_.upscalerInfoLine, sizeof(cachedStats_.upscalerInfoLine), "TAA (%.1f%%)", scalePct);
         } else if (isAmd) {
-            snprintf(cachedStats_.upscalerInfoLine, sizeof(cachedStats_.upscalerInfoLine), "%s (%.1f%%)",
-                isSr ? "AMD FSR SR" : "AMD FSR Native AA", scalePct);
+            char provider[64]{};
+            upscaler.describeAmdProvider(provider, sizeof(provider));
+            snprintf(cachedStats_.upscalerInfoLine, sizeof(cachedStats_.upscalerInfoLine), "AMD %s %s (%.1f%%)",
+                provider, isSr ? "SR" : "Native AA", scalePct);
         } else {
             snprintf(cachedStats_.upscalerInfoLine, sizeof(cachedStats_.upscalerInfoLine), "%s (%.1f%%)",
                 isSr ? "NVIDIA DLSS" : "NVIDIA DLAA", scalePct);
@@ -374,9 +376,15 @@ void PerfTracker::updateCachedStats() {
 
     if (backend_active) {
         const char* backendName = taa_active ? "Native D3D11" : (amd_active ? "AMD" : "NVIDIA");
+        char amdTech[96]{};
+        if (amd_active) {
+            char provider[64]{};
+            upscaler.describeAmdProvider(provider, sizeof(provider));
+            snprintf(amdTech, sizeof(amdTech), "%s %s", provider, isSr ? "Super Resolution" : "Native AA");
+        }
         const char* techName = taa_active
             ? (isSr ? "TAA Super Resolution" : "TAA Native AA")
-            : (amd_active ? (isSr ? "FSR Super Resolution" : "FSR Native AA")
+            : (amd_active ? amdTech
                           : (isSr ? "DLSS Super Resolution" : "DLAA"));
         if (isReconActive) {
             cachedStats_.reconStatusColor = ImVec4(0.2f, 1.0f, 0.2f, 1.0f);

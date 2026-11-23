@@ -1,6 +1,7 @@
 #pragma once
 
 #include "temporal_inputs.h"
+#include "fsr4_logic.h"
 #include "taa_pass.h"
 #include "sharpen_pass.h"
 
@@ -121,6 +122,8 @@ private:
     bool ensureOutputTexture(ID3D11Device* device, uint32_t width, uint32_t height, DXGI_FORMAT format);
 };
 
+class Fsr4Engine;
+
 // AMD FidelityFX FSR backend implementation wrapper.
 // Governed by safety constraints in amd-fsr-input-contract.md.
 class AmdUpscalerBackend : public IUpscalerBackend {
@@ -154,9 +157,31 @@ public:
     void setVelocityFactor(float factor);
     float getVelocityFactor() const;
 
+    // Runtime FSR 3.1 / FSR 4 selection (menu). Both run under the same AMD FSR backend; FSR 4 falls back to
+    // FSR 3.1 on any failure. Selecting FSR 4 again after a failure retries initialization.
+    void setFsr4Wanted(bool wanted);
+    // Explicit user retry after FSR 4 failed to initialize or was disabled by failures.
+    void retryFsr4();
+    bool isFsr4Wanted() const { return fsr4State_.wanted; }
+    // True when FSR 4 is selected and its engine is initialized and not disabled by failures.
+    bool isFsr4Running() const { return fsr4State_.running(); }
+    // The startup probe succeeded: this GPU and AMD's runtime offer a 4.x provider (selectable in the menu).
+    bool isFsr4Capable() const { return fsr4State_.capable; }
+    // Writes the provider that actually runs now, e.g. "FSR 4.1.2", "FSR 3.1.2", or
+    // "FSR 3.1.2 (FSR 4 unavailable)".
+    void describeProvider(char* buffer, size_t size) const;
+    const wchar_t* fsr4LastError() const;
+
 private:
+    bool tryInitFsr4();
+
     struct Impl;
     std::unique_ptr<Impl> impl_;
+    // Optional FSR 4 provider: the official FidelityFX D3D12 upscaler through the D3D11/D3D12 bridge. The D3D11
+    // FSR 3.1 path stays the fallback.
+    std::unique_ptr<Fsr4Engine> fsr4_;
+    ID3D11Device* fsr4Device_ = nullptr;
+    fsr4::ProviderState fsr4State_;  // selection, init and failure-gate state (pure logic, see fsr4_logic.h)
 };
 
 // Native Direct3D 11 Temporal Anti-Aliasing (TAA) backend.
@@ -205,6 +230,17 @@ public:
 
     bool isBackendAvailable(UpscalerBackend backend) const;
     const wchar_t* getBackendUnavailableReason(UpscalerBackend backend) const;
+
+    // FSR 4.1.2 selection inside the AMD FSR backend (menu entry "AMD FSR 4.1.2"). Idempotent.
+    void setFsr4Enabled(bool enabled);
+    void retryFsr4() { amdBackend_.retryFsr4(); pendingReset_ = true; }
+    bool isFsr4Enabled() const { return amdBackend_.isFsr4Wanted(); }
+    bool isFsr4Running() const { return amdBackend_.isFsr4Running(); }
+    // FSR 4 can be offered: the FSR backend is usable, the signed DLLs are present beside the proxy and the
+    // startup probe found a 4.x provider.
+    bool isFsr4Available() const;
+    const wchar_t* getFsr4UnavailableReason() const;
+    void describeAmdProvider(char* buffer, size_t size) const { amdBackend_.describeProvider(buffer, size); }
 
     bool isReconstructionActive() const {
         return currentBackendType_ != UpscalerBackend::None && currentMode_ != UpscaleMode::Native;
