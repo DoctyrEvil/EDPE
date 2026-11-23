@@ -215,7 +215,7 @@ static void testProviderRefusalText() {
     // The Agility hint appears only when the side-loaded runtime is not in use.
     CHECK(two.find("D3D12Core.dll") == std::string::npos);
     const std::string noAgility = providerRefusalText(names({"3.1.5"}), false);
-    CHECK(noAgility.find("D3D12\D3D12Core.dll") != std::string::npos);
+    CHECK(noAgility.find("D3D12\\D3D12Core.dll") != std::string::npos);
     CHECK(providerRefusalText(names({"3.1.5"}), true).find("D3D12Core.dll") == std::string::npos);
 }
 
