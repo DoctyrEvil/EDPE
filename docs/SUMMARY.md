@@ -175,6 +175,21 @@ Run on the cleaned PR 2 (`fsr4-pr2-on-feat@b23fee7-fgfix`: PR 2 after the code a
 - The window nudge fix still works after FG teardown: FSR 4.1.2 shows 3% of frames never shown in phase 5 and 0% in phase 6 (cadence CV 0.026), and FSR 3.1.2 stays at its normal 18% (it renders at 290 fps into a 240 Hz display).
 - Correction to the rerun section above: display latency with FSR 4.1.2 is not raised after FG teardown. This run reads 40.7 ms before FG and 40.8 and 40.7 ms after it. The earlier 34.5 ms before FG came from a different run of the same configuration, so the baseline moves between runs by about 6 ms. Compare latency only within one capture.
 
+Run after splitting `evaluate` into smaller functions (`fsr4-pr2-on-feat@5b26cd6-fgfix`, 2026-11-24 14:37, windowed, same settings; reports in `baseline/selftest/20261124-144410-fsr4-pr2-on-feat/`, captures `baseline/fgcapture/edpe-capture-20261124-143821-fsr4` and `-144026-fsr31`):
+
+| Option | Median frame (ms), round 1 / round 2 | GPU timer (ms) |
+|---|---|---|
+| Bypass | 2.51 / 2.52 | not valid |
+| Native TAA | 3.08 / 3.12 | 0.31 |
+| AMD FSR 3.1.2 | 3.44 / 3.45 | 0.61 |
+| AMD FSR 4.1.2 | 6.02 / 6.04 | 3.15 / 3.14 |
+
+- The refactor of the per-frame path changed nothing measurable: FSR 4.1.2 median 6.02 and 6.04 ms against 6.07 and 6.09 ms in the previous run, GPU timer 3.15 against 3.22 ms. Switch stress passed (60 switches, longest frame 16.5 ms), and so did the settle block.
+- 2 blocks failed on the 100 ms stall limit again, both Native TAA: round 1 one frame of 298 ms, round 2 one frame of 633 ms (641 ms in the previous run). TAA stalls of 621 ms and 628 ms also appear on older builds (2026-11-23 11:58 and 16:20, before any of the cleanup), each in a run where p99 was elevated across all options. So this is not caused by the cleanup or the FSR 4 code. The matching size (about 620 to 640 ms) points to one repeating event rather than random load; cause not found.
+- The FSR 3.1.2 frame generation capture again has isolated long frames before FG starts (406 ms in phase 1 and 123 ms in phase 2). The previous run had 476 ms in phase 2, and the 12:23 capture had 129 ms in phase 2. All three are in the FSR 3.1.2 capture only, which is the second capture of a session. Not investigated.
+- Frame generation: in-process frame time with FG on is 6.76 ms for FSR 3.1.2 (3.41 off) and 9.23 ms for FSR 4.1.2 (6.01 off), so FG costs 3.4 ms and 3.2 ms. Starting FG causes one frame of about 238 to 247 ms.
+- The window nudge fix holds: FSR 4.1.2 shows 3% of frames never shown in phase 5 and 0% in phase 6 (cadence CV 0.016). Display latency with FSR 4.1.2 is 40.5 ms before FG and 40.6 and 40.4 ms after it.
+
 ## 5. Optimization experiments
 
 - **Sharpening (inferred from one session).** In one session turning the sharpness slider to 0 took the FSR 4 dispatch from about 3.25 to 2.60 ms (about 0.65 ms, 20% of the dispatch, 7% of the frame) and the captured frame from 9.14 to 8.53 ms. The slider change time is inferred from log order and the user's report; a clean same-session A/B is not yet measured. FSR 4 may need less or no sharpening; image quality at 0 versus 0.50 has not been compared.
