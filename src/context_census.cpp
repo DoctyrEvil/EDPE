@@ -13804,6 +13804,14 @@ bool ContextCensusSelectSwapChain(IDXGISwapChain* swap_chain, UINT flags) {
     return preferCandidate;
 }
 
+void EdpeDebugBounceSummary(wchar_t* out, size_t count) {
+    swprintf_s(out, count, L"bounce(mode=%d auto=%d tripped=%d reason=%d bounced=%llu flushed=%llu open=%zu)",
+               static_cast<int>(s_cb_map_bounce.mode()), static_cast<int>(s_cb_map_bounce.autoState()),
+               s_cb_map_bounce.isTripped() ? 1 : 0, static_cast<int>(s_cb_map_bounce.lastTripReason()),
+               static_cast<unsigned long long>(s_cb_map_bounce.bouncedMapCount()),
+               static_cast<unsigned long long>(s_cb_map_bounce.flushedUnmapCount()), s_cb_map_bounce.openSlotCount());
+}
+
 void ContextCensusOnPresent(IDXGISwapChain* swap_chain, unsigned long long frame, UINT flags) {
     if (!s_config_loaded) {
         s_config_loaded = true;

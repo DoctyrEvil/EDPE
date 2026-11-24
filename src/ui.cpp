@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "debug_hook.h"
 #include "log.h"
 #include "context_census.h"
 #include "ui_layer.h"
@@ -1639,6 +1640,7 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
     const bool show_perf = cfg.showPerfOverlay || overlay_capture_pending;
     const bool show_debug_view = false;
 
+    EdpeDebugTick(cfg.devMode);
     if (!show_menu && !show_perf && !show_debug_view) {
         std::lock_guard lock(input_mutex);
         pending_input.clear();
@@ -2769,6 +2771,7 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
         }
     } // if (draw_menu)
 
+    EdpeDebugFrame(cfg.devMode, draw_menu);
 
     ImGui::Render();
 

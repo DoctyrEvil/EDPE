@@ -1,4 +1,5 @@
 #include "perf_overlay.h"
+#include "debug_hook.h"
 #include "upscaler_backend.h"
 #include "fg_integration.h"
 #include "frame_limiter.h"
@@ -149,6 +150,16 @@ void PerfTracker::onPresentStart(IDXGISwapChain* swapChain) {
     sample.gameMs = telemetry_.gameFrametimeMs;
     sample.upscalerMs = telemetry_.upscalerFrametimeMs;
     sample.totalMs = telemetry_.totalFrametimeMs;
+    if (historyIndex_ >= kFrametimeHistorySize || historyCount_ > kFrametimeHistorySize) {
+        wchar_t bounce[200]{}, cmsg[512]{};
+        EdpeDebugBounceSummary(bounce, 200);
+        swprintf_s(cmsg, L"EDPE debug: PerfTracker memory is corrupt this=%p historyIndex=0x%zx historyCount=0x%zx %ls",
+                   static_cast<void*>(this), historyIndex_, historyCount_, bounce);
+        EdpeLog(cmsg);
+        EdpeLogFlush();
+        historyIndex_ = 0;
+        historyCount_ = 0;
+    }
     frametimeHistory_[historyIndex_] = sample;
     historyIndex_ = (historyIndex_ + 1) % kFrametimeHistorySize;
     if (historyCount_ < kFrametimeHistorySize) {

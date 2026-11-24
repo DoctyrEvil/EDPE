@@ -113,6 +113,7 @@ add_library(EDPE_DXGI SHARED
     src/fg_integration.cpp
     src/frame_limiter.cpp
     src/version.cpp
+    src/debug_hook.cpp
     src/dxgi_proxy.def
 )
 if(NOT EDPE_BUILD_VERSION STREQUAL "dev")
