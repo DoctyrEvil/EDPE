@@ -332,28 +332,28 @@ add_executable(d3d11_d3d12_bridge_test tests/d3d11_d3d12_bridge_test.cpp src/d3d
 target_compile_features(d3d11_d3d12_bridge_test PRIVATE cxx_std_20)
 target_compile_definitions(d3d11_d3d12_bridge_test PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_include_directories(d3d11_d3d12_bridge_test PRIVATE src)
-target_link_libraries(d3d11_d3d12_bridge_test PRIVATE d3d11 dxgi d3dcompiler)
+target_link_libraries(d3d11_d3d12_bridge_test PRIVATE d3d11 dxgi d3dcompiler dxguid)
 add_test(NAME d3d11_d3d12_bridge COMMAND d3d11_d3d12_bridge_test)
 
 add_executable(d3d12_presenter_test tests/d3d12_presenter_test.cpp src/d3d12_presenter.cpp src/d3d12_bridge.cpp src/renderdoc_support.cpp src/log.cpp)
 target_compile_features(d3d12_presenter_test PRIVATE cxx_std_20)
 target_compile_definitions(d3d12_presenter_test PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_include_directories(d3d12_presenter_test PRIVATE src)
-target_link_libraries(d3d12_presenter_test PRIVATE d3d11 dxgi)
+target_link_libraries(d3d12_presenter_test PRIVATE d3d11 dxgi dxguid)
 add_test(NAME d3d12_presenter COMMAND d3d12_presenter_test)
 
 add_executable(fg_backend_test tests/fg_backend_test.cpp src/fg_backend.cpp src/fg_ui_pack_pass.cpp src/d3d12_presenter.cpp src/d3d12_bridge.cpp src/renderdoc_support.cpp src/log.cpp)
 target_compile_features(fg_backend_test PRIVATE cxx_std_20)
 target_compile_definitions(fg_backend_test PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_include_directories(fg_backend_test PRIVATE src)
-target_link_libraries(fg_backend_test PRIVATE d3d11 dxgi d3dcompiler)
+target_link_libraries(fg_backend_test PRIVATE d3d11 dxgi d3dcompiler dxguid)
 add_test(NAME fg_backend COMMAND fg_backend_test)
 
 add_executable(amd_fsr_fg_test tests/amd_fsr_fg_test.cpp src/amd_fsr_fg_backend.cpp src/fg_backend.cpp src/fg_ui_pack_pass.cpp src/d3d12_presenter.cpp src/d3d12_bridge.cpp src/renderdoc_support.cpp src/log.cpp)
 target_compile_features(amd_fsr_fg_test PRIVATE cxx_std_20)
 target_compile_definitions(amd_fsr_fg_test PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_include_directories(amd_fsr_fg_test PRIVATE src)
-target_link_libraries(amd_fsr_fg_test PRIVATE d3d11 dxgi d3dcompiler)
+target_link_libraries(amd_fsr_fg_test PRIVATE d3d11 dxgi d3dcompiler dxguid)
 if(EDPE_HAVE_FFX_FG)
     target_include_directories(amd_fsr_fg_test PRIVATE
         "${FFX_FG_SDK_DIR}/api/include"
@@ -373,7 +373,7 @@ add_executable(nvidia_sl_fg_test tests/nvidia_sl_fg_test.cpp src/nvidia_sl_fg_ba
 target_compile_features(nvidia_sl_fg_test PRIVATE cxx_std_20)
 target_compile_definitions(nvidia_sl_fg_test PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_include_directories(nvidia_sl_fg_test PRIVATE src)
-target_link_libraries(nvidia_sl_fg_test PRIVATE d3d11 dxgi d3dcompiler)
+target_link_libraries(nvidia_sl_fg_test PRIVATE d3d11 dxgi d3dcompiler dxguid)
 if(EDPE_HAVE_STREAMLINE)
     target_include_directories(nvidia_sl_fg_test PRIVATE "${STREAMLINE_SDK_DIR}/include")
     target_compile_definitions(nvidia_sl_fg_test PRIVATE EDPE_ENABLE_STREAMLINE=1)
@@ -409,7 +409,7 @@ add_executable(fg_integration_test
 target_compile_features(fg_integration_test PRIVATE cxx_std_20)
 target_compile_definitions(fg_integration_test PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_include_directories(fg_integration_test PRIVATE src)
-target_link_libraries(fg_integration_test PRIVATE d3d11 dxgi d3dcompiler)
+target_link_libraries(fg_integration_test PRIVATE d3d11 dxgi d3dcompiler dxguid)
 if(EDPE_HAVE_FFX_FG)
     target_include_directories(fg_integration_test PRIVATE
         "${FFX_FG_SDK_DIR}/api/include"
@@ -464,7 +464,7 @@ if(EDPE_HAVE_NGX AND EDPE_HAVE_STREAMLINE)
         "${STREAMLINE_SDK_DIR}/include")
     target_link_libraries(ngx_streamline_interop_test PRIVATE
         "$<IF:$<CONFIG:Debug>,${NGX_SDK_DIR}/lib/Windows_x86_64/x64/nvsdk_ngx_d_dbg.lib,${NGX_SDK_DIR}/lib/Windows_x86_64/x64/nvsdk_ngx_d.lib>"
-        d3d11 dxgi d3dcompiler version advapi32 user32)
+        d3d11 dxgi d3dcompiler dxguid version advapi32 user32)
     add_custom_command(TARGET ngx_streamline_interop_test POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${NGX_SDK_DIR}/lib/Windows_x86_64/rel/nvngx_dlss.dll" "$<TARGET_FILE_DIR:ngx_streamline_interop_test>/")
