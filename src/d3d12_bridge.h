@@ -104,6 +104,8 @@ public:
                                           ID3DBlob** errorBlob);
 
 private:
+    bool createAgilitySdkDevice(IDXGIAdapter* adapter, const wchar_t* agilitySdkDir);
+
     ID3D12CommandQueue* activeQueue() const {
         return overrideQueue_ ? overrideQueue_.Get() : queue_.Get();
     }
