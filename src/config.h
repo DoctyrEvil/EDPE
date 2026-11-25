@@ -56,7 +56,7 @@ public:
         hdrInput = GetPrivateProfileIntW(L"Upscaler", L"HdrInput", 0, path.c_str()) != 0;
         fsr4 = GetPrivateProfileIntW(L"Upscaler", L"Fsr4", 0, path.c_str()) != 0;
         fsr4DeferSharpen = GetPrivateProfileIntW(L"Upscaler", L"Fsr4DeferSharpen", 1, path.c_str()) != 0;
-        fsr4ComputeQueue = GetPrivateProfileIntW(L"Upscaler", L"Fsr4ComputeQueue", 0, path.c_str()) != 0;
+        fsr4ComputeQueue = GetPrivateProfileIntW(L"Upscaler", L"Fsr4ComputeQueue", 1, path.c_str()) != 0;
 
         wchar_t sharpnessBuf[64]{};
         GetPrivateProfileStringW(L"Upscaler", L"Sharpness", L"0.0", sharpnessBuf, 64, path.c_str());
@@ -480,9 +480,9 @@ public:
     // [Upscaler] Fsr4DeferSharpen=1: with FSR 4, sharpen in EDPE's UI composite or final blit instead of FSR 4's
     // own RCAS pass (FSR 4 then runs with sharpening off). Falls back to RCAS when the deferred path is unavailable.
     bool fsr4DeferSharpen = true;
-    // [Upscaler] Fsr4ComputeQueue=1: run FSR 4 on a D3D12 compute queue instead of a direct queue. Read when the
+    // [Upscaler] Fsr4ComputeQueue (default 1): run FSR 4 on a D3D12 compute queue; 0 uses a direct queue. Read when the
     // FSR 4 engine initializes (game start or reselecting FSR 4 after a failure).
-    bool fsr4ComputeQueue = false;
+    bool fsr4ComputeQueue = true;
 
     int frameGenBackend = 0; // 0=Off, 1=AMD FSR FG, 2=NVIDIA DLSS-G
     int frameGenMultiplier = 2; // 2..4 (clamped by backend capability)
