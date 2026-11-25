@@ -11682,7 +11682,7 @@ void tryTemporalUpscale(ID3D11DeviceContext* context, unsigned long long rendere
             (s_backbuffer_rtv != nullptr || s_backbuffer_uav != nullptr) &&
             !fg_active;
         const float deferredSharpen = canDeferSharpen ? inputs.sharpness : 0.0f;
-        if (upscaler.isFsr4Running() && inputs.sharpness > 0.0f) {
+        if (activeBackend == edpe::UpscalerBackend::AmdFsr && upscaler.isFsr4Running() && inputs.sharpness > 0.0f) {
             // Log which pass sharpens FSR 4 output whenever it changes (A/B diagnostics).
             static int s_fsr4_sharpen_path = -1;
             const int path = canDeferSharpen ? 1 : 0;
