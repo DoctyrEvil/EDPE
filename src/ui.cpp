@@ -2005,6 +2005,15 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
                     cfg.save();
                 }
             }
+            if (upscaler.isFsr4Running()) {
+                bool deferSharpen = ContextCensusGetFsr4DeferSharpen();
+                if (ImGui::Checkbox("FSR 4: sharpen in EDPE pass", &deferSharpen)) {
+                    ContextCensusSetFsr4DeferSharpen(deferSharpen);
+                    cfg.save();
+                }
+                ImGui::SetItemTooltip("On: FSR 4 runs without its RCAS pass and EDPE sharpens while compositing the UI "
+                                      "(cheaper). Off: FSR 4's own RCAS sharpens. Frame generation always uses RCAS.");
+            }
             if (!backend_active) {
                 ImGui::EndDisabled();
                 ImGui::TextDisabled("Sharpening requires an active upscaler backend");

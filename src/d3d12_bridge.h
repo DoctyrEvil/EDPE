@@ -46,7 +46,12 @@ public:
     // When agilitySdkDir is non-null and holds D3D12Core.dll, the device is created through
     // ID3D12DeviceFactory from that Agility SDK runtime (some system runtimes, such as the Windows 10 inbox
     // one, may not offer FSR 4.1.2); if that fails the bridge falls back to the system D3D12 runtime.
-    bool initialize(ID3D11Device* d3d11Device, const wchar_t* agilitySdkDir = nullptr);
+    // queueType selects the queue, allocators and command list type: DIRECT (default) or COMPUTE. A compute queue
+    // suits pure compute work such as FSR 4 and runs on the asynchronous compute engines.
+    bool initialize(ID3D11Device* d3d11Device, const wchar_t* agilitySdkDir = nullptr,
+                    D3D12_COMMAND_LIST_TYPE queueType = D3D12_COMMAND_LIST_TYPE_DIRECT);
+
+    D3D12_COMMAND_LIST_TYPE queueType() const { return queueType_; }
 
     // True when the D3D12 device was created through ID3D12DeviceFactory for the requested Agility SDK version:
     // from the side-loaded D3D12Core.dll, or from a system runtime that already provides that version.
@@ -114,6 +119,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Device5> device11_5_;
     Microsoft::WRL::ComPtr<ID3D12DeviceFactory> deviceFactory_; // keeps the Agility runtime alive
     bool usingAgilitySdk_ = false;
+    D3D12_COMMAND_LIST_TYPE queueType_ = D3D12_COMMAND_LIST_TYPE_DIRECT;
     Microsoft::WRL::ComPtr<ID3D12Device> device12_;
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue_;
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> overrideQueue_;
