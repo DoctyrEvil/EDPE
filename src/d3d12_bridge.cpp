@@ -106,9 +106,12 @@ D3D11D3D12Bridge::~D3D11D3D12Bridge() {
     shutdown();
 }
 
-bool D3D11D3D12Bridge::initialize(ID3D11Device* d3d11Device, const wchar_t* agilitySdkDir) {
+bool D3D11D3D12Bridge::initialize(ID3D11Device* d3d11Device, const wchar_t* agilitySdkDir,
+                                  D3D12_COMMAND_LIST_TYPE queueType) {
     shutdown();
     if (!d3d11Device) return false;
+    if (queueType != D3D12_COMMAND_LIST_TYPE_DIRECT && queueType != D3D12_COMMAND_LIST_TYPE_COMPUTE) return false;
+    queueType_ = queueType;
 
     HRESULT hr = d3d11Device->QueryInterface(IID_PPV_ARGS(&device11_5_));
     if (FAILED(hr)) {
@@ -198,7 +201,7 @@ bool D3D11D3D12Bridge::initialize(ID3D11Device* d3d11Device, const wchar_t* agil
     }
 
     D3D12_COMMAND_QUEUE_DESC qDesc{};
-    qDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+    qDesc.Type = queueType_;
     qDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_HIGH;
     hr = device12_->CreateCommandQueue(&qDesc, IID_PPV_ARGS(&queue_));
     if (FAILED(hr)) {
@@ -215,7 +218,7 @@ bool D3D11D3D12Bridge::initialize(ID3D11Device* d3d11Device, const wchar_t* agil
 
     for (uint32_t i = 0; i < kAllocatorCount; ++i) {
         hr = device12_->CreateCommandAllocator(
-            D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&allocators_[i]));
+            queueType_, IID_PPV_ARGS(&allocators_[i]));
         if (FAILED(hr)) {
             logBridgeFailure(L"CreateCommandAllocator", hr);
             shutdown();
@@ -224,7 +227,7 @@ bool D3D11D3D12Bridge::initialize(ID3D11Device* d3d11Device, const wchar_t* agil
     }
 
     hr = device12_->CreateCommandList(
-        0, D3D12_COMMAND_LIST_TYPE_DIRECT, allocators_[0].Get(), nullptr, IID_PPV_ARGS(&cmdList_));
+        0, queueType_, allocators_[0].Get(), nullptr, IID_PPV_ARGS(&cmdList_));
     if (FAILED(hr)) {
         logBridgeFailure(L"CreateCommandList", hr);
         shutdown();
@@ -301,6 +304,7 @@ void D3D11D3D12Bridge::shutdown() {
     // a device factory from CreateDeviceFactory, but ID3D12DeviceFactory::CreateDevice then crashes inside d3d12.dll.
     // The bridge is re-initialized in normal use (resolution or backend changes).
     usingAgilitySdk_ = false;
+    queueType_ = D3D12_COMMAND_LIST_TYPE_DIRECT;
     device11_5_.Reset();
     device11_ = nullptr;
     fenceValue_ = 0;

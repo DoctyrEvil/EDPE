@@ -282,6 +282,67 @@ int runCorrectnessTest(ID3D11Device* d3d11Dev, ID3D11DeviceContext* d3d11Ctx) {
         if (!fallback.initialize(d3d11Dev, L"C:\\edpe-no-such-agility-dir\\")) return 143;
     }
 
+    // Queue type: a copy queue is refused, and a compute queue (used by FSR 4 with Fsr4ComputeQueue=1) carries a
+    // D3D11 -> D3D12 -> D3D11 round trip: D3D11 fills shared texture A, the D3D12 compute queue copies A to B after
+    // waiting on the D3D11 fence, and D3D11 reads B back after waiting on the D3D12 fence.
+    {
+        edpe::D3D11D3D12Bridge copyBridge;
+        if (copyBridge.initialize(d3d11Dev, nullptr, D3D12_COMMAND_LIST_TYPE_COPY)) return 150;
+        if (copyBridge.isInitialized()) return 151;
+
+        edpe::D3D11D3D12Bridge computeBridge;
+        if (!computeBridge.initialize(d3d11Dev, nullptr, D3D12_COMMAND_LIST_TYPE_COMPUTE)) return 152;
+        if (computeBridge.queueType() != D3D12_COMMAND_LIST_TYPE_COMPUTE) return 153;
+
+        constexpr uint32_t CW = 8, CH = 8;
+        edpe::SharedBridgeTexture a, b;
+        if (!computeBridge.createSharedTexture(CW, CH, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE, a) ||
+            !computeBridge.createSharedTexture(CW, CH, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE, b)) {
+            return 154;
+        }
+        std::vector<uint32_t> pattern(CW * CH, 0xFF336699u);
+        d3d11Ctx->UpdateSubresource(a.d3d11.Get(), 0, nullptr, pattern.data(), CW * 4, 0);
+
+        uint32_t slot = 0;
+        ID3D12GraphicsCommandList* cl = computeBridge.beginCommandList(slot);
+        if (!cl) return 155;
+        edpe::D3D11D3D12Bridge::transitionResource(cl, a.d3d12.Get(), D3D12_RESOURCE_STATE_COMMON,
+                                                   D3D12_RESOURCE_STATE_COPY_SOURCE);
+        edpe::D3D11D3D12Bridge::transitionResource(cl, b.d3d12.Get(), D3D12_RESOURCE_STATE_COMMON,
+                                                   D3D12_RESOURCE_STATE_COPY_DEST);
+        cl->CopyResource(b.d3d12.Get(), a.d3d12.Get());
+        edpe::D3D11D3D12Bridge::transitionResource(cl, a.d3d12.Get(), D3D12_RESOURCE_STATE_COPY_SOURCE,
+                                                   D3D12_RESOURCE_STATE_COMMON);
+        edpe::D3D11D3D12Bridge::transitionResource(cl, b.d3d12.Get(), D3D12_RESOURCE_STATE_COPY_DEST,
+                                                   D3D12_RESOURCE_STATE_COMMON);
+        const uint64_t done = computeBridge.submitAfterD3D11Signal(ctx4.Get(), slot);
+        if (done == 0) return 156;
+        if (!computeBridge.waitOnD3D11(ctx4.Get(), done)) return 157;
+
+        D3D11_TEXTURE2D_DESC sd{};
+        b.d3d11->GetDesc(&sd);
+        sd.BindFlags = 0;
+        sd.MiscFlags = 0;
+        sd.Usage = D3D11_USAGE_STAGING;
+        sd.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+        ComPtr<ID3D11Texture2D> staging;
+        if (FAILED(d3d11Dev->CreateTexture2D(&sd, nullptr, &staging))) return 158;
+        d3d11Ctx->CopyResource(staging.Get(), b.d3d11.Get());
+        D3D11_MAPPED_SUBRESOURCE mapped{};
+        if (FAILED(d3d11Ctx->Map(staging.Get(), 0, D3D11_MAP_READ, 0, &mapped))) return 159;
+        bool match = true;
+        for (uint32_t y = 0; y < CH && match; ++y) {
+            const auto* row = reinterpret_cast<const uint32_t*>(static_cast<const uint8_t*>(mapped.pData) + y * mapped.RowPitch);
+            for (uint32_t x = 0; x < CW; ++x) {
+                if (row[x] != 0xFF336699u) { match = false; break; }
+            }
+        }
+        d3d11Ctx->Unmap(staging.Get(), 0);
+        if (!match) return 160;
+        computeBridge.shutdown();
+        if (computeBridge.queueType() != D3D12_COMMAND_LIST_TYPE_DIRECT) return 161;
+    }
+
     edpe::D3D11D3D12Bridge bridge;
     if (!bridge.initialize(d3d11Dev)) return 13;
     // The default path passes no Agility SDK directory, so it never uses the device factory.
