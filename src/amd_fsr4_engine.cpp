@@ -586,10 +586,11 @@ bool Fsr4Engine::initialize(ID3D11Device* device) {
         agilityDir = dir.wstring();
         if (agilityDir.back() != L'\\') agilityDir += L'\\';
     }
-    // FSR 4 is pure compute. [Upscaler] Fsr4ComputeQueue=1 runs it on a D3D12 compute queue (asynchronous compute
-    // engines) instead of a direct queue, to test whether the D3D11/D3D12 hand-off gets shorter.
+    // FSR 4 is pure compute, so it runs on a D3D12 compute queue (asynchronous compute engines) by default. On an
+    // RX 7900 XTX at 4K Performance this measured about 0.14 ms per frame faster than a direct queue.
+    // [Upscaler] Fsr4ComputeQueue=0 goes back to a direct queue.
     const bool computeQueue =
-        GetPrivateProfileIntW(L"Upscaler", L"Fsr4ComputeQueue", 0, iniPathNextToExecutable().c_str()) != 0;
+        GetPrivateProfileIntW(L"Upscaler", L"Fsr4ComputeQueue", 1, iniPathNextToExecutable().c_str()) != 0;
     const D3D12_COMMAND_LIST_TYPE queueType =
         computeQueue ? D3D12_COMMAND_LIST_TYPE_COMPUTE : D3D12_COMMAND_LIST_TYPE_DIRECT;
     if (!impl_->bridge.initialize(device, agilityDir.empty() ? nullptr : agilityDir.c_str(), queueType)) {
