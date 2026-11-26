@@ -1,4 +1,5 @@
 #include "amd_fsr_fg_backend.h"
+#include "config.h"
 
 #include "log.h"
 
@@ -80,6 +81,7 @@ struct AmdFsrFgBackend::Impl {
     DXGI_FORMAT activeHudlessFmt = DXGI_FORMAT_UNKNOWN;
     bool activeIsHdr = false;
     bool activeLowResMv = false;
+    bool asyncWorkloads = false;  // [FrameGeneration] AsyncWorkloads, latched when the context is created
     std::string providerVersion = "unavailable";
     wchar_t unavailableMsg[256] = L"";
 
@@ -222,6 +224,10 @@ struct AmdFsrFgBackend::Impl {
         if (inputs.isHdr) {
             fgDesc.flags |= FFX_FRAMEGENERATION_ENABLE_HIGH_DYNAMIC_RANGE;
         }
+        asyncWorkloads = Config::instance().frameGenAsyncWorkloads;
+        if (asyncWorkloads) {
+            fgDesc.flags |= FFX_FRAMEGENERATION_ENABLE_ASYNC_WORKLOAD_SUPPORT;
+        }
 
         if (faulted) return false;
         const ffxReturnCode_t rc = callFfxGuarded(L"ffxCreateContext(FrameGeneration)", &faulted,
@@ -244,6 +250,8 @@ struct AmdFsrFgBackend::Impl {
         activeHudlessFmt = hudlessFmt;
         activeIsHdr = inputs.isHdr;
         activeLowResMv = lowResMv;
+        EdpeLog(asyncWorkloads ? L"EDPE AmdFsrFg: context created with async compute workloads"
+                               : L"EDPE AmdFsrFg: context created (async compute workloads off)");
         return true;
     }
 #endif
@@ -407,7 +415,8 @@ bool AmdFsrFgBackend::evaluate(ID3D12GraphicsCommandList* cmdList,
     cfg.frameGenerationCallback = enabled ? &Impl::fgDispatchCallback : nullptr;
     cfg.frameGenerationCallbackUserContext = enabled ? impl_.get() : nullptr;
     cfg.frameGenerationEnabled = enabled;
-    cfg.allowAsyncWorkloads = false;
+    // Only allowed when the context was created with FFX_FRAMEGENERATION_ENABLE_ASYNC_WORKLOAD_SUPPORT.
+    cfg.allowAsyncWorkloads = impl_->asyncWorkloads;
     cfg.HUDLessColor = inputs.hudlessColor
                            ? ffxApiGetResourceDX12(inputs.hudlessColor, FFX_API_RESOURCE_STATE_COMMON)
                            : FfxApiResource{};

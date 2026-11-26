@@ -86,6 +86,7 @@ public:
         frameGenDynamicTargetFps = static_cast<float>(_wtof(fgTargetBuf));
         if (frameGenDynamicTargetFps < 0.0f || frameGenDynamicTargetFps > 1000.0f) frameGenDynamicTargetFps = 0.0f;
         frameGenReflexBoost = GetPrivateProfileIntW(L"FrameGeneration", L"ReflexBoost", 0, path.c_str()) != 0;
+        frameGenAsyncWorkloads = GetPrivateProfileIntW(L"FrameGeneration", L"AsyncWorkloads", 0, path.c_str()) != 0;
 
         wchar_t fpsLimitBuf[64]{};
         GetPrivateProfileStringW(L"FrameLimiter", L"GameFpsLimit", L"0.0", fpsLimitBuf, 64, path.c_str());
@@ -274,6 +275,7 @@ public:
         appendBool("DynamicMfg", frameGenDynamicMfg);
         appendFloat("DynamicTargetFps", "%.1f", frameGenDynamicTargetFps);
         appendBool("ReflexBoost", frameGenReflexBoost);
+        appendBool("AsyncWorkloads", frameGenAsyncWorkloads);
 
         appendSection("FrameLimiter");
         appendFloat("GameFpsLimit", "%.1f", gameFpsLimit);
@@ -486,6 +488,10 @@ public:
     bool frameGenDynamicMfg = false;
     float frameGenDynamicTargetFps = 0.0f;
     bool frameGenReflexBoost = false;
+    // [FrameGeneration] AsyncWorkloads=1: let AMD FSR frame generation run its generation work on async compute
+    // (FFX_FRAMEGENERATION_ENABLE_ASYNC_WORKLOAD_SUPPORT) so it can overlap the next frame. Read when the frame
+    // generation context is created. Experimental, off by default.
+    bool frameGenAsyncWorkloads = false;
 
     float gameFpsLimit = 0.0f;
 
