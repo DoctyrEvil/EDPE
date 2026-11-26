@@ -159,8 +159,10 @@ public:
 
     // Called after the real D3D11 Map succeeds.
     // Returns the cached RAM slot pointer if bounced, or realPtr untouched otherwise.
+    // fastScan (UnmapFastPath): skip the compare-exchange on slots whose key already shows they cannot match. The
+    // result is the same; it only avoids locked operations that would fail.
     void* onMap(uintptr_t resource, uintptr_t context, void* realPtr,
-                uint32_t byteWidth, bool isWriteDiscard, uint64_t frame) {
+                uint32_t byteWidth, bool isWriteDiscard, uint64_t frame, bool fastScan = false) {
         if (resource == 0 || resource == kBusyKey || !realPtr) return realPtr;
 
         // Invariant check: if this resource is already open in the bounce pool, trip Remap.
@@ -177,6 +179,7 @@ public:
         }
 
         for (auto& slot : slots_) {
+            if (fastScan && slot.key.load(std::memory_order_relaxed) != 0) continue;
             uintptr_t expected = 0;
             if (slot.key.compare_exchange_strong(expected, kBusyKey, std::memory_order_acq_rel)) {
                 slot.context = context;
@@ -196,9 +199,10 @@ public:
     // Called right before forwarding to the real D3D11 Unmap.
     // Performs a single sequential memcpy(realPtr, cachedSlot, byteWidth) and releases the slot.
     // Returns true if the resource was bounced and flushed, false otherwise.
-    bool onUnmap(uintptr_t resource, uintptr_t context) {
+    bool onUnmap(uintptr_t resource, uintptr_t context, bool fastScan = false) {
         if (resource == 0 || resource == kBusyKey) return false;
         for (auto& slot : slots_) {
+            if (fastScan && slot.key.load(std::memory_order_relaxed) != resource) continue;
             uintptr_t expected = resource;
             if (slot.key.compare_exchange_strong(expected, kBusyKey, std::memory_order_acq_rel)) {
                 const bool contextMismatch = (slot.context != context);
@@ -250,6 +254,12 @@ public:
     }
 
     // Returns true once when Auto probing detects slow reads and activates map-bounce.
+    // True when either log flag is set; lets callers skip the two exchanges on the common path.
+    bool hasPendingLogs() const {
+        return tripLogPending_.load(std::memory_order_relaxed) ||
+               autoActivatedLogPending_.load(std::memory_order_relaxed);
+    }
+
     bool consumeAutoActivatedLogPending() {
         return autoActivatedLogPending_.exchange(false, std::memory_order_acq_rel);
     }
