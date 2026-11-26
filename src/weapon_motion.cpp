@@ -156,6 +156,14 @@ bool WeaponMotionTracker::isFirstPersonWeaponState(ID3D11DeviceContext* context)
     return desc.StencilEnable && desc.DepthWriteMask == D3D11_DEPTH_WRITE_MASK_ALL;
 }
 
+bool WeaponMotionTracker::hasViewmodelStencilRef(ID3D11DeviceContext* context) {
+    if (!context) return false;
+    Microsoft::WRL::ComPtr<ID3D11DepthStencilState> ds;
+    UINT stencilRef = 0;
+    context->OMGetDepthStencilState(&ds, &stencilRef);
+    return ds && (stencilRef & kDynamicViewmodelStencilMask) != 0u;
+}
+
 bool WeaponMotionTracker::isOpaqueVisibleViewmodelDraw(ID3D11DeviceContext* context,
                                                        ID3D11Texture2D* expectedDepthTex,
                                                        bool onFoot) {

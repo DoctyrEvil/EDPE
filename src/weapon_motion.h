@@ -103,6 +103,12 @@ public:
                                              ID3D11Texture2D* expectedDepthTex,
                                              bool onFoot);
 
+    // Cheap first test with the same outcome as the stencil part of isOpaqueVisibleViewmodelDraw: false when no
+    // depth-stencil state is bound or the stencil reference has no viewmodel bit (on foot the masked reference must
+    // be the weapon bit, in a ship it must be non-zero, so a zero masked reference fails both). One state query
+    // instead of the full set, so callers can reject most draws before doing anything else.
+    static bool hasViewmodelStencilRef(ID3D11DeviceContext* context);
+
     // Begin a new frame: swap current/previous SO pools and clear draw records.
     void beginFrame(ID3D11DeviceContext* context, UINT width, UINT height,
                     float worldNear = kDefaultWorldNearM,
