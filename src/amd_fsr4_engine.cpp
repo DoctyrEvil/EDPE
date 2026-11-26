@@ -29,6 +29,14 @@ namespace edpe {
 
 namespace {
 
+// edpe.ini beside the game executable, for the few settings the engine reads itself (it does not depend on Config).
+std::wstring iniPathNextToExecutable() {
+    wchar_t modulePath[MAX_PATH]{};
+    const DWORD len = GetModuleFileNameW(nullptr, modulePath, MAX_PATH);
+    if (!len || len >= MAX_PATH) return L"edpe.ini";
+    return (std::filesystem::path(modulePath).parent_path() / L"edpe.ini").wstring();
+}
+
 // Directory of the module that contains this code (dxgi.dll in the game, the test exe in tests).
 std::filesystem::path moduleDirectory() {
     wchar_t path[MAX_PATH]{};
@@ -180,6 +188,101 @@ struct Fsr4Engine::Impl {
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> ownDepthSrv;
     ID3D11Texture2D* ownDepthSrvSource = nullptr;
     unsigned evalCount = 0;
+
+    // Developer mode only ([Overlay] or [General] DEV=1): GPU time of each D3D11 step around the FSR 4 dispatch,
+    // measured with timestamp queries that are read back without stalling and logged every kTimingLogFrames
+    // evaluations. Stamps: 0 before the color copy, 1 after it, 2 after the motion copy, 3 after the depth
+    // conversion, 4 after the D3D11 wait on the D3D12 fence (so 3..4 is FSR 4 on the D3D12 queue plus the
+    // cross-API sync, seen from the D3D11 timeline), 5 after the output copy into the destination.
+    static constexpr size_t kTimingStamps = 6;
+    static constexpr unsigned kTimingLogFrames = 600;
+    struct TimingSlot {
+        Microsoft::WRL::ComPtr<ID3D11Query> disjoint;
+        std::array<Microsoft::WRL::ComPtr<ID3D11Query>, kTimingStamps> stamps;
+        bool open = false;     // Begin issued this frame, End not yet issued
+        bool pending = false;  // ended, results not read yet
+    };
+    bool timingEnabled = false;
+    std::array<TimingSlot, 4> timing{};
+    size_t timingIndex = 0;
+    std::array<double, kTimingStamps - 1> timingSumMs{};
+    unsigned timingSamples = 0;
+    unsigned timingFrames = 0;
+
+    void resetTiming() {
+        for (auto& s : timing) s = TimingSlot{};
+        timingIndex = 0;
+        timingSumMs.fill(0.0);
+        timingSamples = timingFrames = 0;
+    }
+
+    void collectTiming(ID3D11DeviceContext* ctx) {
+        for (auto& s : timing) {
+            if (!s.pending) continue;
+            D3D11_QUERY_DATA_TIMESTAMP_DISJOINT dj{};
+            if (ctx->GetData(s.disjoint.Get(), &dj, sizeof(dj), D3D11_ASYNC_GETDATA_DONOTFLUSH) != S_OK) continue;
+            std::array<UINT64, kTimingStamps> t{};
+            bool ready = true;
+            for (size_t i = 0; i < kTimingStamps && ready; ++i) {
+                ready = ctx->GetData(s.stamps[i].Get(), &t[i], sizeof(UINT64), D3D11_ASYNC_GETDATA_DONOTFLUSH) == S_OK;
+            }
+            if (!ready) continue;
+            s.pending = false;
+            if (dj.Disjoint || dj.Frequency == 0) continue;
+            bool ordered = true;
+            for (size_t i = 1; i < kTimingStamps; ++i) ordered = ordered && t[i] >= t[i - 1];
+            if (!ordered) continue;
+            for (size_t i = 0; i + 1 < kTimingStamps; ++i) {
+                timingSumMs[i] += static_cast<double>(t[i + 1] - t[i]) * 1000.0 / static_cast<double>(dj.Frequency);
+            }
+            ++timingSamples;
+        }
+    }
+
+    void timingBegin(ID3D11DeviceContext* ctx) {
+        if (!timingEnabled) return;
+        collectTiming(ctx);
+        TimingSlot& s = timing[timingIndex];
+        if (s.pending) return;  // still in flight; skip this frame's sample
+        if (!s.disjoint) {
+            const D3D11_QUERY_DESC dq{D3D11_QUERY_TIMESTAMP_DISJOINT, 0};
+            const D3D11_QUERY_DESC tq{D3D11_QUERY_TIMESTAMP, 0};
+            bool ok = SUCCEEDED(device->CreateQuery(&dq, &s.disjoint));
+            for (auto& q : s.stamps) ok = ok && SUCCEEDED(device->CreateQuery(&tq, &q));
+            if (!ok) { s = TimingSlot{}; return; }
+        }
+        ctx->Begin(s.disjoint.Get());
+        ctx->End(s.stamps[0].Get());
+        s.open = true;
+    }
+
+    void timingMark(ID3D11DeviceContext* ctx, size_t stamp) {
+        TimingSlot& s = timing[timingIndex];
+        if (s.open) ctx->End(s.stamps[stamp].Get());
+    }
+
+    // Closes the frame's sample. `complete` is false when the evaluation failed part way; the disjoint query is
+    // still ended so the slot can be reused, but the sample is dropped.
+    void timingEnd(ID3D11DeviceContext* ctx, bool complete) {
+        TimingSlot& s = timing[timingIndex];
+        if (!s.open) return;
+        if (complete) ctx->End(s.stamps[kTimingStamps - 1].Get());
+        ctx->End(s.disjoint.Get());
+        s.open = false;
+        s.pending = complete;
+        timingIndex = (timingIndex + 1) % timing.size();
+        if (!complete || ++timingFrames < kTimingLogFrames) return;
+        const double n = timingSamples ? static_cast<double>(timingSamples) : 1.0;
+        wchar_t buf[400]{};
+        std::swprintf(buf, 400,
+            L"EDPE FSR4 timing (%u frames, %u samples): color copy %.3f ms, motion copy %.3f ms, depth convert "
+            L"%.3f ms, D3D12 FSR 4 + sync %.3f ms, output copy %.3f ms",
+            timingFrames, timingSamples, timingSumMs[0] / n, timingSumMs[1] / n, timingSumMs[2] / n,
+            timingSumMs[3] / n, timingSumMs[4] / n);
+        EdpeLog(buf);
+        timingSumMs.fill(0.0);
+        timingSamples = timingFrames = 0;
+    }
 
     void setError(const wchar_t* msg) {
         // Log only when the message changes so a persistent failure does not flood edpe.log.
@@ -492,7 +595,9 @@ struct Fsr4Engine::Impl {
     void fillSharedInputs(ID3D11DeviceContext* context, const TemporalFrameInputs& in, Fsr4Slot& slot,
                           ID3D11ShaderResourceView* depthSrv) {
         context->CopyResource(slot.color.d3d11.Get(), in.color);
+        timingMark(context, 1);
         context->CopyResource(slot.motion.d3d11.Get(), in.motionVectors);
+        timingMark(context, 2);
         {
             // Preserve the compute state the game or EDPE may have bound.
             Microsoft::WRL::ComPtr<ID3D11ComputeShader> prevCs;
@@ -537,13 +642,21 @@ struct Fsr4Engine::Impl {
         Fsr4Slot& slot = slots[slotIndex];
 
         if (!recordDispatch(cl, slot, in)) return false;
+        timingBegin(context);
         fillSharedInputs(context, in, slot, depthSrv);
+        timingMark(context, 3);
 
         const uint64_t done = bridge.submitAfterD3D11Signal(ctx4.Get(), slotIndex);
-        if (done == 0) { setError(L"bridge submit failed"); return false; }
-        if (!bridge.waitOnD3D11(ctx4.Get(), done)) { setError(L"D3D11 wait on D3D12 fence failed"); return false; }
+        if (done == 0) { timingEnd(context, false); setError(L"bridge submit failed"); return false; }
+        if (!bridge.waitOnD3D11(ctx4.Get(), done)) {
+            timingEnd(context, false);
+            setError(L"D3D11 wait on D3D12 fence failed");
+            return false;
+        }
+        timingMark(context, 4);
 
         context->CopyResource(dest, slot.output.d3d11.Get());
+        timingEnd(context, true);
         resetPending = false;
         ++evalCount;
         if (evalCount == 1) {
@@ -587,6 +700,14 @@ bool Fsr4Engine::initialize(ID3D11Device* device) {
         impl_->device.Reset();
         return false;
     }
+    {
+        // Same DEV key as Config ([Overlay] first, then [General]); read here so the engine does not depend on Config.
+        const std::wstring ini = iniPathNextToExecutable();
+        int dev = GetPrivateProfileIntW(L"Overlay", L"DEV", -1, ini.c_str());
+        if (dev < 0) dev = GetPrivateProfileIntW(L"General", L"DEV", 0, ini.c_str());
+        impl_->resetTiming();
+        impl_->timingEnabled = dev > 0;
+    }
     impl_->ready = true;
     wchar_t buf[256]{};
     std::swprintf(buf, 256, L"EDPE FSR4: engine initialized (agilitySdk=%d)", impl_->bridge.usingAgilitySdk() ? 1 : 0);
@@ -601,6 +722,8 @@ void Fsr4Engine::shutdown() {
     impl_->depthCs.Reset();
     impl_->ownDepthSrv.Reset();
     impl_->ownDepthSrvSource = nullptr;
+    impl_->resetTiming();
+    impl_->timingEnabled = false;
     impl_->bridge.shutdown();
     impl_->device.Reset();
     impl_->evalCount = 0;
