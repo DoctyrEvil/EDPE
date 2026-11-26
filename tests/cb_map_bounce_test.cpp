@@ -204,6 +204,35 @@ int main() {
         if (bounce.isActive()) return fail(47, "Bounce must remain disabled after Context trip");
     }
 
+    // fastScan (UnmapFastPath) gives the same results: several open slots, flush of the right one, pool exhaustion,
+    // a miss on an unknown resource and the pending-log check.
+    {
+        auto bouncePtr = std::make_unique<CbMapBounce>();
+        CbMapBounce& bounce = *bouncePtr;
+        bounce.configure(MapBounceMode::On, false);
+        if (bounce.hasPendingLogs()) return fail(48, "No log should be pending after configure");
+        std::array<std::array<unsigned char, 272>, CbMapBounce::kSlotCount + 1> real{};
+        std::array<void*, CbMapBounce::kSlotCount + 1> ptrs{};
+        for (size_t i = 0; i < real.size(); ++i) {
+            ptrs[i] = bounce.onMap(0x7001 + i, 0xF001, real[i].data(), 272, true, 6, true);
+        }
+        for (size_t i = 0; i < CbMapBounce::kSlotCount; ++i) {
+            if (ptrs[i] == real[i].data()) return fail(49, "fastScan onMap should bounce while slots are free");
+            static_cast<unsigned char*>(ptrs[i])[7] = static_cast<unsigned char>(0x30 + i);
+        }
+        if (ptrs[CbMapBounce::kSlotCount] != real[CbMapBounce::kSlotCount].data()) {
+            return fail(50, "fastScan onMap should pass through when the pool is full");
+        }
+        if (bounce.onUnmap(0x9999, 0xF001, true)) return fail(51, "fastScan onUnmap of an unknown resource");
+        // Release in reverse order so the scan has to skip occupied slots.
+        for (size_t i = CbMapBounce::kSlotCount; i-- > 0;) {
+            if (!bounce.onUnmap(0x7001 + i, 0xF001, true)) return fail(52, "fastScan onUnmap should flush");
+            if (real[i][7] != static_cast<unsigned char>(0x30 + i)) return fail(53, "fastScan flushed wrong data");
+        }
+        if (bounce.openSlotCount() != 0) return fail(54, "fastScan should release every slot");
+        if (bounce.isTripped()) return fail(55, "fastScan path must not trip");
+    }
+
     std::printf("cb_map_bounce_test PASSED\n");
     return 0;
 }
