@@ -6585,6 +6585,13 @@ static void tryCaptureDynamicViewmodelDrawInstanced(ID3D11DeviceContext* context
         !edpe::FgRuntime::instance().isMotionNeeded()) return;
 
     const auto cur = last_present_frame.load(std::memory_order_relaxed);
+    // [Pipeline] DrawHookFastPath: once this frame's weapon-motion frame has begun, a draw without a viewmodel stencil
+    // reference cannot be captured (isOpaqueVisibleViewmodelDraw would reject it), so skip the scene lock and the full
+    // pipeline-state queries. The outcome is the same as the full path.
+    if (edpe::Config::instance().drawHookFastPath && s_weapon_motion_frame == cur &&
+        !edpe::WeaponMotionTracker::hasViewmodelStencilRef(context)) {
+        return;
+    }
     std::lock_guard<std::recursive_mutex> lock(g_scene_ctx_mutex);
     beginWeaponMotionFrameIfNeeded(context, cur);
     if (scene_depth_source) {
@@ -6601,6 +6608,13 @@ static void tryCaptureDynamicViewmodelDrawIndexed(ID3D11DeviceContext* context,
     if (!edpe::UpscalerManager::instance().isReconstructionActive() &&
         !edpe::FgRuntime::instance().isMotionNeeded()) return;
     const auto cur = last_present_frame.load(std::memory_order_relaxed);
+    // [Pipeline] DrawHookFastPath: once this frame's weapon-motion frame has begun, a draw without a viewmodel stencil
+    // reference cannot be captured (isOpaqueVisibleViewmodelDraw would reject it), so skip the scene lock and the full
+    // pipeline-state queries. The outcome is the same as the full path.
+    if (edpe::Config::instance().drawHookFastPath && s_weapon_motion_frame == cur &&
+        !edpe::WeaponMotionTracker::hasViewmodelStencilRef(context)) {
+        return;
+    }
     std::lock_guard<std::recursive_mutex> lock(g_scene_ctx_mutex);
     beginWeaponMotionFrameIfNeeded(context, cur);
     if (scene_depth_source) {
