@@ -6,6 +6,7 @@
 
 #include <d3d11_4.h>
 #include <dxgi1_6.h>
+#include <array>
 #include <cstdint>
 #include <mutex>
 
@@ -164,6 +165,27 @@ private:
 
     uint64_t monotonicFrameIndex_ = 0;
     double lastCopyMs_ = 0.0;
+
+    // Developer mode only: GPU time of the D3D11 side of each frame generation frame (input copies, depth extract,
+    // UI pack and the backbuffer copy into the presenter), read back without stalling and logged every few hundred
+    // frames next to the D3D12 prepare + blit time (lastCopyMs_).
+    struct D3d11TimingSlot {
+        Microsoft::WRL::ComPtr<ID3D11Query> disjoint;
+        Microsoft::WRL::ComPtr<ID3D11Query> start;
+        Microsoft::WRL::ComPtr<ID3D11Query> end;
+        bool pending = false;
+    };
+    std::array<D3d11TimingSlot, 4> d3d11Timing_{};
+    size_t d3d11TimingIndex_ = 0;
+    double sumD3d11PrepMs_ = 0.0;
+    double sumD3d12Ms_ = 0.0;
+    unsigned d3d11TimingSamples_ = 0;
+    unsigned d3d12TimingSamples_ = 0;
+    unsigned timingFrames_ = 0;
+    void beginD3d11Timing(ID3D11Device* dev, ID3D11DeviceContext* ctx);
+    void endD3d11Timing(ID3D11DeviceContext* ctx);
+    void collectD3d11Timing(ID3D11DeviceContext* ctx);
+    void resetFgTiming();
     bool capabilitiesProbed_ = false;
     bool uiPackPassInitialized_ = false;
     bool amdDllAvailable_ = false;

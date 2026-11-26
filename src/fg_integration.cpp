@@ -1,6 +1,7 @@
 #include "fg_integration.h"
 
 #include "amd_fsr_fg_backend.h"
+#include "config.h"
 #include "context_census.h"
 #include "log.h"
 #include "nvidia_sl_fg_backend.h"
@@ -490,6 +491,7 @@ void FgRuntime::shutdownLocked() {
     trackedSwapChain_ = nullptr;
     gameHwnd_ = nullptr;
     monotonicFrameIndex_ = 0;
+    resetFgTiming();
 
     telemetry_.active = false;
     telemetry_.activeBackend = FrameGenerationBackend::Off;
@@ -502,6 +504,57 @@ void FgRuntime::shutdownLocked() {
 void FgRuntime::shutdown() {
     std::lock_guard<std::recursive_mutex> lock(mutex_);
     shutdownLocked();
+}
+
+void FgRuntime::resetFgTiming() {
+    for (auto& s : d3d11Timing_) s = D3d11TimingSlot{};
+    d3d11TimingIndex_ = 0;
+    sumD3d11PrepMs_ = sumD3d12Ms_ = 0.0;
+    d3d11TimingSamples_ = d3d12TimingSamples_ = timingFrames_ = 0;
+}
+
+void FgRuntime::collectD3d11Timing(ID3D11DeviceContext* ctx) {
+    for (auto& s : d3d11Timing_) {
+        if (!s.pending) continue;
+        D3D11_QUERY_DATA_TIMESTAMP_DISJOINT dj{};
+        UINT64 t0 = 0, t1 = 0;
+        if (ctx->GetData(s.disjoint.Get(), &dj, sizeof(dj), D3D11_ASYNC_GETDATA_DONOTFLUSH) != S_OK ||
+            ctx->GetData(s.start.Get(), &t0, sizeof(t0), D3D11_ASYNC_GETDATA_DONOTFLUSH) != S_OK ||
+            ctx->GetData(s.end.Get(), &t1, sizeof(t1), D3D11_ASYNC_GETDATA_DONOTFLUSH) != S_OK) {
+            continue;
+        }
+        s.pending = false;
+        if (!dj.Disjoint && dj.Frequency > 0 && t1 >= t0) {
+            sumD3d11PrepMs_ += static_cast<double>(t1 - t0) * 1000.0 / static_cast<double>(dj.Frequency);
+            ++d3d11TimingSamples_;
+        }
+    }
+}
+
+void FgRuntime::beginD3d11Timing(ID3D11Device* dev, ID3D11DeviceContext* ctx) {
+    collectD3d11Timing(ctx);
+    auto& s = d3d11Timing_[d3d11TimingIndex_];
+    if (s.pending) return;  // still in flight; skip this frame's sample
+    if (!s.disjoint) {
+        D3D11_QUERY_DESC dq{D3D11_QUERY_TIMESTAMP_DISJOINT, 0};
+        D3D11_QUERY_DESC tq{D3D11_QUERY_TIMESTAMP, 0};
+        if (FAILED(dev->CreateQuery(&dq, &s.disjoint)) || FAILED(dev->CreateQuery(&tq, &s.start)) ||
+            FAILED(dev->CreateQuery(&tq, &s.end))) {
+            s = D3d11TimingSlot{};
+            return;
+        }
+    }
+    ctx->Begin(s.disjoint.Get());
+    ctx->End(s.start.Get());
+}
+
+void FgRuntime::endD3d11Timing(ID3D11DeviceContext* ctx) {
+    auto& s = d3d11Timing_[d3d11TimingIndex_];
+    if (!s.disjoint || s.pending) return;
+    ctx->End(s.end.Get());
+    ctx->End(s.disjoint.Get());
+    s.pending = true;
+    d3d11TimingIndex_ = (d3d11TimingIndex_ + 1) % d3d11Timing_.size();
 }
 
 void FgRuntime::restartForUpscalerChange() {
@@ -776,6 +829,7 @@ void FgRuntime::onPresent(IDXGISwapChain* gameSwapChain,
         // Ensure D3D12 (PrepareV2 + FG Present) from the previous frame has finished reading
         // shared bridge textures before D3D11 overwrites them for the current frame.
         presenter_.waitForLastPresentOnD3D11(ctx4.Get());
+        if (Config::instance().devMode) beginD3d11Timing(dev11.Get(), ctx11.Get());
 
         D3D11_TEXTURE2D_DESC mvDesc{};
         snap.motionVectorsTex->GetDesc(&mvDesc);
@@ -843,8 +897,29 @@ void FgRuntime::onPresent(IDXGISwapChain* gameSwapChain,
     const bool presentedOk = presenter_.presentFromD3D11Texture(
         ctx4.Get(), gameBackbuffer.Get(), syncInterval, flags, &presentHr, &copyMs);
     presenter_.setPrePresentCallback(nullptr, nullptr);
+    if (canGenerateThisFrame && Config::instance().devMode) endD3d11Timing(ctx11.Get());
 
     lastCopyMs_ = copyMs;
+    if (Config::instance().devMode && canGenerateThisFrame) {
+        if (copyMs > 0.0) {
+            sumD3d12Ms_ += copyMs;
+            ++d3d12TimingSamples_;
+        }
+        if (++timingFrames_ >= 600) {
+            const auto& diag = manager_.diagnostics();
+            wchar_t msg[320];
+            swprintf_s(msg,
+                L"EDPE FG timing (%u frames): D3D11 inputs+UI pack+backbuffer copy %.3f ms (%u samples), "
+                L"D3D12 prepare+blit %.3f ms (%u samples), rendered %.1f fps, presented %.1f fps",
+                timingFrames_,
+                d3d11TimingSamples_ ? sumD3d11PrepMs_ / d3d11TimingSamples_ : 0.0, d3d11TimingSamples_,
+                d3d12TimingSamples_ ? sumD3d12Ms_ / d3d12TimingSamples_ : 0.0, d3d12TimingSamples_,
+                diag.renderedFps, diag.presentedFps);
+            EdpeLog(msg);
+            sumD3d11PrepMs_ = sumD3d12Ms_ = 0.0;
+            d3d11TimingSamples_ = d3d12TimingSamples_ = timingFrames_ = 0;
+        }
+    }
 
     const auto& mgrDiag = manager_.diagnostics();
     telemetry_.active = presentedOk;
