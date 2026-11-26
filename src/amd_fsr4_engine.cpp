@@ -182,7 +182,11 @@ struct Fsr4Engine::Impl {
     bool hdr = false;
     bool depthInverted = true;
     bool depthInfinite = true;
-    std::array<Fsr4Slot, D3D11D3D12Bridge::kAllocatorCount> slots;
+    // One set of shared textures serves every frame. The queues already order the reuse: D3D11 copies the next
+    // frame's inputs only after its GPU wait on this frame's dispatch, and the next dispatch waits for D3D11's fence
+    // signal, which follows the copy of this frame's output. Only the command allocators need one per frame in
+    // flight (bridge.beginCommandList). A set per allocator cost about 58 MB each at 1920x1080 -> 3840x2160.
+    Fsr4Slot slot;
 
     Microsoft::WRL::ComPtr<ID3D11ComputeShader> depthCs;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> ownDepthSrv;
@@ -293,13 +297,11 @@ struct Fsr4Engine::Impl {
 
     void destroyResources() {
         destroyContext();
-        for (auto& s : slots) {
-            s.depthUav.Reset();
-            s.color.reset();
-            s.depth.reset();
-            s.motion.reset();
-            s.output.reset();
-        }
+        slot.depthUav.Reset();
+        slot.color.reset();
+        slot.depth.reset();
+        slot.motion.reset();
+        slot.output.reset();
         renderW = renderH = outputW = outputH = 0;
         colorFmt = motionFmt = outputFmt = DXGI_FORMAT_UNKNOWN;
     }
@@ -312,13 +314,14 @@ struct Fsr4Engine::Impl {
         const DXGI_FORMAT of = concreteColorFormat(destDesc.Format);
         if (renderW == in.renderWidth && renderH == in.renderHeight && outputW == in.outputWidth &&
             outputH == in.outputHeight && colorFmt == cf && motionFmt == mf && outputFmt == of && hdr == in.colorIsHdr &&
-            depthInverted == in.depthInverted && depthInfinite == in.depthInfinite && slots[0].color.isValid()) {
+            depthInverted == in.depthInverted && depthInfinite == in.depthInfinite && slot.color.isValid()) {
             return true;
         }
 
         destroyResources();
         const auto t0 = std::chrono::steady_clock::now();
-        for (auto& s : slots) {
+        {
+            Fsr4Slot& s = slot;
             if (!bridge.createSharedTexture(in.renderWidth, in.renderHeight, cf, D3D11_BIND_SHADER_RESOURCE, s.color) ||
                 !bridge.createSharedTexture(in.renderWidth, in.renderHeight, DXGI_FORMAT_R32_FLOAT,
                                             D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS, s.depth) ||
@@ -542,7 +545,6 @@ struct Fsr4Engine::Impl {
         uint32_t slotIndex = 0;
         ID3D12GraphicsCommandList* cl = bridge.beginCommandList(slotIndex);
         if (!cl) { setError(L"bridge command list unavailable"); return false; }
-        Fsr4Slot& slot = slots[slotIndex];
 
         if (!recordDispatch(cl, slot, in)) return false;
         fillSharedInputs(context, in, slot, depthSrv);
