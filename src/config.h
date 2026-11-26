@@ -183,6 +183,7 @@ public:
         wchar_t bounceBuf[64]{};
         GetPrivateProfileStringW(L"Pipeline", L"MapBounceMode", L"auto", bounceBuf, 64, path.c_str());
         mapBounceMode = parseMapBounceModeString(bounceBuf);
+        drawHookFastPath = GetPrivateProfileIntW(L"Pipeline", L"DrawHookFastPath", 1, path.c_str()) != 0;
 
         renderDocAnnotations = GetPrivateProfileIntW(L"RenderDoc", L"EnableAnnotations", 1, path.c_str()) != 0;
         // Allow forcing D3D11/D3D12 debug markers & object names when external tools (e.g., Linux
@@ -324,6 +325,7 @@ public:
         appendSection("Pipeline");
         appendBool("DebugView", debugViewActive);
         appendWide("MapBounceMode", mapBounceModeToString(mapBounceMode));
+        appendBool("DrawHookFastPath", drawHookFastPath);
 
         appendSection("RenderDoc");
         appendBool("EnableAnnotations", renderDocAnnotations);
@@ -546,6 +548,9 @@ public:
 
     bool debugViewActive = false;
     int mapBounceMode = 0; // 0=auto, 1=on, 2=off
+    // [Pipeline] DrawHookFastPath=1: in the draw hooks, reject draws that cannot be first-person viewmodel draws
+    // (no viewmodel stencil reference) before taking the scene lock and querying the full pipeline state.
+    bool drawHookFastPath = true;
 
     static int parseMapBounceModeString(const wchar_t* s) {
         if (!s || !s[0]) return 0;
