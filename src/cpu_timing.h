@@ -16,6 +16,7 @@
 
 #include <atomic>
 #include <cstdio>
+#include <cwchar>
 #include <cstdint>
 
 namespace edpe::cputiming {
@@ -50,6 +51,9 @@ struct State {
     std::atomic<bool> sampleFrame{false};
     std::atomic<int64_t> hookTicks[static_cast<uint32_t>(Hook::Count)]{};
     std::atomic<uint32_t> hookCalls[static_cast<uint32_t>(Hook::Count)]{};
+    std::atomic<int64_t> hookForwardTicks[static_cast<uint32_t>(Hook::Count)]{};  // forwarded driver calls
+    std::atomic<int64_t> hookUpscaleTicks[static_cast<uint32_t>(Hook::Count)]{};  // EDPE upscale run from the hook
+    double qpcCallNs = 0.0;  // cost of one QueryPerformanceCounter call, measured when enabled
     int64_t presentTicks[static_cast<uint32_t>(PresentStep::Count)]{};  // render thread only
     uint32_t frames = 0;
     uint32_t sampledFrames = 0;
@@ -62,6 +66,10 @@ inline State& state() {
 }
 
 inline thread_local int t_depth = 0;  // >0 inside a recorded hook or EDPE's Present work
+inline thread_local bool t_inHook = false;     // inside a recorded (outermost) hook
+inline thread_local bool t_inUpscale = false;  // inside an UpscaleScope
+inline thread_local int64_t t_forwardTicks = 0;
+inline thread_local int64_t t_upscaleTicks = 0;
 
 inline int64_t now() {
     LARGE_INTEGER t;
@@ -75,6 +83,14 @@ inline void setEnabled(bool on) {
         LARGE_INTEGER f{};
         if (QueryPerformanceFrequency(&f) && f.QuadPart > 0) s.qpcToMs = 1000.0 / static_cast<double>(f.QuadPart);
     }
+    if (on && s.qpcCallNs == 0.0 && s.qpcToMs > 0.0) {
+        constexpr int kCalls = 4096;
+        const int64_t t0 = now();
+        volatile int64_t sink = 0;
+        for (int i = 0; i < kCalls; ++i) sink = sink + now();
+        const int64_t t1 = now();
+        s.qpcCallNs = static_cast<double>(t1 - t0) * s.qpcToMs * 1.0e6 / kCalls;
+    }
     s.enabled.store(on, std::memory_order_relaxed);
 }
 
@@ -86,22 +102,70 @@ public:
         hook_ = hook;
         active_ = true;
         ++t_depth;
+        t_inHook = true;
+        t_forwardTicks = 0;
+        t_upscaleTicks = 0;
         start_ = now();
     }
     ~HookScope() {
         if (!active_) return;
         const int64_t elapsed = now() - start_;
         --t_depth;
+        t_inHook = false;
         State& s = state();
         const auto i = static_cast<uint32_t>(hook_);
         s.hookTicks[i].fetch_add(elapsed, std::memory_order_relaxed);
         s.hookCalls[i].fetch_add(1, std::memory_order_relaxed);
+        s.hookForwardTicks[i].fetch_add(t_forwardTicks, std::memory_order_relaxed);
+        s.hookUpscaleTicks[i].fetch_add(t_upscaleTicks, std::memory_order_relaxed);
     }
     HookScope(const HookScope&) = delete;
     HookScope& operator=(const HookScope&) = delete;
 
 private:
     Hook hook_ = Hook::Draw;
+    int64_t start_ = 0;
+    bool active_ = false;
+};
+
+// Wraps a forwarded driver call inside a hook, so the hook's own (EDPE) time can be told apart from the driver's.
+// Ignored outside a recorded hook and inside an UpscaleScope (that time is reported as upscale).
+class ForwardScope {
+public:
+    ForwardScope() {
+        if (!t_inHook || t_inUpscale) return;
+        active_ = true;
+        start_ = now();
+    }
+    ~ForwardScope() {
+        if (active_) t_forwardTicks += now() - start_;
+    }
+    ForwardScope(const ForwardScope&) = delete;
+    ForwardScope& operator=(const ForwardScope&) = delete;
+
+private:
+    int64_t start_ = 0;
+    bool active_ = false;
+};
+
+// Wraps EDPE's upscale when a hook runs it, so it is reported apart from the per-call hook cost.
+class UpscaleScope {
+public:
+    UpscaleScope() {
+        if (!t_inHook || t_inUpscale) return;
+        active_ = true;
+        t_inUpscale = true;
+        start_ = now();
+    }
+    ~UpscaleScope() {
+        if (!active_) return;
+        t_upscaleTicks += now() - start_;
+        t_inUpscale = false;
+    }
+    UpscaleScope(const UpscaleScope&) = delete;
+    UpscaleScope& operator=(const UpscaleScope&) = delete;
+
+private:
     int64_t start_ = 0;
     bool active_ = false;
 };
@@ -180,6 +244,28 @@ inline bool endFrame(wchar_t* out, size_t outCount) {
         hookCalls[hi(H::VSSetConstantBuffers)], hookMs[hi(H::PSSetSamplers)], hookCalls[hi(H::PSSetSamplers)],
         hookMs[hi(H::OMSetRenderTargets)], hookCalls[hi(H::OMSetRenderTargets)], hookMs[hi(H::CommandList)],
         hookCalls[hi(H::CommandList)]);
+    // Second line: per hook, inclusive = driver (forwarded calls) + upscale (run from the hook) + EDPE's own work.
+    // EDPE's own work still contains about two timer calls per call (qpc, ns each).
+    if (outCount > 0) {
+        wchar_t* tail = out + wcslen(out);
+        size_t left = outCount - (tail - out);
+        auto split = [&](H h, const wchar_t* name) {
+            const uint32_t i = hi(h);
+            const double fwd = static_cast<double>(s.hookForwardTicks[i].exchange(0, std::memory_order_relaxed)) * perSampled;
+            const double ups = static_cast<double>(s.hookUpscaleTicks[i].exchange(0, std::memory_order_relaxed)) * perSampled;
+            const int n = std::swprintf(tail, left, L" | %ls driver %.3f upscale %.3f edpe %.3f", name, fwd, ups,
+                                        hookMs[i] - fwd - ups);
+            if (n > 0 && static_cast<size_t>(n) < left) { tail += n; left -= n; }
+        };
+        split(H::Draw, L"draw");
+        split(H::Map, L"map");
+        split(H::Unmap, L"unmap");
+        std::swprintf(tail, left, L" | qpc %.1f ns", s.qpcCallNs);
+        for (uint32_t i = 0; i < static_cast<uint32_t>(Hook::Count); ++i) {
+            s.hookForwardTicks[i].store(0, std::memory_order_relaxed);
+            s.hookUpscaleTicks[i].store(0, std::memory_order_relaxed);
+        }
+    }
     for (auto& t : s.presentTicks) t = 0;
     s.frames = 0;
     s.sampledFrames = 0;

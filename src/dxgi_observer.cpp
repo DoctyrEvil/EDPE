@@ -302,8 +302,8 @@ HRESULT STDMETHODCALLTYPE observedPresent(IDXGISwapChain* swap_chain, UINT sync_
         edpe::PerfTracker::instance().onPresentEnd();
         cpuTimer.mark(Step::Limiter);
     }
-    wchar_t cpuMsg[640];
-    if (edpe::cputiming::endFrame(cpuMsg, 640)) EdpeLog(cpuMsg);
+    wchar_t cpuMsg[1024];
+    if (edpe::cputiming::endFrame(cpuMsg, 1024)) EdpeLog(cpuMsg);
     return result;
 }
 
