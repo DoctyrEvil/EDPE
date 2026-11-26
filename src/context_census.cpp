@@ -6458,14 +6458,14 @@ void STDMETHODCALLTYPE observedDrawIndexed(ID3D11DeviceContext* context, UINT co
     if (!immediate || !isHudDrawInterceptWindowActive()) {
         if (const auto forward = resolveOriginalDrawIndexed(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context, !immediate);
-            forward(context, count, start, base);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, count, start, base); }
         }
         return;
     }
     if (!shouldInspectHudOrTonemapDraw(count, 1)) {
         if (const auto forward = resolveOriginalDrawIndexed(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, count, start, base);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, count, start, base); }
         }
         abandonAmortizedAndRearmHudProbe(context);
         return;
@@ -6495,7 +6495,7 @@ void STDMETHODCALLTYPE observedDrawIndexed(ID3D11DeviceContext* context, UINT co
         }
         if (const auto forward = resolveOriginalDrawIndexed(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, count, start, base);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, count, start, base); }
         }
         abandonAmortizedAndRearmHudProbe(context);
     }
@@ -6507,14 +6507,14 @@ void STDMETHODCALLTYPE observedDraw(ID3D11DeviceContext* context, UINT count, UI
     if (!immediate || !isHudDrawInterceptWindowActive()) {
         if (const auto forward = resolveOriginalDraw(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context, !immediate);
-            forward(context, count, start);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, count, start); }
         }
         return;
     }
     if (!shouldInspectHudOrTonemapDraw(count, 1)) {
         if (const auto forward = resolveOriginalDraw(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, count, start);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, count, start); }
         }
         abandonAmortizedAndRearmHudProbe(context);
         return;
@@ -6544,7 +6544,7 @@ void STDMETHODCALLTYPE observedDraw(ID3D11DeviceContext* context, UINT count, UI
         }
         if (const auto forward = resolveOriginalDraw(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, count, start);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, count, start); }
         }
         abandonAmortizedAndRearmHudProbe(context);
     }
@@ -6624,14 +6624,14 @@ void STDMETHODCALLTYPE observedDrawIndexedInstanced(ID3D11DeviceContext* context
     if (!immediate || !isHudDrawInterceptWindowActive()) {
         if (const auto forward = resolveOriginalDrawIndexedInstanced(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context, !immediate);
-            forward(context, index_count, instance_count, start_index, base_vertex, start_instance);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, index_count, instance_count, start_index, base_vertex, start_instance); }
         }
         return;
     }
     if (!shouldInspectHudOrTonemapDraw(index_count, instance_count)) {
         if (const auto forward = resolveOriginalDrawIndexedInstanced(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, index_count, instance_count, start_index, base_vertex, start_instance);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, index_count, instance_count, start_index, base_vertex, start_instance); }
         }
         abandonAmortizedAndRearmHudProbe(context);
         return;
@@ -6663,7 +6663,7 @@ void STDMETHODCALLTYPE observedDrawIndexedInstanced(ID3D11DeviceContext* context
         }
         if (const auto forward = resolveOriginalDrawIndexedInstanced(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, index_count, instance_count, start_index, base_vertex, start_instance);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, index_count, instance_count, start_index, base_vertex, start_instance); }
         }
         abandonAmortizedAndRearmHudProbe(context);
         if (hudResult == HudDrawResult::GlassReplay) {
@@ -6784,14 +6784,14 @@ void STDMETHODCALLTYPE observedDrawInstanced(ID3D11DeviceContext* context,
     if (!immediate || !isHudDrawInterceptWindowActive()) {
         if (const auto forward = resolveOriginalDrawInstanced(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context, !immediate);
-            forward(context, vertex_count, instance_count, start_vertex, start_instance);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, vertex_count, instance_count, start_vertex, start_instance); }
         }
         return;
     }
     if (!shouldInspectHudOrTonemapDraw(vertex_count, instance_count)) {
         if (const auto forward = resolveOriginalDrawInstanced(context)) {
             DeferredCb0ViewportJitterScope cb0VpScope(context);
-            forward(context, vertex_count, instance_count, start_vertex, start_instance);
+            { edpe::cputiming::ForwardScope cpuFwd; forward(context, vertex_count, instance_count, start_vertex, start_instance); }
         }
         abandonAmortizedAndRearmHudProbe(context);
         return;
@@ -6926,7 +6926,7 @@ void STDMETHODCALLTYPE observedDrawInstanced(ID3D11DeviceContext* context,
             flareColorHandled = issueAndStabilizeAdditiveFlareDraw(
                 context, motion_color_frame, [&]() {
                     if (const auto forward = resolveOriginalDrawInstanced(context)) {
-                        forward(context, vertex_count, instance_count, start_vertex, start_instance);
+                        { edpe::cputiming::ForwardScope cpuFwd; forward(context, vertex_count, instance_count, start_vertex, start_instance); }
                     }
                 });
             if (flareColorHandled) {
@@ -6939,7 +6939,7 @@ void STDMETHODCALLTYPE observedDrawInstanced(ID3D11DeviceContext* context,
         if (!flareColorHandled) {
             if (const auto forward = resolveOriginalDrawInstanced(context)) {
                 DeferredCb0ViewportJitterScope cb0VpScope(context, flareUnjittered);
-                forward(context, vertex_count, instance_count, start_vertex, start_instance);
+                { edpe::cputiming::ForwardScope cpuFwd; forward(context, vertex_count, instance_count, start_vertex, start_instance); }
             }
         }
         if (flareUnjittered) {
@@ -7688,8 +7688,11 @@ HRESULT STDMETHODCALLTYPE observedMap(ID3D11DeviceContext* context, ID3D11Resour
     UINT subresource, D3D11_MAP type, UINT flags, D3D11_MAPPED_SUBRESOURCE* mapped) {
     edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Map);
     const MapFn forward = resolveOriginalMap(context);
-    const HRESULT result = forward ? forward(
-        context, resource, subresource, type, flags, mapped) : E_FAIL;
+    HRESULT result = E_FAIL;
+    if (forward) {
+        edpe::cputiming::ForwardScope cpuFwd;
+        result = forward(context, resource, subresource, type, flags, mapped);
+    }
     if (FAILED(result) || !resource ||
         s_in_edpe_present.load(std::memory_order_acquire) ||
         !map_hook_active.load(std::memory_order_acquire) ||
@@ -7809,7 +7812,10 @@ void STDMETHODCALLTYPE observedUnmap(ID3D11DeviceContext* context, ID3D11Resourc
                 reinterpret_cast<uintptr_t>(context));
             logCbMapBounceEvents();
         }
-        if (forward) forward(context, resource, subresource);
+        if (forward) {
+            edpe::cputiming::ForwardScope cpuFwd;
+            forward(context, resource, subresource);
+        }
     };
     if (!s_in_edpe_present.load(std::memory_order_acquire) &&
         unmap_hook_active.load(std::memory_order_acquire) &&
@@ -10924,6 +10930,7 @@ void finalizeHudMaskForFrame(ID3D11DeviceContext* context, unsigned long long cu
 void tryTemporalUpscale(ID3D11DeviceContext* context, unsigned long long rendered,
     ID3D11Texture2D* backbuffer) {
     edpe::ScopedProfileTimer profTimer(edpe::ProfileZone::TemporalUpscale);
+    edpe::cputiming::UpscaleScope cpuUpscaleScope;
     const auto frame = rendered;
     auto& upscaler = edpe::UpscalerManager::instance();
     const bool upscale_active = upscaler.isReconstructionActive();
