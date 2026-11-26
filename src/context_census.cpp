@@ -7233,6 +7233,8 @@ static void ensureCbMapBounceConfigured() {
 }
 
 static void logCbMapBounceEvents() {
+    // [Pipeline] UnmapFastPath: both flags are almost always clear; check them with plain loads first.
+    if (edpe::Config::instance().unmapFastPath && !s_cb_map_bounce.hasPendingLogs()) return;
     edpe::MapBounceTrip reason = edpe::MapBounceTrip::None;
     if (s_cb_map_bounce.consumeTripLogPending(&reason)) {
         wchar_t msg[192]{};
@@ -7753,7 +7755,8 @@ HRESULT STDMETHODCALLTYPE observedMap(ID3D11DeviceContext* context, ID3D11Resour
             effectivePtr = s_cb_map_bounce.onMap(
                 reinterpret_cast<uintptr_t>(resource),
                 reinterpret_cast<uintptr_t>(context),
-                mapped->pData, 5376u, type == D3D11_MAP_WRITE_DISCARD, cur_frame);
+                mapped->pData, 5376u, type == D3D11_MAP_WRITE_DISCARD, cur_frame,
+                edpe::Config::instance().unmapFastPath);
             mapped->pData = effectivePtr;
             logCbMapBounceEvents();
         }
@@ -7775,7 +7778,8 @@ HRESULT STDMETHODCALLTYPE observedMap(ID3D11DeviceContext* context, ID3D11Resour
                 effectivePtr = s_cb_map_bounce.onMap(
                     reinterpret_cast<uintptr_t>(resource),
                     reinterpret_cast<uintptr_t>(context),
-                    mapped->pData, dot_cb_bytes, type == D3D11_MAP_WRITE_DISCARD, cur_frame);
+                    mapped->pData, dot_cb_bytes, type == D3D11_MAP_WRITE_DISCARD, cur_frame,
+                    edpe::Config::instance().unmapFastPath);
                 mapped->pData = effectivePtr;
                 logCbMapBounceEvents();
             }
@@ -7793,7 +7797,8 @@ void STDMETHODCALLTYPE observedUnmap(ID3D11DeviceContext* context, ID3D11Resourc
         if (resource) {
             s_cb_map_bounce.onUnmap(
                 reinterpret_cast<uintptr_t>(resource),
-                reinterpret_cast<uintptr_t>(context));
+                reinterpret_cast<uintptr_t>(context),
+                edpe::Config::instance().unmapFastPath);
             logCbMapBounceEvents();
         }
         if (forward) {
