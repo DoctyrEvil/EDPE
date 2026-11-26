@@ -1787,6 +1787,7 @@ static inline void recordPhaseAuditLocked(const float* jitteredProj16, const edp
 }
 std::atomic<bool> s_preserve_native_ui{true};
 std::atomic<float> s_sharpness{0.0f};
+std::atomic<bool> s_fsr4_defer_sharpen{true};
 
 std::atomic<bool> s_jitter_debug_view{false};
 std::atomic<bool> s_motion_class_debug_view{false};
@@ -11735,8 +11736,13 @@ void tryTemporalUpscale(ID3D11DeviceContext* context, unsigned long long rendere
         bool compOk = false;
         bool upscalerEvalOk = false;
         const bool preAllowBackbufferWrite = (s_diag_eval_stage == 1) || chosenIsBackbuffer;
+        // FSR 3.1.2 keeps its own RCAS. FSR 4's RCAS pass costs about 0.65 ms at 4K output on an RX 7900 XTX, so
+        // with Fsr4DeferSharpen it runs with sharpening off and EDPE sharpens in the composite or blit pass that
+        // already reads every output pixel.
+        const bool deferFsr4Sharpen =
+            upscaler.isFsr4Running() && s_fsr4_defer_sharpen.load(std::memory_order_relaxed);
         const bool canDeferSharpen =
-            (activeBackend != edpe::UpscalerBackend::AmdFsr) &&
+            (activeBackend != edpe::UpscalerBackend::AmdFsr || deferFsr4Sharpen) &&
             (inputs.sharpness > 0.0f) &&
             !isHdrColor &&
             (evalDestination == s_dlss_output_texture.Get()) &&
@@ -11745,6 +11751,16 @@ void tryTemporalUpscale(ID3D11DeviceContext* context, unsigned long long rendere
             (s_backbuffer_rtv != nullptr || s_backbuffer_uav != nullptr) &&
             !fg_active;
         const float deferredSharpen = canDeferSharpen ? inputs.sharpness : 0.0f;
+        if (activeBackend == edpe::UpscalerBackend::AmdFsr && upscaler.isFsr4Running() && inputs.sharpness > 0.0f) {
+            // Log which pass sharpens FSR 4 output whenever it changes (A/B diagnostics).
+            static int s_fsr4_sharpen_path = -1;
+            const int path = canDeferSharpen ? 1 : 0;
+            if (path != s_fsr4_sharpen_path) {
+                s_fsr4_sharpen_path = path;
+                EdpeLog(canDeferSharpen ? L"EDPE FSR4: sharpening in EDPE's composite/blit pass (FSR 4 RCAS off)"
+                                        : L"EDPE FSR4: sharpening with FSR 4's RCAS pass");
+            }
+        }
         edpe::TemporalFrameInputs evalInputs = inputs;
         if (canDeferSharpen) {
             evalInputs.sharpness = 0.0f;
@@ -13887,6 +13903,7 @@ void ContextCensusOnPresent(IDXGISwapChain* swap_chain, unsigned long long frame
         s_jitter_mode.store(cfg.jitterMode, std::memory_order_relaxed);
         s_preserve_native_ui.store(cfg.preserveNativeUi, std::memory_order_relaxed);
         s_sharpness.store(cfg.sharpness, std::memory_order_relaxed);
+        s_fsr4_defer_sharpen.store(cfg.fsr4DeferSharpen, std::memory_order_relaxed);
         s_jitter_debug_view.store(false, std::memory_order_relaxed);
         s_jitter_debug_sensitivity.store(cfg.jitterDebugSensitivity, std::memory_order_relaxed);
         s_jitter_debug_threshold.store(cfg.jitterDebugThreshold, std::memory_order_relaxed);
@@ -15442,6 +15459,18 @@ float ContextCensusGetSharpness() {
         return edpe::Config::instance().sharpness;
     }
     return s_sharpness.load(std::memory_order_relaxed);
+}
+
+void ContextCensusSetFsr4DeferSharpen(bool defer) {
+    s_fsr4_defer_sharpen.store(defer, std::memory_order_relaxed);
+    edpe::Config::instance().fsr4DeferSharpen = defer;
+}
+
+bool ContextCensusGetFsr4DeferSharpen() {
+    if (!s_config_loaded) {
+        return edpe::Config::instance().fsr4DeferSharpen;
+    }
+    return s_fsr4_defer_sharpen.load(std::memory_order_relaxed);
 }
 
 void ContextCensusRefreshMipLodBias() {
