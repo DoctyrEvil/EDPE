@@ -1,5 +1,6 @@
 #include <chrono>
 #include "context_census.h"
+#include "cpu_timing.h"
 #include "crash_logger.h"
 #include "camera_delta.h"
 #include "dxbc_fanout.h"
@@ -6282,6 +6283,7 @@ void dumpSceneShaders() {
 
 void STDMETHODCALLTYPE observedVSSetConstantBuffers(ID3D11DeviceContext* context,
     UINT start, UINT count, ID3D11Buffer* const* buffers) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::VSSetConstantBuffers);
     const auto forward = resolveOriginalVSSetConstantBuffers(context);
     if (!forward) return;
 
@@ -6446,6 +6448,7 @@ static void tryCaptureDynamicViewmodelDrawIndexed(ID3D11DeviceContext* context,
 
 void STDMETHODCALLTYPE observedDrawIndexed(ID3D11DeviceContext* context, UINT count,
     UINT start, INT base) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Draw);
     const bool immediate = isObservedImmediateContext(context);
     if (immediate) {
         if (const auto forward = resolveOriginalDrawIndexed(context)) {
@@ -6499,6 +6502,7 @@ void STDMETHODCALLTYPE observedDrawIndexed(ID3D11DeviceContext* context, UINT co
 }
 
 void STDMETHODCALLTYPE observedDraw(ID3D11DeviceContext* context, UINT count, UINT start) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Draw);
     const bool immediate = isObservedImmediateContext(context);
     if (!immediate || !isHudDrawInterceptWindowActive()) {
         if (const auto forward = resolveOriginalDraw(context)) {
@@ -6609,6 +6613,7 @@ static void tryCaptureDynamicViewmodelDrawIndexed(ID3D11DeviceContext* context,
 void STDMETHODCALLTYPE observedDrawIndexedInstanced(ID3D11DeviceContext* context,
     UINT index_count, UINT instance_count, UINT start_index, INT base_vertex,
     UINT start_instance) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Draw);
     const bool immediate = isObservedImmediateContext(context);
     if (immediate) {
         if (const auto forward = resolveOriginalDrawIndexedInstanced(context)) {
@@ -6771,6 +6776,7 @@ static bool tryBlockBuiltinAntiAliasingDraw(ID3D11DeviceContext* context,
 
 void STDMETHODCALLTYPE observedDrawInstanced(ID3D11DeviceContext* context,
     UINT vertex_count, UINT instance_count, UINT start_vertex, UINT start_instance) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Draw);
     const bool immediate = isObservedImmediateContext(context);
     if (immediate && tryBlockBuiltinAntiAliasingDraw(context, vertex_count, instance_count)) {
         return;
@@ -7680,6 +7686,7 @@ private:
 
 HRESULT STDMETHODCALLTYPE observedMap(ID3D11DeviceContext* context, ID3D11Resource* resource,
     UINT subresource, D3D11_MAP type, UINT flags, D3D11_MAPPED_SUBRESOURCE* mapped) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Map);
     const MapFn forward = resolveOriginalMap(context);
     const HRESULT result = forward ? forward(
         context, resource, subresource, type, flags, mapped) : E_FAIL;
@@ -7793,6 +7800,7 @@ HRESULT STDMETHODCALLTYPE observedMap(ID3D11DeviceContext* context, ID3D11Resour
 
 void STDMETHODCALLTYPE observedUnmap(ID3D11DeviceContext* context, ID3D11Resource* resource,
     UINT subresource) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::Unmap);
     const UnmapFn forward = resolveOriginalUnmap(context);
     auto forwardUnmap = [&]() {
         if (resource) {
@@ -9241,6 +9249,7 @@ void STDMETHODCALLTYPE observedUnmap(ID3D11DeviceContext* context, ID3D11Resourc
 void STDMETHODCALLTYPE observedUpdateSubresource(ID3D11DeviceContext* context,
     ID3D11Resource* pDstResource, UINT DstSubresource, const D3D11_BOX* pDstBox,
     const void* pSrcData, UINT SrcRowPitch, UINT SrcDepthPitch) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::UpdateSubresource);
     const UpdateSubresourceFn forward = resolveOriginalUpdateSubresource(context);
     if (!s_in_edpe_present.load(std::memory_order_acquire) &&
         update_subresource_hook_active.load(std::memory_order_acquire) &&
@@ -13432,6 +13441,7 @@ OMSetRenderTargetsAndUnorderedAccessViewsFn resolveOriginalOMUav(ID3D11DeviceCon
 
 void STDMETHODCALLTYPE observedOMSetRenderTargets(ID3D11DeviceContext* context, UINT count,
     ID3D11RenderTargetView* const* targets, ID3D11DepthStencilView* dsv) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::OMSetRenderTargets);
     OMSetRenderTargetsFn forward = resolveOriginalOM(context);
     if (g_is_evaluating_upscaler.load(std::memory_order_acquire)) {
         if (forward) forward(context, count, targets, dsv);
@@ -13499,6 +13509,7 @@ void STDMETHODCALLTYPE observedOMSetRenderTargetsAndUnorderedAccessViews(
     UINT numUAVs,
     ID3D11UnorderedAccessView* const* uavs,
     const UINT* initialCounts) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::OMSetRenderTargets);
     OMSetRenderTargetsAndUnorderedAccessViewsFn forward = resolveOriginalOMUav(context);
     if (g_is_evaluating_upscaler.load(std::memory_order_acquire)) {
         if (forward) forward(context, numRTVs, targets, dsv, uavStartSlot, numUAVs, uavs, initialCounts);
@@ -13608,6 +13619,7 @@ void STDMETHODCALLTYPE observedPSSetSamplers(
     UINT StartSlot,
     UINT NumSamplers,
     ID3D11SamplerState* const* ppSamplers) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::PSSetSamplers);
     const PSSetSamplersFn forward = resolveOriginalPSSetSamplers(context);
     if (!forward) return;
     if (ppSamplers && NumSamplers > 0 && NumSamplers <= D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT &&
@@ -13625,6 +13637,7 @@ void STDMETHODCALLTYPE observedExecuteCommandList(
     ID3D11DeviceContext* context,
     ID3D11CommandList* pCommandList,
     BOOL restoreContextState) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::CommandList);
     s_count_execute_command_list.fetch_add(1, std::memory_order_relaxed);
     logContextHookOnce(context, kExecuteCommandList, L"ExecuteCommandList", s_log_exec_imm, s_log_exec_def);
 
@@ -13650,6 +13663,7 @@ HRESULT STDMETHODCALLTYPE observedFinishCommandList(
     ID3D11DeviceContext* context,
     BOOL restoreDeferredContextState,
     ID3D11CommandList** ppCommandList) {
+    edpe::cputiming::HookScope cpuHookScope(edpe::cputiming::Hook::CommandList);
     s_count_finish_command_list.fetch_add(1, std::memory_order_relaxed);
     logContextHookOnce(context, kFinishCommandList, L"FinishCommandList", s_log_finish_imm, s_log_finish_def);
 
