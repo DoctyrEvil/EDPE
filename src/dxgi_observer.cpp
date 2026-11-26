@@ -1,5 +1,6 @@
 #include "d3d11_proxy.h"
 #include "config.h"
+#include "cpu_timing.h"
 #include "crash_logger.h"
 #include "log.h"
 #include "system_dll.h"
@@ -271,20 +272,38 @@ HRESULT STDMETHODCALLTYPE observedPresent(IDXGISwapChain* swap_chain, UINT sync_
     if (frame <= 8 || (edpe::Config::instance().devMode && frame <= 32768 && frame % 1024 == 0)) {
         logContextDispatch(swap_chain, frame);
     }
-    edpe::PerfTracker::instance().onPresentStart(swap_chain);
-    ContextCensusOnPresent(swap_chain, frame, flags);
-    UiOnPresent(swap_chain, flags);
-    ContextCensusAfterOverlay(swap_chain, flags);
-    bool presentedViaFgProxy = false;
-    edpe::FgRuntime::instance().setFrameLimitFps(edpe::FrameLimiter::instance().targetFps());
-    edpe::FgRuntime::instance().onPresent(swap_chain, sync_interval, flags, &presentedViaFgProxy, UiMenuVisible());
-    const HRESULT result = presentedViaFgProxy ? S_OK : original(swap_chain, sync_interval, flags);
-    edpe::setLastD3D11HResult(result);
-    ContextCensusAfterPresent(swap_chain, flags);
-    if (!(presentedViaFgProxy && edpe::FgRuntime::instance().isReflexFrameLimiterActive())) {
-        edpe::FrameLimiter::instance().waitForNextFrame();
+    const bool devMode = edpe::Config::instance().devMode;
+    if (edpe::cputiming::state().enabled.load(std::memory_order_relaxed) != devMode) {
+        edpe::cputiming::setEnabled(devMode);
     }
-    edpe::PerfTracker::instance().onPresentEnd();
+    using Step = edpe::cputiming::PresentStep;
+    HRESULT result = S_OK;
+    {
+        edpe::cputiming::PresentTimer cpuTimer;
+        edpe::PerfTracker::instance().onPresentStart(swap_chain);
+        ContextCensusOnPresent(swap_chain, frame, flags);
+        cpuTimer.mark(Step::Census);
+        UiOnPresent(swap_chain, flags);
+        cpuTimer.mark(Step::Ui);
+        ContextCensusAfterOverlay(swap_chain, flags);
+        cpuTimer.mark(Step::AfterOverlay);
+        bool presentedViaFgProxy = false;
+        edpe::FgRuntime::instance().setFrameLimitFps(edpe::FrameLimiter::instance().targetFps());
+        edpe::FgRuntime::instance().onPresent(swap_chain, sync_interval, flags, &presentedViaFgProxy, UiMenuVisible());
+        cpuTimer.mark(Step::FrameGen);
+        result = presentedViaFgProxy ? S_OK : original(swap_chain, sync_interval, flags);
+        cpuTimer.mark(Step::Original);
+        edpe::setLastD3D11HResult(result);
+        ContextCensusAfterPresent(swap_chain, flags);
+        cpuTimer.mark(Step::AfterPresent);
+        if (!(presentedViaFgProxy && edpe::FgRuntime::instance().isReflexFrameLimiterActive())) {
+            edpe::FrameLimiter::instance().waitForNextFrame();
+        }
+        edpe::PerfTracker::instance().onPresentEnd();
+        cpuTimer.mark(Step::Limiter);
+    }
+    wchar_t cpuMsg[640];
+    if (edpe::cputiming::endFrame(cpuMsg, 640)) EdpeLog(cpuMsg);
     return result;
 }
 

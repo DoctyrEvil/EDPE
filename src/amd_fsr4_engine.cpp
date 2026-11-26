@@ -209,11 +209,46 @@ struct Fsr4Engine::Impl {
     unsigned timingSamples = 0;
     unsigned timingFrames = 0;
 
+    // CPU time of each step of evaluate() on the render thread (QueryPerformanceCounter), same developer-mode gate,
+    // averaged over the evaluations that completed and logged with the GPU timings.
+    enum class CpuStep : size_t { Prepare, BeginList, Record, Fill, Submit, Wait, Copy, Count };
+    std::array<double, static_cast<size_t>(CpuStep::Count)> cpuSumMs{};
+    unsigned cpuSamples = 0;
+    double qpcToMs = 0.0;
+
+    struct CpuSplit {
+        Impl& impl;
+        LARGE_INTEGER last{};
+        std::array<double, static_cast<size_t>(CpuStep::Count)> ms{};
+        bool active = false;
+        explicit CpuSplit(Impl& i) : impl(i) {
+            if (!impl.timingEnabled || impl.qpcToMs == 0.0) return;
+            active = true;
+            QueryPerformanceCounter(&last);
+        }
+        void mark(CpuStep step) {
+            if (!active) return;
+            LARGE_INTEGER t;
+            QueryPerformanceCounter(&t);
+            ms[static_cast<size_t>(step)] = static_cast<double>(t.QuadPart - last.QuadPart) * impl.qpcToMs;
+            last = t;
+        }
+        void complete() {
+            if (!active) return;
+            for (size_t i = 0; i < ms.size(); ++i) impl.cpuSumMs[i] += ms[i];
+            ++impl.cpuSamples;
+        }
+    };
+
     void resetTiming() {
         for (auto& s : timing) s = TimingSlot{};
         timingIndex = 0;
         timingSumMs.fill(0.0);
         timingSamples = timingFrames = 0;
+        cpuSumMs.fill(0.0);
+        cpuSamples = 0;
+        LARGE_INTEGER f{};
+        qpcToMs = (QueryPerformanceFrequency(&f) && f.QuadPart > 0) ? 1000.0 / static_cast<double>(f.QuadPart) : 0.0;
     }
 
     void collectTiming(ID3D11DeviceContext* ctx) {
@@ -280,8 +315,20 @@ struct Fsr4Engine::Impl {
             timingFrames, timingSamples, timingSumMs[0] / n, timingSumMs[1] / n, timingSumMs[2] / n,
             timingSumMs[3] / n, timingSumMs[4] / n);
         EdpeLog(buf);
+        const double c = cpuSamples ? static_cast<double>(cpuSamples) : 1.0;
+        auto cs = [&](CpuStep s) { return cpuSumMs[static_cast<size_t>(s)] / c; };
+        double cpuTotal = 0.0;
+        for (double v : cpuSumMs) cpuTotal += v;
+        std::swprintf(buf, 400,
+            L"EDPE FSR4 CPU (%u evaluations): total %.3f ms [prepare %.3f beginList %.3f record %.3f fill %.3f "
+            L"submit %.3f wait %.3f copy %.3f]",
+            cpuSamples, cpuTotal / c, cs(CpuStep::Prepare), cs(CpuStep::BeginList), cs(CpuStep::Record),
+            cs(CpuStep::Fill), cs(CpuStep::Submit), cs(CpuStep::Wait), cs(CpuStep::Copy));
+        EdpeLog(buf);
         timingSumMs.fill(0.0);
         timingSamples = timingFrames = 0;
+        cpuSumMs.fill(0.0);
+        cpuSamples = 0;
     }
 
     void setError(const wchar_t* msg) {
@@ -632,31 +679,40 @@ struct Fsr4Engine::Impl {
     // queue and copies the result into `dest`. Returns false, with an error message, without touching `dest`.
     bool evaluate(ID3D11DeviceContext* context, const TemporalFrameInputs& in, ID3D11Texture2D* dest) {
         if (!ready) return false;
+        CpuSplit cpu(*this);
         ID3D11ShaderResourceView* depthSrv = nullptr;
         Microsoft::WRL::ComPtr<ID3D11DeviceContext4> ctx4;
         if (!prepareFrame(context, in, dest, depthSrv, ctx4)) return false;
+        cpu.mark(CpuStep::Prepare);
 
         uint32_t slotIndex = 0;
         ID3D12GraphicsCommandList* cl = bridge.beginCommandList(slotIndex);
         if (!cl) { setError(L"bridge command list unavailable"); return false; }
         Fsr4Slot& slot = slots[slotIndex];
+        cpu.mark(CpuStep::BeginList);
 
         if (!recordDispatch(cl, slot, in)) return false;
+        cpu.mark(CpuStep::Record);
         timingBegin(context);
         fillSharedInputs(context, in, slot, depthSrv);
         timingMark(context, 3);
+        cpu.mark(CpuStep::Fill);
 
         const uint64_t done = bridge.submitAfterD3D11Signal(ctx4.Get(), slotIndex);
         if (done == 0) { timingEnd(context, false); setError(L"bridge submit failed"); return false; }
+        cpu.mark(CpuStep::Submit);
         if (!bridge.waitOnD3D11(ctx4.Get(), done)) {
             timingEnd(context, false);
             setError(L"D3D11 wait on D3D12 fence failed");
             return false;
         }
         timingMark(context, 4);
+        cpu.mark(CpuStep::Wait);
 
         context->CopyResource(dest, slot.output.d3d11.Get());
         timingEnd(context, true);
+        cpu.mark(CpuStep::Copy);
+        cpu.complete();
         resetPending = false;
         ++evalCount;
         if (evalCount == 1) {
