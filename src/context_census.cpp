@@ -6547,7 +6547,10 @@ void STDMETHODCALLTYPE observedDraw(ID3D11DeviceContext* context, UINT count, UI
 }
 
 static edpe::WeaponMotionTracker s_weapon_motion;
-static unsigned long long s_weapon_motion_frame = ~0ull;
+// Frame whose weapon-motion capture has begun. Written under g_scene_ctx_mutex; the draw-hook fast path reads it
+// without the lock to decide whether frame setup is still pending, so it is atomic. A stale read only sends the
+// draw down the full (locked) path or skips a draw that could not be captured in that frame.
+static std::atomic<unsigned long long> s_weapon_motion_frame{~0ull};
 static bool s_weapon_motion_on_foot = false;
 static bool s_weapon_motion_logged_active = false;
 
@@ -6584,7 +6587,8 @@ static void tryCaptureDynamicViewmodelDrawInstanced(ID3D11DeviceContext* context
     // [Pipeline] DrawHookFastPath: once this frame's weapon-motion frame has begun, a draw without a viewmodel stencil
     // reference cannot be captured (isOpaqueVisibleViewmodelDraw would reject it), so skip the scene lock and the full
     // pipeline-state queries. The outcome is the same as the full path.
-    if (edpe::Config::instance().drawHookFastPath && s_weapon_motion_frame == cur &&
+    if (edpe::Config::instance().drawHookFastPath &&
+        s_weapon_motion_frame.load(std::memory_order_acquire) == cur &&
         !edpe::WeaponMotionTracker::hasViewmodelStencilRef(context)) {
         return;
     }
@@ -6607,7 +6611,8 @@ static void tryCaptureDynamicViewmodelDrawIndexed(ID3D11DeviceContext* context,
     // [Pipeline] DrawHookFastPath: once this frame's weapon-motion frame has begun, a draw without a viewmodel stencil
     // reference cannot be captured (isOpaqueVisibleViewmodelDraw would reject it), so skip the scene lock and the full
     // pipeline-state queries. The outcome is the same as the full path.
-    if (edpe::Config::instance().drawHookFastPath && s_weapon_motion_frame == cur &&
+    if (edpe::Config::instance().drawHookFastPath &&
+        s_weapon_motion_frame.load(std::memory_order_acquire) == cur &&
         !edpe::WeaponMotionTracker::hasViewmodelStencilRef(context)) {
         return;
     }
