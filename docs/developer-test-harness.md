@@ -91,7 +91,7 @@ Reading the numbers:
 - The render scale (`-Mode`) is fixed at game start, so one run covers one mode. Run again with another `-Mode`.
 - The GPU timer is not valid for bypass and may be incomplete for FSR 3.1.2. Compare options by frame time.
 - Compare builds at the same `-Sharpness`. The sharpen pass can add close to 1 ms on a branch without deferred sharpening, so a different sharpness is a different measurement.
-- Load a static scene before the run. The stall check assumes steady frames.
+- Load a static scene before the run. The stall check assumes steady frames. With `-AutoRun`, `-StartDelay` counts upscaler frames from the first one (default 3600, about 20 to 30 seconds). A run that started 300 frames after a load measured the settling scene: its first round was far from the second (Bypass 0.57 ms against 2.32 ms) and had a 222 ms stall.
 
 Settings changed during the run are restored at the end or on Abort. The self-test refuses to start while FG is on or while a capture is running.
 

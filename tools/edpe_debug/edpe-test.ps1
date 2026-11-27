@@ -38,6 +38,9 @@ The external\ folder (SDKs, imgui) shared with the worktree through a junction. 
 .PARAMETER Backend
 Upscaler selected at game start: Bypass, DLSS, FSR3, TAA or FSR4. Default FSR4.
 
+.PARAMETER StartDelay
+Upscaler frames to wait before an AutoRun self-test starts. Default 3600 (about 20 to 30 seconds of rendering). The count starts when the upscaler first runs, so a short delay can start the test while the scene is still settling after a load.
+
 .PARAMETER Rounds
 Times the option list runs (module default 2). 0 keeps the default.
 
@@ -81,7 +84,7 @@ param(
     [switch]$EdpeProfiler,
     [switch]$AutoRun,
     [switch]$AutoExit,
-    [int]$StartDelay = 300,
+    [int]$StartDelay = 3600,
     [int]$Warm = 120,
     [int]$Hold = 600,
     [int]$Stress = 600,
