@@ -1,0 +1,8 @@
+EDPE capture 2026-11-27 12:37:35  build integ/fsr4-all-three@b405bac  provider FSR 4.1.2
+phase 0 fg=off seconds=3 in-process frames=481 median=6.06 ms p99=11.59 ms max=87.45 ms
+phase 1 fg=off+menu seconds=15 in-process frames=2475 median=6.06 ms p99=6.52 ms max=7.08 ms
+phase 2 fg=off+nomenu seconds=20 in-process frames=3299 median=6.06 ms p99=6.57 ms max=6.98 ms
+phase 3 fg=off+menu seconds=20 in-process frames=3300 median=6.06 ms p99=6.51 ms max=6.81 ms
+phase 4 fg=on+nomenu seconds=15 in-process frames=1544 median=9.40 ms p99=13.83 ms max=263.02 ms
+phase 5 fg=off+nomenu seconds=20 in-process frames=3295 median=6.06 ms p99=6.60 ms max=52.63 ms
+phase 6 fg=off+menu seconds=20 in-process frames=3291 median=6.07 ms p99=6.56 ms max=6.91 ms

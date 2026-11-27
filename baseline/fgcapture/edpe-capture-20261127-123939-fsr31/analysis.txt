@@ -1,0 +1,12 @@
+edpe-capture-20261127-123939-fsr31
+start: 12:39:39.705 presentmon_pid=14236 total_seconds=113 provider=31
+
+ph  fg         secs present modes                         fps ft_med ft_p99 ft_max dsp_med dsp_p99  cadCV    lat fgActive  menu unshown last mode change
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+0   off           3 Comp Copy with GPU GDI:100%           291   3.35   4.49    4.9    4.17    4.22  0.031   24.7       0%  100%     20% 
+1   off+menu     15 Comp Copy with GPU GDI:100%           297   3.37   4.50    5.1    4.17    4.22  0.025   24.9       0%  100%     19% 
+2   off+nomenu    20 Comp Copy with GPU GDI:100%           298   3.35   3.74    4.6    4.17    4.22  0.028   25.0       0%    0%     20% 
+3   off+menu     20 Comp Copy with GPU GDI:100%           296   3.38   4.35    5.2    4.17    4.22  0.035   24.9       0%  100%     19% 
+4   on+nomenu    15 HW Independent Flip:100%, Comp Flip:0%    290   3.29   4.46   22.7    3.91    6.40  0.827    4.4     100%    0%      0% +0.3s
+5   off+nomenu    20 Comp Copy with GPU GDI:100%, HW Independent Flip:0%    292   3.37   3.78  251.9    4.17    4.22  0.869   24.9       0%    0%     19% +0.0s
+6   off+menu     20 Comp Copy with GPU GDI:100%           293   3.38   4.40  179.0    4.17    4.22  0.806   24.9       0%  100%     19% 

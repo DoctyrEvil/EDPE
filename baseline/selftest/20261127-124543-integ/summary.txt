@@ -1,0 +1,18 @@
+All-three test build integ/fsr4-all-three@b405bac, 2026-11-27 12:36 to 12:43.
+= #41 (fsr4-pr3-fg-judder@377687c, 2 commits) + #40 (fsr4-fg-teardown-fix@efa4087) + #39 (fsr4-cb-lifetime-fixes@4c3d856). Local branch, not pushed. Test hook and module loaded (DEV=1). RX 7900 XTX, Performance, 1920x1080 -> 3840x2160, sharpness 0.00.
+
+Self-test edpe-selftest-20261127-123636 (stress on): 10 of 10 passed. Median frame time, ms: Bypass 2.38, AMD FSR 3.1.2 3.26, AMD FSR 4.1.2 6.01, Native TAA 2.94.
+  60-switch stress passed; longest frame 670.1 ms (limit 2000 ms; earlier runs peaked near 287 ms). Settle block 6.06 ms.
+
+Judder capture, FSR 4.1.2 (edpe-capture-20261127-123735-fsr4, analysis.txt, PresentMon joined to events.csv), about 165 fps on a 240 Hz display:
+  FG off before: 0% never displayed, cadence variation 0.020.
+  First 20 s after FG off: 3% never displayed, cadence variation 0.264 (includes about 2 s of recovery), display p99 16.0 ms.
+  Next phase (menu): 0% never displayed, cadence variation 0.020.
+  Phase 3 (before FG ever ran, menu open) shows cadence variation 0.186 with a normal frame time; not investigated.
+Capture, FSR 3.1.2 (edpe-capture-20261127-123939-fsr31): about 19% never displayed before FG and after, unchanged (it renders above the display rate).
+  Frame time max after FG off: 251.9 ms (phase 5) and 179.0 ms (phase 6); FG on phase had 235.3 ms at startup.
+
+Log (edpe.log of this session): 10 "game window re-evaluated after the overlay window was destroyed" lines, 0 "re-evaluation failed" lines.
+  6 "frame generation off for the upscaler change" lines, each immediately followed by a re-evaluation line (FG restart plus #41 interplay); FG resumed after each (observed on screen).
+  The other 4 re-evaluations follow plain FG off events.
+  No device lost, exception, [ffx error] or fail-safe line; map-bounce tripped=0 in all 469 markers; no crash report; no display-driver or bugcheck event during the run; clean exit.
