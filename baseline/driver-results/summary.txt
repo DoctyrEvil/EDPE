@@ -1,0 +1,11 @@
+First runs of the new driver (tools/edpe_debug/edpe-test.ps1 on fork branch tools/edpe-debug), build integ/fsr4-all-three@b405bac,
+Performance 1920x1080 -> 3840x2160, sharpness 0.00, main menu, 2 rounds of 600 frames, with stress.
+
+20261127-141311  StartDelay=300. Started while the scene was still settling after the load: round 1 far from round 2
+                 (Bypass 0.57 ms vs 2.32 ms, spread up to 1.94 ms), FSR 4.1.2 stall 222 ms. Do not use these medians.
+                 8 passed, 2 failed (stall checks: 222 ms, 287 ms after the stress), 1 skipped (DLSS, AMD GPU).
+20261127-141845  StartDelay=3600. Medians 2.40 / 3.31 / 5.97 / 3.01 ms (Bypass, FSR 3.1.2, FSR 4.1.2, TAA), spread <= 0.08 ms,
+                 in line with the earlier all-three self-test (2.38 / 3.26 / 6.01 / 2.94). 9 passed, 2 failed (stall checks:
+                 101.5 ms TAA round 1, 634 ms Bypass round 2, cause unknown), 1 skipped. Stress: 60 switches, longest 288 ms.
+Both logs: no device removed, DEVICE_HUNG, exception, FFX error or DRED report lines.
+collected.txt lists the report names already in the game folder before the first collect, so Collect skips them.

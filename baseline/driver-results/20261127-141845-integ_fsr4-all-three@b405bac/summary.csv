@@ -1,0 +1,5 @@
+"report","build","scene","mode","sharpness","option","blocks","median_ms","p99_ms","spread_ms","gpu_timer_ms"
+"edpe-selftest-20261127-141752-mode4.json","integ/fsr4-all-three@b405bac","main menu","4","0.00","Bypass (no reconstruction)","2","2.40","6.37","0.08","4.62"
+"edpe-selftest-20261127-141752-mode4.json","integ/fsr4-all-three@b405bac","main menu","4","0.00","AMD FSR 3.1.2","2","3.31","9.06","0.07","2.15"
+"edpe-selftest-20261127-141752-mode4.json","integ/fsr4-all-three@b405bac","main menu","4","0.00","AMD FSR 4.1.2","2","5.97","24.13","0.04","2.15"
+"edpe-selftest-20261127-141752-mode4.json","integ/fsr4-all-three@b405bac","main menu","4","0.00","Native TAA","2","3.01","3.88","0.00","0.22"
