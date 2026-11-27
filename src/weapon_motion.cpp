@@ -161,7 +161,7 @@ bool WeaponMotionTracker::hasViewmodelStencilRef(ID3D11DeviceContext* context) {
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> ds;
     UINT stencilRef = 0;
     context->OMGetDepthStencilState(&ds, &stencilRef);
-    return ds && (stencilRef & kDynamicViewmodelStencilMask) != 0u;
+    return ds && viewmodelStencilRefPossible(stencilRef);
 }
 
 bool WeaponMotionTracker::isOpaqueVisibleViewmodelDraw(ID3D11DeviceContext* context,
@@ -181,8 +181,7 @@ bool WeaponMotionTracker::isOpaqueVisibleViewmodelDraw(ID3D11DeviceContext* cont
     UINT stencilRef = 0;
     context->OMGetDepthStencilState(&ds, &stencilRef);
     if (!ds) return false;
-    const uint32_t maskedRef = stencilRef & kDynamicViewmodelStencilMask;
-    if (onFoot ? (maskedRef != kWeaponStencilBit) : (maskedRef == 0u)) return false;
+    if (!viewmodelStencilRefMatches(stencilRef, onFoot)) return false;
 
     D3D11_DEPTH_STENCIL_DESC dsDesc{};
     ds->GetDesc(&dsDesc);
