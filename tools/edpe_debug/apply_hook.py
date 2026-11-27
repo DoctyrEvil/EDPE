@@ -1,14 +1,23 @@
-"""Apply the EDPE debug hook to an EDPE worktree. Usage: apply_hook.py <edpe-tree>
+"""Apply the EDPE debug hook to an EDPE worktree. Usage: apply_hook.py <edpe-tree> [--forensics]
 
-Copies the hook sources into src/ and makes four small, anchored edits (CMakeLists.txt source list, ui.cpp include,
-ui.cpp frame call). Exits non-zero if an anchor is missing or ambiguous, so a drifted tree fails loudly instead of
-building without the hook. Never run this against a branch you intend to push.
+Copies the hook sources into src/ and makes small, anchored edits (CMakeLists.txt source list, the D3D12 bridge DRED
+calls, the ui.cpp include and frame calls, and a bounce-state summary function in context_census.cpp). Exits non-zero
+if an anchor is missing or ambiguous, so a drifted tree fails loudly instead of building without the hook.
+
+--forensics adds a guard in PerfTracker that logs corrupt history indices and recovers. It is off by default because
+it can hide the memory corruption it was written to catch.
+
+Never run this against a branch you intend to push.
 """
 import shutil
 import sys
 from pathlib import Path
 
-tree = Path(sys.argv[1]).resolve()
+args = [a for a in sys.argv[1:] if not a.startswith("--")]
+forensics = "--forensics" in sys.argv[1:]
+if len(args) != 1:
+    sys.exit(__doc__)
+tree = Path(args[0]).resolve()
 here = Path(__file__).resolve().parent
 
 for src, dst in [
@@ -59,10 +68,7 @@ edit("src/ui.cpp", [
     ("    if (!show_menu && !show_perf && !show_debug_view) {\n",
      "    EdpeDebugTick(cfg.devMode);\n    if (!show_menu && !show_perf && !show_debug_view) {\n"),
 ])
-# Forensics for the 2026-11-23 20:24 crash: PerfTracker::onPresentStart wrote through a garbage historyIndex_, and the CB
-# map-bounce object logged a trip with reason None plus a second auto-enable in the same frame (neither should be possible),
-# which points at memory being overwritten. The summary goes into every timeline marker; the guard logs the corrupt values
-# (and the bounce state) and recovers instead of crashing, so the log survives.
+# Bounce-state summary, written into every timeline marker by the hook (always applied: it only adds a function).
 edit("src/context_census.cpp", [
     ("void ContextCensusOnPresent(IDXGISwapChain* swap_chain, unsigned long long frame, UINT flags) {\n",
      "void EdpeDebugBounceSummary(wchar_t* out, size_t count) {\n"
@@ -74,7 +80,10 @@ edit("src/context_census.cpp", [
      "}\n\n"
      "void ContextCensusOnPresent(IDXGISwapChain* swap_chain, unsigned long long frame, UINT flags) {\n"),
 ])
-edit("src/perf_overlay.cpp", [
+# Forensics (opt-in, --forensics): PerfTracker::onPresentStart once wrote through a garbage historyIndex_. The guard logs the
+# corrupt values and the bounce state and recovers instead of crashing, so the log survives.
+if forensics:
+  edit("src/perf_overlay.cpp", [
     ('#include "perf_overlay.h"\n', '#include "perf_overlay.h"\n#include "debug_hook.h"\n'),
     ("    frametimeHistory_[historyIndex_] = sample;\n",
      "    if (historyIndex_ >= kFrametimeHistorySize || historyCount_ > kFrametimeHistorySize) {\n"
