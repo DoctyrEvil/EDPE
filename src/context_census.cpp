@@ -13948,6 +13948,23 @@ bool ContextCensusSelectSwapChain(IDXGISwapChain* swap_chain, UINT flags) {
     return preferCandidate;
 }
 
+// Logs the CPU fast-path switches ([Pipeline] DrawHookFastPath, UnmapFastPath) on the first frame and whenever
+// the configuration changes them, so edpe.log always says which path ran.
+static void logFastPathSwitchesIfChanged() {
+    static int s_logged_draw = -1;
+    static int s_logged_unmap = -1;
+    const auto& cfg = edpe::Config::instance();
+    const int draw = cfg.drawHookFastPath ? 1 : 0;
+    const int unmap = cfg.unmapFastPath ? 1 : 0;
+    if (draw == s_logged_draw && unmap == s_logged_unmap) return;
+    s_logged_draw = draw;
+    s_logged_unmap = unmap;
+    wchar_t msg[128]{};
+    swprintf_s(msg, L"EDPE: CPU fast paths: draw hook %ls, unmap %ls", draw ? L"on" : L"off",
+               unmap ? L"on" : L"off");
+    EdpeLog(msg);
+}
+
 void ContextCensusOnPresent(IDXGISwapChain* swap_chain, unsigned long long frame, UINT flags) {
     if (!s_config_loaded) {
         s_config_loaded = true;
@@ -14013,6 +14030,7 @@ void ContextCensusOnPresent(IDXGISwapChain* swap_chain, unsigned long long frame
     if (!(flags & DXGI_PRESENT_TEST)) {
         s_cb_map_bounce.onPresent(frame);
         logCbMapBounceEvents();
+        logFastPathSwitchesIfChanged();
     }
     struct PresentScopeGuard {
         PresentScopeGuard() { s_in_edpe_present.store(true, std::memory_order_release); }
