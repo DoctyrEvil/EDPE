@@ -47,7 +47,8 @@ The fix worked: FG resumed after every switch, and no run had a hang, device err
   | AMD FSR 4.1.2 | 5.80 to 6.00 ms | 5.95 ms |
   | Native TAA | 3.02 to 3.06 ms | 3.00 ms |
 - **CI and tests:** fork CI passes on `efa4087` (34 of 34, with `FSR 4: enabled`). Local `ctest` without the FG and presenter GPU tests: 27 of 28, and `upscaler_dejitter` also fails on unmodified `master`. The new `guarded_call` test passes, and fails if the flag-set line is removed.
-- **Before:** switching to Bypass with FG on gave a GPU page fault and `DEVICE_HUNG`, then a hang (integration build at `8060dcf`).
+- **Before:** switching to Bypass with FG on gave a GPU page fault and `DEVICE_HUNG`, then a hang (integration build at `8060dcf`). On a build with #39 but without this PR, the same sequence ended in a bluescreen (bugcheck `0x119`, `VIDEO_SCHEDULER_INTERNAL_ERROR`, the same bugcheck as an earlier occurrence on 2026-11-25). The crash dump was not analysed.
+- **Still needed:** that crash was recorded on a clean build of #39 on its own, which confirms that none of our other work fixes this bug.
 - **Limits:** the guard, the lost-device path and the 5-second wait on a hung device never ran in any test, because nothing threw and no device was removed. No test covers the restart or the device-lost latch. The final-tree runs used a build merged with #39. The longest continuous FG run was about 6.5 minutes. Not tested: NVIDIA frame generation (the guard is in the AMD backend only), fullscreen, Windows 11, other GPUs.
 
 Radeon RX 7900 XTX, Adrenalin 26.11.2, Windows 10 (19045), AMD frame generation, windowed, 240 Hz.
