@@ -1,0 +1,26 @@
+FSR 4 bridge copy timing (perf/fsr4-zero-copy@0071f82, DEV=1), 2026-11-25
+RX 7900 XTX, Performance mode, render 1920x1080 -> output 3840x2160, sharpness 0.00, compute queue, deferred sharpen.
+
+Purpose: step 1 of the zero-copy plan. Measure the D3D11 copies around the FSR 4 dispatch before removing any.
+Gate: if the copies together cost under about 0.15 ms per frame, zero-copy is not worth building.
+
+Per-step GPU time, D3D11 timestamp queries, 10 windows of 600 frames (edpe.log, "EDPE FSR4 timing"):
+  color copy           0.000-0.011 ms
+  motion copy          0.011-0.021 ms
+  depth convert        0.000 ms
+  D3D12 FSR 4 + sync   2.98-3.22 ms
+  output copy          0.034-0.073 ms
+  copies total         about 0.09-0.11 ms
+
+Zero readings most likely mean the small copies overlap other work on the GPU timeline, not that they are free.
+The FSR 4 dispatch (about 3.1 ms) matches the self-test's FSR 4 GPU figure (3.15 ms); it is AMD's model.
+
+Self-test vs the restaged perf branch (61ca77f, 20261125-171015):
+  FSR 4 mean 5.94 ms vs 5.92 ms (no change, so the timing code costs nothing measurable)
+  Bypass 2.43 vs 2.42, FSR 3.1.2 3.33 vs 3.33, Native TAA 3.06 vs 2.98
+  Failed blocks: R2 FSR 4 stall 125.9 ms, R2 FSR 3.1.2 stall 282.8 ms. Same class as the parked intermittent
+  stalls (the baseline also had an R2 FSR 3.1.2 stall of 140.7 ms).
+
+Verdict: below the gate. Removing every copy would save at most about 0.09 ms per frame (about 1.5%).
+Zero-copy inputs/outputs closed. Frame time with FSR 4 is about 3.5 ms above Bypass: about 3.1 ms FSR 4,
+about 0.1 ms copies, about 0.3 ms other EDPE passes (not timed here).

@@ -1,0 +1,19 @@
+FG switch check, 2026-11-25 15:52 to 16:00
+build: integ/fsr4-pr2-perf@d1e3c53 (debug hook, DRED on), RX 7900 XTX, 1920x1080 -> 3840x2160, windowed, 240 Hz
+
+Purpose: confirm the upscaler switch with frame generation on no longer hangs the FG D3D12 device
+(14:21 freeze on 8060dcf: GPU page fault and DEVICE_HUNG after switching to Bypass, then a hang).
+
+Sequence (manual, F5 menu, FG on): 8 upscaler switches - Bypass x2, AMD FSR x3, TAA x1,
+FSR 3.1.2 <-> FSR 4 x3 each way. FG on for about 6.5 min (15:53:40 to 16:00:05), then off.
+
+Result: pass.
+- Each switch logged "EDPE FG: frame generation off for the upscaler change; it starts again on
+  the next frame" (8 times) and FG resumed.
+- No [ffx error], no DEVICE_REMOVED/HUNG, no DRED report, no FG device-lost line, no provider
+  exception, no OpenSharedHandle failure.
+- Map-bounce: 14,128,610 bounced, all flushed, no trip.
+- Game exited cleanly (watchdog exit code 0); no crash report, no minidump.
+- Windows event log: no display driver reset, no game crash or hang record.
+
+Not covered: a long session with FG on (only about 6.5 minutes here).

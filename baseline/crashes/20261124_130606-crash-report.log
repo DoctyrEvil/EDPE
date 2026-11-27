@@ -1,0 +1,263 @@
+================================================================================
+                              EDPE CRASH REPORT
+================================================================================
+
+Date/Time:    2026-11-24 13:06:06
+EDPE Version: dev
+PID:          17660 (0x44FC)
+TID:          10864 (0x2A70)
+
+--- Exception Details ---
+Exception Code:    0xC0000005 (EXCEPTION_ACCESS_VIOLATION)
+Exception Address: 0x00007FF75FCDC1A2 (EliteDangerous64.exe+0x34CC1A2)
+Access Violation:  Write at 0x0000000000000000
+
+--- Processor Registers ---
+RAX: 0x0000000000000000  RBX: 0x0000000000000016  RCX: 0x0000000000000016  RDX: 0x00007FF761584CC0
+RSI: 0x00007FF75FCDC1A0  RDI: 0x00007FF762858C40  RBP: 0x0000004D60BFE878  RSP: 0x0000004D60BFE758
+R8:  0x0000004D60BFE7D0  R9:  0x0000004D60BFE7D8  R10: 0x00000000546C6148  R11: 0x0000004D60BFE7C8
+R12: 0x0000000000000910  R13: 0x0000000000000000  R14: 0x00000000FFFFFF01  R15: 0x0000021C66960090
+RIP: 0x00007FF75FCDC1A2  EFLAGS: 0x00010246
+CS: 0x0033  DS: 0x002B  ES: 0x002B  FS: 0x0053  GS: 0x002B  SS: 0x002B
+
+--- Stack Trace ---
+#00 0x00007FF75FCDC1A2 EliteDangerous64.exe+0x34CC1A2 (AK::WriteBytesCount::SetCount+0x2509EA2)
+#01 0x00007FF7610D4790 EliteDangerous64.exe+0x48C4790 (AK::WriteBytesCount::SetCount+0x3902490)
+#02 0x00007FF7610B2308 EliteDangerous64.exe+0x48A2308 (AK::WriteBytesCount::SetCount+0x38E0008)
+#03 0x00007FF75CD317CC EliteDangerous64.exe+0x5217CC (Scaleform::Render::Matrix4x4<double>::Transpose+0x623BC)
+#04 0x00007FF75CD1ED00 EliteDangerous64.exe+0x50ED00 (Scaleform::Render::Matrix4x4<double>::Transpose+0x4F8F0)
+#05 0x00007FF75CD286B3 EliteDangerous64.exe+0x5186B3 (Scaleform::Render::Matrix4x4<double>::Transpose+0x592A3)
+#06 0x00007FF75FD499C1 EliteDangerous64.exe+0x35399C1 (AK::WriteBytesCount::SetCount+0x25776C1)
+#07 0x00007FF75FD478C4 EliteDangerous64.exe+0x35378C4 (AK::WriteBytesCount::SetCount+0x25755C4)
+#08 0x00007FF75CDA5108 EliteDangerous64.exe+0x595108 (fLogSetLevel+0x39568)
+#09 0x00007FF75CD9F3F4 EliteDangerous64.exe+0x58F3F4 (fLogSetLevel+0x33854)
+#10 0x00007FF75CD9FACF EliteDangerous64.exe+0x58FACF (fLogSetLevel+0x33F2F)
+#11 0x00007FF75CD9B082 EliteDangerous64.exe+0x58B082 (fLogSetLevel+0x2F4E2)
+#12 0x00007FF75CECFA29 EliteDangerous64.exe+0x6BFA29 (AK::WriteBytesMem::Clear+0x16569)
+#13 0x00007FF75CDA4D3E EliteDangerous64.exe+0x594D3E (fLogSetLevel+0x3919E)
+#14 0x00007FF75F07B5D3 EliteDangerous64.exe+0x286B5D3 (AK::WriteBytesCount::SetCount+0x18A92D3)
+#15 0x00007FF75C9F79A6 EliteDangerous64.exe+0x1E79A6 (Scaleform::System::~System+0x1AE6)
+#16 0x00007FF75C9FE191 EliteDangerous64.exe+0x1EE191 (Scaleform::Thread::`default constructor closure'+0x4071)
+#17 0x00007FF75CFFB73D EliteDangerous64.exe+0x7EB73D (AK::WriteBytesMem::Clear+0x14227D)
+#18 0x00007FF75CA0BE94 EliteDangerous64.exe+0x1FBE94 (AK::WriteBytesCount::Reserve+0x48A4)
+#19 0x00007FF75D00DCE2 EliteDangerous64.exe+0x7FDCE2 (AK::WriteBytesMem::Clear+0x154822)
+#20 0x00007FF75CDE6B81 EliteDangerous64.exe+0x5D6B81 (fLogSetLevel+0x7AFE1)
+#21 0x00007FF75CDE6CB3 EliteDangerous64.exe+0x5D6CB3 (fLogSetLevel+0x7B113)
+#22 0x00007FF75CDE4233 EliteDangerous64.exe+0x5D4233 (fLogSetLevel+0x78693)
+#23 0x00007FF75CDE68A6 EliteDangerous64.exe+0x5D68A6 (fLogSetLevel+0x7AD06)
+#24 0x00007FF75CD5F276 EliteDangerous64.exe+0x54F276 (Scaleform::Render::Matrix4x4<double>::Transpose+0x8FE66)
+#25 0x00007FF75CD6CCA6 EliteDangerous64.exe+0x55CCA6 (fLogSetLevel+0x1106)
+#26 0x00007FFD50E97124 KERNEL32.DLL+0x17124 (BaseThreadInitThunk+0x14)
+#27 0x00007FFD523DCC91 ntdll.dll+0x4CC91 (RtlUserThreadStart+0x21)
+
+--- System & Hardware ---
+OS Version:     Windows 10.0 (Build 19045)
+GPU:            AMD Radeon RX 7900 XTX
+Driver Version: 32.0.32029.2010
+
+--- Graphics State ---
+Last D3D11 HRESULT: 0x00000000 (S_OK)
+Upscaler Backend:   AMD FSR (Active)
+Upscaler Mode:      Performance
+Resolution:         1920x1080 -> 3840x2160
+Frame Number:       794692
+RenderDoc Attached: No
+
+--- Loaded Modules ---
+0x00007FF75C810000 - 0x00007FF762C1C000  EliteDangerous64.exe          C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\EliteDangerous64.exe
+0x00007FFD52390000 - 0x00007FFD52589000  ntdll.dll                     C:\Windows\SYSTEM32\ntdll.dll
+0x00007FFD50E80000 - 0x00007FFD50F42000  KERNEL32.DLL                  C:\Windows\System32\KERNEL32.DLL
+0x00007FFD4FF50000 - 0x00007FFD50247000  KERNELBASE.dll                C:\Windows\System32\KERNELBASE.dll
+0x00007FFD4B0C0000 - 0x00007FFD4B154000  apphelp.dll                   C:\Windows\SYSTEM32\apphelp.dll
+0x00007FFD1BF30000 - 0x00007FFD1BF93000  AcGenral.DLL                  C:\Windows\SYSTEM32\AcGenral.DLL
+0x00007FFD51800000 - 0x00007FFD5189E000  msvcrt.dll                    C:\Windows\System32\msvcrt.dll
+0x00007FFD520F0000 - 0x00007FFD52194000  sechost.dll                   C:\Windows\System32\sechost.dll
+0x00007FFD52220000 - 0x00007FFD52346000  RPCRT4.dll                    C:\Windows\System32\RPCRT4.dll
+0x00007FFD4FB50000 - 0x00007FFD4FB77000  bcrypt.dll                    C:\Windows\System32\bcrypt.dll
+0x00007FFD52090000 - 0x00007FFD520EB000  SHLWAPI.dll                   C:\Windows\System32\SHLWAPI.dll
+0x00007FFD50640000 - 0x00007FFD507E1000  USER32.dll                    C:\Windows\System32\USER32.dll
+0x00007FFD4FF20000 - 0x00007FFD4FF42000  win32u.dll                    C:\Windows\System32\win32u.dll
+0x00007FFD50DD0000 - 0x00007FFD50DFB000  GDI32.dll                     C:\Windows\System32\GDI32.dll
+0x00007FFD4F9B0000 - 0x00007FFD4FACC000  gdi32full.dll                 C:\Windows\System32\gdi32full.dll
+0x00007FFD502A0000 - 0x00007FFD5033D000  msvcp_win.dll                 C:\Windows\System32\msvcp_win.dll
+0x00007FFD4FB80000 - 0x00007FFD4FC80000  ucrtbase.dll                  C:\Windows\System32\ucrtbase.dll
+0x00007FFD51430000 - 0x00007FFD5155C000  ole32.dll                     C:\Windows\System32\ole32.dll
+0x00007FFD509B0000 - 0x00007FFD50D05000  combase.dll                   C:\Windows\System32\combase.dll
+0x00007FFD518A0000 - 0x00007FFD52011000  SHELL32.dll                   C:\Windows\System32\SHELL32.dll
+0x00007FFD51620000 - 0x00007FFD516D3000  ADVAPI32.dll                  C:\Windows\System32\ADVAPI32.dll
+0x00007FFD4F850000 - 0x00007FFD4F87E000  USERENV.dll                   C:\Windows\SYSTEM32\USERENV.dll
+0x00007FFD377E0000 - 0x00007FFD377FF000  MPR.dll                       C:\Windows\SYSTEM32\MPR.dll
+0x00007FFD4F880000 - 0x00007FFD4F8BB000  SspiCli.dll                   C:\Windows\SYSTEM32\SspiCli.dll
+0x00007FFD50530000 - 0x00007FFD5055F000  IMM32.DLL                     C:\Windows\System32\IMM32.DLL
+0x00007FFD521A0000 - 0x00007FFD52213000  WS2_32.dll                    C:\Windows\System32\WS2_32.dll
+0x00007FFD50360000 - 0x00007FFD50437000  OLEAUT32.dll                  C:\Windows\System32\OLEAUT32.dll
+0x00007FFD50F50000 - 0x00007FFD513C1000  SETUPAPI.dll                  C:\Windows\System32\SETUPAPI.dll
+0x00007FFD50250000 - 0x00007FFD5029E000  cfgmgr32.dll                  C:\Windows\System32\cfgmgr32.dll
+0x00007FFC7ACB0000 - 0x00007FFC7B996000  EOSSDK-Win64-Shipping.dll     C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\EOSSDK-Win64-Shipping.dll
+0x00007FFCF55A0000 - 0x00007FFCF55E5000  DINPUT8.dll                   C:\Windows\SYSTEM32\DINPUT8.dll
+0x00007FFD40FE0000 - 0x00007FFD40FE7000  XINPUT9_1_0.dll               C:\Windows\SYSTEM32\XINPUT9_1_0.dll
+0x00007FFD43D20000 - 0x00007FFD43F2B000  dbghelp.dll                   C:\Windows\SYSTEM32\dbghelp.dll
+0x00007FFD49B00000 - 0x00007FFD49D64000  d3d11.dll                     C:\Windows\SYSTEM32\d3d11.dll
+0x00007FFD48B90000 - 0x00007FFD48BB7000  WINMM.dll                     C:\Windows\SYSTEM32\WINMM.dll
+0x00007FFD0C7E0000 - 0x00007FFD0C875000  portaudio_x64.dll             C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\portaudio_x64.dll
+0x00007FFD4ED90000 - 0x00007FFD4EDCB000  IPHLPAPI.DLL                  C:\Windows\SYSTEM32\IPHLPAPI.DLL
+0x00007FFD4F340000 - 0x00007FFD4F34C000  CRYPTBASE.DLL                 C:\Windows\SYSTEM32\CRYPTBASE.DLL
+0x00007FFD4FDC0000 - 0x00007FFD4FF1D000  CRYPT32.dll                   C:\Windows\System32\CRYPT32.dll
+0x00007FFD513D0000 - 0x00007FFD5142E000  WLDAP32.dll                   C:\Windows\System32\WLDAP32.dll
+0x00007FFD507F0000 - 0x00007FFD507F8000  Normaliz.dll                  C:\Windows\System32\Normaliz.dll
+0x00007FFD4FAD0000 - 0x00007FFD4FB44000  WINTRUST.dll                  C:\Windows\System32\WINTRUST.dll
+0x00007FFD476A0000 - 0x00007FFD477AC000  WINHTTP.dll                   C:\Windows\SYSTEM32\WINHTTP.dll
+0x00007FFD44BD0000 - 0x00007FFD44BDC000  Secur32.dll                   C:\Windows\SYSTEM32\Secur32.dll
+0x00007FFD35400000 - 0x00007FFD3549D000  MSVCP140.dll                  C:\Windows\SYSTEM32\MSVCP140.dll
+0x00007FFD353B0000 - 0x00007FFD353DC000  VCRUNTIME140.dll              C:\Windows\SYSTEM32\VCRUNTIME140.dll
+0x00007FFD354C0000 - 0x00007FFD354CC000  VCRUNTIME140_1.dll            C:\Windows\SYSTEM32\VCRUNTIME140_1.dll
+0x00007FFC6EED0000 - 0x00007FFC6FBA6000  dxgi.dll                      C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\dxgi.dll
+0x00007FFD490D0000 - 0x00007FFD4952D000  D3DCOMPILER_47.dll            C:\Windows\SYSTEM32\D3DCOMPILER_47.dll
+0x00007FFD4F320000 - 0x00007FFD4F338000  CRYPTSP.dll                   C:\Windows\SYSTEM32\CRYPTSP.dll
+0x00007FFD351F0000 - 0x00007FFD35225000  dbgcore.DLL                   C:\Windows\SYSTEM32\dbgcore.DLL
+0x00007FFD4F560000 - 0x00007FFD4F572000  MSASN1.dll                    C:\Windows\SYSTEM32\MSASN1.dll
+0x00007FFD4FC80000 - 0x00007FFD4FD02000  bcryptPrimitives.dll          C:\Windows\System32\bcryptPrimitives.dll
+0x00007FFD075E0000 - 0x00007FFD077B3000  gameoverlayrenderer64.dll     C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll
+0x00007FFD52020000 - 0x00007FFD52028000  PSAPI.DLL                     C:\Windows\System32\PSAPI.DLL
+0x00007FFD313B0000 - 0x00007FFD31503000  inputhost.dll                 C:\Windows\SYSTEM32\inputhost.dll
+0x00007FFD50D10000 - 0x00007FFD50DBD000  shcore.dll                    C:\Windows\System32\shcore.dll
+0x00007FFD4ACE0000 - 0x00007FFD4ADD2000  CoreMessaging.dll             C:\Windows\SYSTEM32\CoreMessaging.dll
+0x00007FFD4C270000 - 0x00007FFD4C3C7000  wintypes.dll                  C:\Windows\SYSTEM32\wintypes.dll
+0x00007FFD4CCC0000 - 0x00007FFD4CDBA000  PROPSYS.dll                   C:\Windows\SYSTEM32\PROPSYS.dll
+0x00007FFD4A980000 - 0x00007FFD4ACDB000  CoreUIComponents.dll          C:\Windows\SYSTEM32\CoreUIComponents.dll
+0x00007FFD4EC00000 - 0x00007FFD4EC33000  ntmarta.dll                   C:\Windows\SYSTEM32\ntmarta.dll
+0x00007FFD4D810000 - 0x00007FFD4D822000  kernel.appcore.dll            C:\Windows\SYSTEM32\kernel.appcore.dll
+0x00007FFD51560000 - 0x00007FFD51611000  clbcatq.dll                   C:\Windows\System32\clbcatq.dll
+0x00007FFD426A0000 - 0x00007FFD426BF000  amsi.dll                      C:\Windows\SYSTEM32\amsi.dll
+0x00007FFD4F8E0000 - 0x00007FFD4F905000  profapi.dll                   C:\Windows\SYSTEM32\profapi.dll
+0x00007FFD3ED80000 - 0x00007FFD3EE25000  MpOav.dll                     C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26100.4-0\MpOav.dll
+0x00007FFD43890000 - 0x00007FFD4389A000  version.dll                   C:\Windows\system32\version.dll
+0x00007FFD4DA20000 - 0x00007FFD4E1CC000  windows.storage.dll           C:\Windows\SYSTEM32\windows.storage.dll
+0x00007FFD4F3D0000 - 0x00007FFD4F3FB000  Wldp.dll                      C:\Windows\SYSTEM32\Wldp.dll
+0x00007FFD40690000 - 0x00007FFD408FD000  atiadlxx.dll                  C:\Windows\SYSTEM32\atiadlxx.dll
+0x00007FFD4B080000 - 0x00007FFD4B094000  WTSAPI32.dll                  C:\Windows\SYSTEM32\WTSAPI32.dll
+0x00007FFD4F730000 - 0x00007FFD4F763000  DEVOBJ.dll                    C:\Windows\SYSTEM32\DEVOBJ.dll
+0x00007FFD426C0000 - 0x00007FFD42711000  pdh.dll                       C:\Windows\SYSTEM32\pdh.dll
+0x00007FFD50DC0000 - 0x00007FFD50DC8000  NSI.dll                       C:\Windows\System32\NSI.dll
+0x00007FFD4A740000 - 0x00007FFD4A757000  dhcpcsvc6.DLL                 C:\Windows\SYSTEM32\dhcpcsvc6.DLL
+0x00007FFD4B0A0000 - 0x00007FFD4B0BD000  dhcpcsvc.DLL                  C:\Windows\SYSTEM32\dhcpcsvc.DLL
+0x00007FFD4F100000 - 0x00007FFD4F16A000  mswsock.dll                   C:\Windows\system32\mswsock.dll
+0x00007FFD4EDD0000 - 0x00007FFD4EE9B000  DNSAPI.dll                    C:\Windows\SYSTEM32\DNSAPI.dll
+0x00007FFD4B740000 - 0x00007FFD4B74B000  WINNSI.DLL                    C:\Windows\SYSTEM32\WINNSI.DLL
+0x00000000634A0000 - 0x00000000634C6000  mdnsNSP.dll                   C:\Program Files\Bonjour\mdnsNSP.dll
+0x00007FFD45A20000 - 0x00007FFD45A2A000  rasadhlp.dll                  C:\Windows\System32\rasadhlp.dll
+0x00007FFD3DE10000 - 0x00007FFD3DE90000  fwpuclnt.dll                  C:\Windows\System32\fwpuclnt.dll
+0x00007FFD4E9B0000 - 0x00007FFD4E9E8000  rsaenh.dll                    C:\Windows\system32\rsaenh.dll
+0x00007FFD4E1E0000 - 0x00007FFD4E2D6000  dxgi.dll                      C:\Windows\system32\dxgi.dll
+0x00007FFD4E1D0000 - 0x00007FFD4E1DD000  HID.DLL                       C:\Windows\SYSTEM32\HID.DLL
+0x00007FFD4D320000 - 0x00007FFD4D3BE000  uxtheme.dll                   C:\Windows\system32\uxtheme.dll
+0x00007FFD516E0000 - 0x00007FFD517F6000  MSCTF.dll                     C:\Windows\System32\MSCTF.dll
+0x00007FFD3D9C0000 - 0x00007FFD3DAB9000  textinputframework.dll        C:\Windows\SYSTEM32\textinputframework.dll
+0x00007FFCDFA70000 - 0x00007FFCE27F7000  amdxx64.dll                   C:\Windows\System32\DriverStore\FileRepository\u0206168.inf_amd64_1fdbc918cb04eef5\B026806\amdxx64.dll
+0x00007FFD4BF00000 - 0x00007FFD4BF23000  atidxx64.dll                  C:\Windows\system32\atidxx64.dll
+0x00007FFD1E660000 - 0x00007FFD1E94D000  amdenc64.dll                  C:\Windows\System32\DriverStore\FileRepository\u0206168.inf_amd64_1fdbc918cb04eef5\B026806\amdenc64.dll
+0x00007FFD4BEB0000 - 0x00007FFD4BEF3000  amdihk64.dll                  C:\Windows\System32\DriverStore\FileRepository\u0206168.inf_amd64_1fdbc918cb04eef5\B026806\amdihk64.dll
+0x00007FFD42720000 - 0x00007FFD4275B000  dxcore.dll                    C:\Windows\SYSTEM32\dxcore.dll
+0x00007FFC6B160000 - 0x00007FFC6CDAF000  amd_fidelityfx_framegeneration_dx12.dll  C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\amd_fidelityfx_framegeneration_dx12.dll
+0x00007FFD40310000 - 0x00007FFD4031C000  amd_fidelityfx_loader_dx12.dll  C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\amd_fidelityfx_loader_dx12.dll
+0x00007FFCF99A0000 - 0x00007FFCF99B1000  xinput1_4.dll                 C:\Windows\SYSTEM32\xinput1_4.dll
+0x00007FFC5E540000 - 0x00007FFC61C3F000  amd_fidelityfx_upscaler_dx12.dll  C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\amd_fidelityfx_upscaler_dx12.dll
+0x00007FFD00930000 - 0x00007FFD00955000  d3d12.dll                     C:\Windows\system32\d3d12.dll
+0x00007FFC6AD00000 - 0x00007FFC6B15F000  D3D12Core.dll                 C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\D3D12\D3D12Core.dll
+0x00007FFCCF150000 - 0x00007FFCD78DC000  amdxc64.dll                   C:\Windows\System32\DriverStore\FileRepository\u0206168.inf_amd64_1fdbc918cb04eef5\B026806\amdxc64.dll
+0x00007FFD00900000 - 0x00007FFD0092B000  D3DSCache.dll                 C:\Windows\SYSTEM32\D3DSCache.dll
+0x00007FFD45A70000 - 0x00007FFD45C73000  twinapi.appcore.dll           C:\Windows\SYSTEM32\twinapi.appcore.dll
+0x00007FFD50340000 - 0x00007FFD5035D000  imagehlp.dll                  C:\Windows\System32\imagehlp.dll
+0x00007FFD4F190000 - 0x00007FFD4F1B3000  gpapi.dll                     C:\Windows\SYSTEM32\gpapi.dll
+0x00007FFD3DC00000 - 0x00007FFD3DC31000  cryptnet.dll                  C:\Windows\SYSTEM32\cryptnet.dll
+0x00007FFD33410000 - 0x00007FFD334A9000  webio.dll                     C:\Windows\SYSTEM32\webio.dll
+0x00007FFC6A8D0000 - 0x00007FFC6ACF9000  amdcc.dll                     C:\Windows\System32\DriverStore\FileRepository\u0206168.inf_amd64_1fdbc918cb04eef5\B026806\amdcc.dll
+0x00007FFD23A40000 - 0x00007FFD23A9F000  edpe_debug.dll                C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\edpe_debug.dll
+0x00007FFD4A8F0000 - 0x00007FFD4A979000  MMDevApi.dll                  C:\Windows\System32\MMDevApi.dll
+0x00007FFD4A1D0000 - 0x00007FFD4A351000  AUDIOSES.DLL                  C:\Windows\SYSTEM32\AUDIOSES.DLL
+0x00007FFD4EEB0000 - 0x00007FFD4EEFB000  powrprof.dll                  C:\Windows\SYSTEM32\powrprof.dll
+0x00007FFD4ED70000 - 0x00007FFD4ED82000  UMPDC.dll                     C:\Windows\SYSTEM32\UMPDC.dll
+0x00007FFD4D510000 - 0x00007FFD4D53E000  dwmapi.dll                    C:\Windows\SYSTEM32\dwmapi.dll
+0x00007FFD44C00000 - 0x00007FFD44C11000  wbemprox.dll                  C:\Windows\system32\wbem\wbemprox.dll
+0x00007FFD441D0000 - 0x00007FFD44263000  wbemcomn.dll                  C:\Windows\SYSTEM32\wbemcomn.dll
+0x00007FFD43250000 - 0x00007FFD43264000  wbemsvc.dll                   C:\Windows\system32\wbem\wbemsvc.dll
+0x00007FFD43380000 - 0x00007FFD4348A000  fastprox.dll                  C:\Windows\system32\wbem\fastprox.dll
+0x00007FFD49FC0000 - 0x00007FFD4A1A5000  dcomp.dll                     C:\Windows\SYSTEM32\dcomp.dll
+0x00007FFD35740000 - 0x00007FFD35766000  winmmbase.dll                 C:\Windows\SYSTEM32\winmmbase.dll
+0x00007FFCF99C0000 - 0x00007FFCF9A06000  wdmaud.drv                    C:\Windows\SYSTEM32\wdmaud.drv
+0x00007FFD4CFF0000 - 0x00007FFD4CFF9000  ksuser.dll                    C:\Windows\SYSTEM32\ksuser.dll
+0x00007FFD4B1D0000 - 0x00007FFD4B1DA000  AVRT.dll                      C:\Windows\SYSTEM32\AVRT.dll
+0x00007FFD3F9B0000 - 0x00007FFD3F9BD000  msacm32.drv                   C:\Windows\SYSTEM32\msacm32.drv
+0x00007FFCFA6C0000 - 0x00007FFCFA6DE000  MSACM32.dll                   C:\Windows\SYSTEM32\MSACM32.dll
+0x00007FFD2B230000 - 0x00007FFD2B23B000  midimap.dll                   C:\Windows\SYSTEM32\midimap.dll
+0x00007FFD4D410000 - 0x00007FFD4D424000  resourcepolicyclient.dll      C:\Windows\SYSTEM32\resourcepolicyclient.dll
+0x00007FFD40020000 - 0x00007FFD40027000  FreeTrackClient64.dll         C:\Users\<user>\AppData\Local\TobiiGameHubData\FreeTrackClient\FreeTrackClient64.dll
+0x00007FFD077D0000 - 0x00007FFD078BF000  MSVCR120.dll                  C:\Windows\SYSTEM32\MSVCR120.dll
+0x00007FFD4B610000 - 0x00007FFD4B64F000  deviceaccess.dll              C:\Windows\System32\deviceaccess.dll
+0x0000021D69160000 - 0x0000021D69163000  XAudio2_8.dll                 C:\Windows\SYSTEM32\XAudio2_8.dll
+0x00007FFD0C730000 - 0x00007FFD0C7D4000  xaudio2_9.DLL                 C:\Windows\SYSTEM32\xaudio2_9.DLL
+0x00007FFC6A4F0000 - 0x00007FFC6A6C0000  quartz.dll                    C:\Windows\System32\quartz.dll
+0x00007FFD1C600000 - 0x00007FFD1C64C000  dsfVorbisDecoder64.dll        C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\dsfVorbisDecoder64.dll
+0x0000000063370000 - 0x0000000063443000  MSVCP90.dll                   C:\Windows\WinSxS\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.9625_none_08e1c10da83fbc83\MSVCP90.dll
+0x00000000632C0000 - 0x0000000063363000  MSVCR90.dll                   C:\Windows\WinSxS\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.9625_none_08e1c10da83fbc83\MSVCR90.dll
+0x0000000180000000 - 0x0000000180098000  vp8decoder64.dll              C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\vp8decoder64.dll
+0x0000021D79B50000 - 0x0000021D79BA3000  webmsplit64.dll               C:\Program Files (x86)\Steam\steamapps\common\Elite Dangerous\Products\elite-dangerous-odyssey-64\webmsplit64.dll
+0x00007FFD249B0000 - 0x00007FFD249C7000  napinsp.dll                   C:\Windows\system32\napinsp.dll
+0x00007FFD24990000 - 0x00007FFD249AB000  pnrpnsp.dll                   C:\Windows\system32\pnrpnsp.dll
+0x00007FFD4C250000 - 0x00007FFD4C26D000  wshbth.dll                    C:\Windows\system32\wshbth.dll
+0x00007FFD4B750000 - 0x00007FFD4B76D000  NLAapi.dll                    C:\Windows\system32\NLAapi.dll
+0x00007FFD24970000 - 0x00007FFD24982000  winrnr.dll                    C:\Windows\System32\winrnr.dll
+0x00007FFCE4CF0000 - 0x00007FFCE4EBD000  D3D12Core.dll                 C:\Windows\system32\D3D12Core.dll
+
+--- EDPE Internal Log (Recent Entries) ---
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793200 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793260 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=793309 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=81.5870 rTrace=-0.4552 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793320 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:05:55.329 frames=793352 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80381805 flushed=80381805 open=0)
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793380 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=793429 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=84.1460 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793440 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793500 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:05:56.337 frames=793508 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80397593 flushed=80397593 open=0)
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=793549 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=85.1403 rTrace=-0.9672 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793560 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: context calls frame=793600 OMSetRenderTargets=59694911 OMSetRenderTargetsAndUnorderedAccessViews=0 FinishCommandList=0 ExecuteCommandList=0
+[EliteDangerous64.exe:17660] EDPE: context census ctx=0000021CC5B661C0 device=0000021CC5B63CF8 OMSetRenderTargets=59694911 (game=59694911 own=0) OMSetRenderTargetsAndUnorderedAccessViews=0 (game=0 own=0) omCalls=59694911 dsvCalls=14264956 (game=14264956 own=0) maxDsv=3840x2160
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793620 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:05:57.341 frames=793661 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80413076 flushed=80413076 open=0)
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=793669 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=95.8160 rTrace=-0.4554 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793680 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793740 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=793789 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=12.3906 rTrace=2.8607 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793800 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:05:58.347 frames=793819 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80429066 flushed=80429066 open=0)
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793860 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=793909 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=27.1249 rTrace=-0.9681 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793920 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:05:59.348 frames=793977 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80445056 flushed=80445056 open=0)
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=793980 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=794029 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=37.8085 rTrace=-0.4536 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794040 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794100 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:06:00.354 frames=794138 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80461349 flushed=80461349 open=0)
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=794149 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=22.6723 rTrace=-0.9670 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794160 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794220 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=794269 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=30.6112 rTrace=-0.4579 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794280 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:06:01.358 frames=794286 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80476327 flushed=80476327 open=0)
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794340 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=794389 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=40.3705 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794400 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:06:02.364 frames=794444 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80492316 flushed=80492316 open=0)
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794460 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=794509 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=55.8956 rTrace=-0.9670 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794520 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794580 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+[EliteDangerous64.exe:17660] EDPE debug: marker 13:06:03.368 frames=794592 fg=0 menu=0 provider=FSR 4.1.2 bounce(mode=0 auto=1 tripped=0 reason=0 bounced=80507294 flushed=80507294 open=0)
+[EliteDangerous64.exe:17660] EDPE: context calls frame=794624 OMSetRenderTargets=59771085 OMSetRenderTargetsAndUnorderedAccessViews=0 FinishCommandList=0 ExecuteCommandList=0
+[EliteDangerous64.exe:17660] EDPE: context census ctx=0000021CC5B661C0 device=0000021CC5B63CF8 OMSetRenderTargets=59771085 (game=59771085 own=0) OMSetRenderTargetsAndUnorderedAccessViews=0 (game=0 own=0) omCalls=59771085 dsvCalls=14283587 (game=14283587 own=0) maxDsv=3840x2160
+[EliteDangerous64.exe:17660] EDPE DIAG: unmap candidate ignored frame=794629 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=48.5270 rTrace=-0.0122 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:17660] EDPE: HUD diag frame=794640 probe=1 hookMask=0xF rearmed=0x0 unhooks=0 candidates=0 replayed=0 prevReplayed=0 declined=0 slot=0 evalStage=1(prev=1) ldrUpdates=1 composite=2 hudSrc=0 maskW=0 cleanCb=1 subs=0 jitter=1
+

@@ -1,0 +1,13 @@
+﻿label: A
+captured: 2026-11-21T13:27:30
+gpu: AMD Radeon RX 7900 XTX
+driver: 32.0.32029.2010 (11/17/2026 16:00:00)
+os: Microsoft Windows 10 Home 10.0.19045
+cpu: AMD Ryzen 7 5800X3D 8-Core Processor
+game folder files present: dxgi.dll=False, d3d11.dll=False, edpe.ini=False, edvr.ini=True
+relevant processes:
+
+ProcessId ParentProcessId Name                 CreationDate         
+--------- --------------- ----                 ------------         
+     1808           17772 EliteDangerous64.exe 11/21/2026 1:09:48 PM
+     3740           12648 PresentMon-x64.exe   11/21/2026 1:15:29 PM

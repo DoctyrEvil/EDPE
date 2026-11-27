@@ -1,0 +1,8 @@
+EDPE capture 2026-11-25 13:38:58  build integ/fsr4-pr2-perf@3b6bc6e  provider FSR 4.1.2
+phase 0 fg=off seconds=3 in-process frames=489 median=5.97 ms p99=6.68 ms max=86.65 ms
+phase 1 fg=off+menu seconds=15 in-process frames=2517 median=5.97 ms p99=6.43 ms max=7.22 ms
+phase 2 fg=off+nomenu seconds=20 in-process frames=3360 median=5.96 ms p99=6.44 ms max=6.80 ms
+phase 3 fg=off+menu seconds=20 in-process frames=3344 median=5.99 ms p99=6.43 ms max=6.83 ms
+phase 4 fg=on+nomenu seconds=15 in-process frames=1612 median=9.13 ms p99=11.07 ms max=239.84 ms
+phase 5 fg=off+nomenu seconds=20 in-process frames=3357 median=5.95 ms p99=6.51 ms max=52.41 ms
+phase 6 fg=off+menu seconds=20 in-process frames=3355 median=5.97 ms p99=6.47 ms max=6.76 ms

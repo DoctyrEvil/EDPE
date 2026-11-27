@@ -1,0 +1,20 @@
+All-fixes self-test, 2026-11-27 01:00 (report edpe-selftest-20261127-010012-mode4)
+build: integ/fsr4-all-fixes@a1f8872 = #41 (judder) + #39 (constant buffer, 7 commits incl. owner-review fixes a0cc416) + #40 (FG teardown), local branch, not pushed.
+Debug hook and test module loaded (DEV=1), DRED on. Not a clean build. RX 7900 XTX, Performance, 1920x1080 -> 3840x2160, sharpness 0.50, 2 rounds, stress off, FG off (fg=0 in every marker).
+
+Only round 2 is usable: the scene was still settling in round 1 (R1 Bypass 96 ms spike, R1 FSR 4.1.2 stall 219.7 ms, flagged FAIL at the 100 ms limit). The report's summary means average both rounds and are not used.
+The GPU column reads 3.81 ms for every R2 block (looks stale), so it is not used.
+
+Median frame time, ms: before = d1e3c53 (baseline/selftest/20261125-154903-integ-fsr4-pr2-perf), after = R2 of this run
+  Bypass         2.40 -> 2.30
+  AMD FSR 3.1.2  3.37 -> 3.21
+  AMD FSR 4.1.2  6.03 -> 6.30   (R2 block p99 13.5 ms, max 38 ms: noisy)
+  Native TAA     3.14 -> 2.86
+Differences are within run-to-run noise. No excursion from baseline. This is not an A/B test of the owner item 6 size check.
+
+Other results in the log:
+- Map-bounce: bounced=1064052 flushed=1064052 at the last marker, tripped=0 in all 53 markers.
+- No device lost, DRED report, exception, [ffx error] or fail-safe line. (The grep hits on "tripped" and "DRED" are the counter field and the DRED setup lines.)
+- No FG restart lines because FG was off.
+
+Files: fsr4-all-fixes/ holds this run's report (20261127-010012) and, by accident of -Collect, an older uncollected report from 2026-11-26 09:31 (build perf/fsr4-zero-copy@0071f82, not part of this test). results.csv has rows for both.

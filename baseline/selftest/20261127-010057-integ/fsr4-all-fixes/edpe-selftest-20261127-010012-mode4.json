@@ -1,0 +1,25 @@
+{
+  "started": "2026-11-27 01:00:12",
+  "build": "integ/fsr4-all-fixes@a1f8872",
+  "mode": 4, "modeName": "Performance", "sharpness": 0.50,
+  "renderWidth": 1920, "renderHeight": 1080, "outputWidth": 3840, "outputHeight": 2160,
+  "rounds": 2, "warmFrames": 120, "holdFrames": 600,
+  "passed": 7, "failed": 1, "skipped": 1,
+  "summary": [
+    {"option": "Bypass (no reconstruction)", "blocks": 2, "meanMedianMs": 1.442, "minMedianMs": 0.582, "maxMedianMs": 2.303, "meanP99Ms": 2.410, "meanGpuMs": 4.588},
+    {"option": "AMD FSR 3.1.2", "blocks": 2, "meanMedianMs": 2.224, "minMedianMs": 1.236, "maxMedianMs": 3.211, "meanP99Ms": 5.743, "meanGpuMs": 2.200},
+    {"option": "AMD FSR 4.1.2", "blocks": 2, "meanMedianMs": 6.025, "minMedianMs": 5.754, "maxMedianMs": 6.295, "meanP99Ms": 24.932, "meanGpuMs": 2.200},
+    {"option": "Native TAA", "blocks": 2, "meanMedianMs": 2.843, "minMedianMs": 2.824, "maxMedianMs": 2.862, "meanP99Ms": 7.346, "meanGpuMs": 0.199}
+  ],
+  "phases": [
+    {"name": "NVIDIA DLSS", "outcome": "SKIP", "frames": 0, "medianMs": 0.000, "p99Ms": 0.000, "maxMs": 0.000, "gpuMedianMs": 0.000, "switches": 0},
+    {"name": "R1 Bypass (no reconstruction)", "outcome": "PASS", "frames": 600, "medianMs": 0.582, "p99Ms": 0.953, "maxMs": 96.023, "gpuMedianMs": 5.367, "switches": 0},
+    {"name": "R1 AMD FSR 3.1.2", "outcome": "PASS", "frames": 600, "medianMs": 1.236, "p99Ms": 1.635, "maxMs": 8.611, "gpuMedianMs": 0.591, "switches": 0},
+    {"name": "R1 AMD FSR 4.1.2", "outcome": "FAIL", "frames": 600, "medianMs": 5.754, "p99Ms": 36.362, "maxMs": 219.657, "gpuMedianMs": 0.591, "switches": 0},
+    {"name": "R1 Native TAA", "outcome": "PASS", "frames": 600, "medianMs": 2.824, "p99Ms": 10.043, "maxMs": 34.066, "gpuMedianMs": 0.199, "switches": 0},
+    {"name": "R2 Native TAA", "outcome": "PASS", "frames": 600, "medianMs": 2.862, "p99Ms": 4.649, "maxMs": 39.129, "gpuMedianMs": 0.199, "switches": 0},
+    {"name": "R2 AMD FSR 4.1.2", "outcome": "PASS", "frames": 600, "medianMs": 6.295, "p99Ms": 13.503, "maxMs": 38.133, "gpuMedianMs": 3.809, "switches": 0},
+    {"name": "R2 AMD FSR 3.1.2", "outcome": "PASS", "frames": 600, "medianMs": 3.211, "p99Ms": 9.850, "maxMs": 36.985, "gpuMedianMs": 3.809, "switches": 0},
+    {"name": "R2 Bypass (no reconstruction)", "outcome": "PASS", "frames": 600, "medianMs": 2.303, "p99Ms": 3.867, "maxMs": 42.774, "gpuMedianMs": 3.809, "switches": 0}
+  ]
+}

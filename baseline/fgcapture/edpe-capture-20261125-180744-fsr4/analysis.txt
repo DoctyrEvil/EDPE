@@ -1,0 +1,24 @@
+build: perf/fg-async@8fd1d6c (FG async compute on, AsyncWorkloads=1), RX 7900 XTX, 1920x1080 -> 3840x2160 Performance, sharpness 0.50, windowed, 240 Hz
+
+edpe-capture-20261125-180744-fsr4
+start: 18:07:44.973 presentmon_pid=5620 total_seconds=113 provider=4
+
+ph  fg         secs present modes                         fps ft_med ft_p99 ft_max dsp_med dsp_p99  cadCV    lat fgActive  menu unshown last mode change
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+0   off           3 Comp Copy with GPU GDI:100%           164   5.94  11.13   14.1    5.91    6.33  0.022   33.6       0%  100%      0% 
+1   off+menu     15 Comp Copy with GPU GDI:100%           168   5.94   6.62   18.5    5.92    6.35  0.022   33.6       0%  100%      0% 
+2   off+nomenu    20 Comp Copy with GPU GDI:100%           168   5.94   6.49    7.7    5.92    6.35  0.023   33.9       0%    0%      0% 
+3   off+menu     20 Comp Copy with GPU GDI:100%           167   5.96   6.50    6.9    5.94    6.37  0.036   33.8       0%  100%      0% 
+4   on+nomenu    15 HW Independent Flip:100%, Comp Flip:0%    219   4.40   5.01   37.7    4.46    5.33  0.178    5.1     100%    0%      0% +0.3s
+5   off+nomenu    20 Comp Copy with GPU GDI:100%, HW Independent Flip:0%    168   5.93   6.51   11.2    5.92   15.73  0.262   40.1       0%    0%      3% +0.1s
+6   off+menu     20 Comp Copy with GPU GDI:100%           167   5.97   6.51    6.8    5.96    6.39  0.021   40.0       0%  100%      0% 
+
+GPU cost per phase (PresentMon GPUBusy, first 2 s of each phase skipped):
+ph name         swapchain          mode                        pres/s  ft_med busy_med gputime_med busy ms/s
+ 0 off          F41E9F30           Composed: Copy with GPU GD     168    5.95     5.87        5.93       993
+ 1 off+menu     F41E9F30           Composed: Copy with GPU GD     168    5.94     5.86        5.92       990
+ 2 off+nomenu   F41E9F30           Composed: Copy with GPU GD     168    5.94     5.86        5.92       991
+ 3 off+menu     F41E9F30           Composed: Copy with GPU GD     168    5.96     5.88        5.94       991
+ 4 on+nomenu/fg 738500E0           Hardware: Independent Flip     223    4.40     4.32        4.38       970
+ 5 off+nomenu   F41E9F30           Composed: Copy with GPU GD     168    5.94     5.87        5.92       990
+ 6 off+menu     F41E9F30           Composed: Copy with GPU GD     167    5.97     5.90        5.96       990

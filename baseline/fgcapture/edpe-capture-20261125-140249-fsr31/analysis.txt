@@ -1,0 +1,14 @@
+build: integ/fsr4-pr2-perf@8060dcf (build B, with the judder fix), RX 7900 XTX, 1920x1080 -> 3840x2160 Performance, windowed, 240 Hz
+
+edpe-capture-20261125-140249-fsr31
+start: 14:02:49.812 presentmon_pid=14904 total_seconds=113 provider=31
+
+ph  fg         secs present modes                         fps ft_med ft_p99 ft_max dsp_med dsp_p99  cadCV    lat fgActive  menu unshown last mode change
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+0   off           3 Comp Copy with GPU GDI:100%           249   3.41   4.10  361.2    4.17    4.21  3.043   25.0       0%  100%     18% 
+1   off+menu     15 Comp Copy with GPU GDI:100%           291   3.43   4.09    6.0    4.17    4.21  0.037   25.1       0%  100%     18% 
+2   off+nomenu    20 Comp Copy with GPU GDI:100%           293   3.41   3.78    6.8    4.17    4.22  0.032   25.3       0%    0%     18% 
+3   off+menu     20 Comp Copy with GPU GDI:100%           291   3.44   4.32    5.1    4.17    4.21  0.025   25.2       0%  100%     18% 
+4   on+nomenu    15 HW Independent Flip:100%, Comp Flip:0%    293   3.28   3.87   21.2    3.13    6.39  0.827    4.1     100%    0%      0% +0.3s
+5   off+nomenu    20 Comp Copy with GPU GDI:100%, HW Independent Flip:0%    291   3.42   3.88   10.9    4.17    4.28  0.046   25.4       0%    0%     18% +0.0s
+6   off+menu     20 Comp Copy with GPU GDI:100%           290   3.42   4.41  180.0    4.17    4.22  0.803   25.1       0%  100%     18% 

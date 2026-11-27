@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cards>
+    <card vendor="4098" device="29772" driverVersion="32.0.32029.2010" name="AMD Radeon RX 7900 XTX">
+        <task name="TransformToSAPatchSpace(VertexFormat::DPPosition)" version="1" size="256" hash="18db7521e23e2ed7e06f8f22b73df74ba01e4abf">
+            <item work="256" time="0.001720" />
+            <item work="1536" time="0.001840" />
+            <item work="8960" time="0.002040" />
+            <item work="12288" time="0.002360" />
+            <item work="15360" time="0.002560" />
+            <item work="17920" time="0.002800" />
+        </task>
+        <task name="TransformToSAPatchSpace(VertexFormat::DPPositionMaterialData)" version="1" size="256" hash="fa472bc016ee65cd599ad679b1be724e83afbac2">
+            <item work="512" time="0.001920" />
+            <item work="4864" time="0.002120" />
+            <item work="6656" time="0.002360" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Vertex_PositionNormalMaterialData)" version="1" size="1" hash="954842cb79697bf437545fffb66e2cb2ecd9338a">
+            <item work="64" time="0.059560" />
+            <item work="128" time="0.094640" />
+            <item work="192" time="0.126000" />
+            <item work="256" time="0.166840" />
+            <item work="320" time="0.207920" />
+            <item work="384" time="0.249920" />
+            <item work="448" time="0.332720" />
+            <item work="512" time="0.350600" />
+            <item work="576" time="0.383480" />
+            <item work="704" time="0.462440" />
+            <item work="768" time="0.505720" />
+            <item work="896" time="0.593440" />
+            <item work="960" time="0.633680" />
+            <item work="1024" time="0.677880" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Vertex_PositionNormalUVMaterialData)" version="1" size="1" hash="d81bbafdacc3395873afddf2db7f2a6a7c903546">
+            <item work="64" time="0.044840" />
+            <item work="128" time="0.085120" />
+            <item work="192" time="0.125720" />
+            <item work="320" time="0.208280" />
+            <item work="384" time="0.250520" />
+            <item work="448" time="0.296200" />
+            <item work="576" time="0.385480" />
+            <item work="640" time="0.429920" />
+            <item work="704" time="0.468760" />
+            <item work="768" time="0.512200" />
+            <item work="896" time="0.586360" />
+            <item work="960" time="0.622000" />
+            <item work="1024" time="0.664560" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Vertex_PositionNormalUV)" version="1" size="1" hash="d9372febb9637feee13e69f88b6c6b5aeb10bb42">
+            <item work="64" time="0.018760" />
+            <item work="128" time="0.032760" />
+            <item work="192" time="0.047080" />
+            <item work="256" time="0.061640" />
+            <item work="320" time="0.076800" />
+            <item work="448" time="0.106080" />
+            <item work="512" time="0.153920" />
+            <item work="576" time="0.170520" />
+            <item work="640" time="0.183760" />
+            <item work="704" time="0.196000" />
+            <item work="896" time="0.207000" />
+            <item work="1024" time="0.235720" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Vertex_PositionUV)" version="1" size="1" hash="417749afc2f40f6fed34081101b0a9d7635b2812">
+            <item work="64" time="0.016600" />
+            <item work="128" time="0.031360" />
+            <item work="192" time="0.046240" />
+            <item work="256" time="0.062440" />
+            <item work="320" time="0.076640" />
+            <item work="384" time="0.091560" />
+            <item work="448" time="0.106480" />
+            <item work="512" time="0.120040" />
+            <item work="576" time="0.135000" />
+            <item work="640" time="0.148560" />
+            <item work="704" time="0.163440" />
+            <item work="768" time="0.177560" />
+            <item work="832" time="0.191400" />
+            <item work="896" time="0.205360" />
+            <item work="960" time="0.220360" />
+            <item work="1024" time="0.234880" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Vertex_PositionNormal)" version="1" size="1" hash="5ab80d3f1b304b3c7eac69b5592f1d9ae2dec648">
+            <item work="64" time="0.018880" />
+            <item work="128" time="0.033160" />
+            <item work="192" time="0.084360" />
+            <item work="256" time="0.100200" />
+            <item work="320" time="0.116400" />
+            <item work="384" time="0.132320" />
+            <item work="448" time="0.145200" />
+            <item work="576" time="0.162240" />
+            <item work="704" time="0.191160" />
+            <item work="768" time="0.213480" />
+            <item work="832" time="0.231640" />
+            <item work="896" time="0.244240" />
+            <item work="960" time="0.259920" />
+            <item work="1024" time="0.274240" />
+        </task>
+        <task name="Skirts(VertexFormat::DPPosition, PatchVertexFormat::PositionNormalMaterialData)" version="2" size="153" hash="44d3a1238373aa31feeac443976e597973e4950a">
+            <item work="612" time="0.003760" />
+            <item work="765" time="0.004320" />
+        </task>
+        <task name="Skirts(VertexFormat::DPPosition, PatchVertexFormat::PositionNormalUVMaterialData)" version="2" size="153" hash="0ebb63f48f6a617a3d444c7b25f1a4038e4a921c">
+            <item work="612" time="0.003600" />
+            <item work="765" time="0.003800" />
+        </task>
+        <task name="Skirts(VertexFormat::DPPosition, PatchVertexFormat::PositionNormalUV)" version="2" size="153" hash="3cbb8f55590b6816132496b4a14228a5d9fa7bdf">
+            <item work="612" time="0.003600" />
+            <item work="765" time="0.004080" />
+        </task>
+        <task name="Skirts(VertexFormat::DPPosition, PatchVertexFormat::PositionUV)" version="2" size="153" hash="bdc20bb9cde87fd4f8b92055fba4dc352cfad4d9">
+            <item work="306" time="0.003640" />
+            <item work="765" time="0.004360" />
+        </task>
+        <task name="BoundingBoxCalculation" version="1" size="2048" hash="c53cc197035b62a3c18020746c65f8879e9cd0a5">
+            <item work="2048" time="0.004960" />
+            <item work="4096" time="0.006160" />
+            <item work="6144" time="0.008000" />
+            <item work="8192" time="0.009800" />
+            <item work="10240" time="0.011960" />
+            <item work="12288" time="0.013840" />
+            <item work="14336" time="0.015880" />
+            <item work="20736" time="0.017600" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Texture_PosNormalMaterialDataScatterMasksSlope)" version="1" size="1" hash="1dbf0541473828eea6fbef44b5db20fa6cedaf11">
+            <item work="64" time="0.047000" />
+            <item work="128" time="0.118720" />
+            <item work="192" time="0.169720" />
+            <item work="256" time="0.217280" />
+            <item work="320" time="0.261520" />
+            <item work="384" time="0.305080" />
+            <item work="448" time="0.353080" />
+            <item work="512" time="0.396800" />
+            <item work="576" time="0.460480" />
+            <item work="640" time="0.502680" />
+            <item work="768" time="0.548200" />
+            <item work="896" time="0.646520" />
+            <item work="960" time="0.745520" />
+            <item work="1024" time="0.788720" />
+        </task>
+        <task name="Assembly(AstroPatchRequestFormat::Texture_NormalMaterialData)" version="1" size="1" hash="e77ddf634c06f0386b74c9a9b2299bdfff9fc4be">
+            <item work="64" time="0.038800" />
+            <item work="128" time="0.099360" />
+            <item work="192" time="0.104600" />
+            <item work="256" time="0.177480" />
+            <item work="320" time="0.209040" />
+            <item work="448" time="0.239000" />
+            <item work="576" time="0.308040" />
+            <item work="640" time="0.344480" />
+            <item work="704" time="0.377960" />
+            <item work="832" time="0.444760" />
+            <item work="896" time="0.478840" />
+            <item work="1024" time="0.548000" />
+        </task>
+        <task name="PatchLighting_ShadowAOGeneration" version="1" size="256" hash="0ed28abfcee89198c0fb2d79afa342169ae91318">
+            <item work="16896" time="0.456360" />
+        </task>
+        <task name="PatchLighting_ShadowAOGeneration_SP" version="1" size="256" hash="5f6d143afccdd602d82973bdc70dd9965941f19e">
+            <item work="16896" time="0.227720" />
+        </task>
+        <task name="PatchLighting_ShadowAOGeneration_SP_ShadowsOnly" version="1" size="256" hash="5f6d143afccdd602d82973bdc70dd9965941f19e">
+            <item work="4096" time="0.021480" />
+            <item work="16896" time="0.023480" />
+        </task>
+        <task name="PatchLighting_ShadowAOGeneration2_SP" version="1" size="256" hash="c06c1d0f3e37baac1efd15ffa96e423028cce9b0">
+            <item work="256" time="0.133640" />
+            <item work="16896" time="0.143120" />
+        </task>
+        <task name="PatchLighting_ShadowAOGeneration2_SP_ShadowsOnly" version="1" size="256" hash="c06c1d0f3e37baac1efd15ffa96e423028cce9b0">
+            <item work="4096" time="0.019920" />
+            <item work="16896" time="0.021960" />
+        </task>
+        <task name="BC3" version="2" size="1" hash="f59274507aced76fcdf7643eef65ef7d4ea71bdd">
+            <item work="16" time="0.004320" />
+            <item work="32" time="0.004880" />
+            <item work="48" time="0.005440" />
+            <item work="64" time="0.005840" />
+            <item work="80" time="0.006360" />
+            <item work="96" time="0.006960" />
+            <item work="112" time="0.007560" />
+            <item work="128" time="0.008120" />
+            <item work="176" time="0.008640" />
+            <item work="192" time="0.010120" />
+            <item work="256" time="0.010800" />
+        </task>
+        <task name="BC4" version="2" size="1" hash="f413edca7e7adc13ffe220c6d408c0a4a9cfa800">
+            <item work="16" time="0.002120" />
+            <item work="32" time="0.002320" />
+            <item work="48" time="0.002560" />
+            <item work="64" time="0.002800" />
+            <item work="96" time="0.003280" />
+            <item work="144" time="0.004080" />
+            <item work="160" time="0.004880" />
+            <item work="208" time="0.005320" />
+            <item work="256" time="0.006280" />
+        </task>
+        <task name="BC5" version="2" size="1" hash="c7be5fdd8cc1b89df76a5f27a0c5ba210a5ca11d">
+            <item work="16" time="0.002400" />
+            <item work="32" time="0.002600" />
+            <item work="64" time="0.002920" />
+            <item work="80" time="0.003360" />
+            <item work="96" time="0.003600" />
+            <item work="128" time="0.003920" />
+            <item work="144" time="0.004440" />
+            <item work="160" time="0.004720" />
+            <item work="256" time="0.005240" />
+        </task>
+        <task name="Terrain_Combined_Planet::Combined_Planet" version="2" size="64" hash="e3e6cd882829dcfcd7f15103c9c8a0699f9d8ebb">
+            <item work="6144" time="0.030720" />
+            <item work="17728" time="0.053840" />
+        </task>
+        <task name="Terrain_Combined_Planet_VtxSP::Combined_Planet" version="2" size="64" hash="2dd10b2d7f89736d06c256484f2471905e840372">
+            <item work="2048" time="0.009120" />
+            <item work="10240" time="0.009960" />
+            <item work="16384" time="0.011240" />
+            <item work="17728" time="0.013640" />
+        </task>
+        <task name="Terrain_Combined_Planet_Materials::Combined_Planet" version="2" size="64" hash="85f022546befebe50062d666d99d61c68d28b0d3">
+            <item work="6144" time="0.120000" />
+            <item work="17728" time="0.219400" />
+        </task>
+        <task name="Terrain_Combined_Planet_Materials_VtxSP::Combined_Planet" version="2" size="64" hash="40c1152101845b1f830e3b1ee94607fedff046a5">
+            <item work="16384" time="0.021480" />
+            <item work="23552" time="0.025480" />
+            <item work="35840" time="0.027440" />
+            <item work="43008" time="0.030400" />
+            <item work="57344" time="0.034520" />
+            <item work="61440" time="0.039160" />
+            <item work="67584" time="0.049640" />
+            <item work="67648" time="0.054520" />
+        </task>
+        <task name="Terrain_Combined_Planet_MaterialsEx_Physics::Combined_Planet" version="2" size="64" hash="d60652f97c52a4f870ff30056ffcaf7f96137b6c">
+            <item work="6144" time="0.120520" />
+            <item work="6592" time="0.220480" />
+        </task>
+        <task name="Terrain_Combined_Planet_Materials_ScatterMasks::Combined_Planet" version="2" size="64" hash="e6ec8bba74153e1a4038fbb92f524b5ad26bcab2">
+            <item work="6144" time="0.120040" />
+            <item work="17728" time="0.220880" />
+        </task>
+        <task name="Terrain_Combined_Planet_MiddleStage::Combined_Planet" version="2" size="64" hash="718c5cd9a1eddb330f2385951b296fedb48a0652">
+            <item work="6144" time="0.403240" />
+            <item work="17216" time="0.771440" />
+        </task>
+        <task name="Terrain_Combined_Planet_MiddleStage_SP::Combined_Planet" version="2" size="64" hash="b0366d8b79073a50e612646c502bb5990120d85e">
+            <item work="15360" time="0.043280" />
+            <item work="17216" time="0.058400" />
+        </task>
+        <task name="Terrain_Combined_Planet_CoarseStage::Combined_Planet" version="2" size="64" hash="e1b6f9f113864d57b0517220045238154988eec8">
+            <item work="7168" time="0.074480" />
+            <item work="17216" time="0.134320" />
+        </task>
+        <task name="Terrain_Combined_Planet_CoarseStage_SP::Combined_Planet" version="2" size="64" hash="898f38ad2a3ca7b7a557a934be88feca643ffbab">
+            <item work="14336" time="0.016520" />
+            <item work="17216" time="0.018520" />
+        </task>
+        <task name="Atmospheres(High)::ComputeExtinctionLUT::High" version="1" size="256" hash="60c43e6cab000391c6f65cf9c16e1d3894439dc8">
+            <item work="3840" time="0.006400" />
+            <item work="17664" time="0.006800" />
+            <item work="36864" time="0.007760" />
+            <item work="49152" time="0.008600" />
+            <item work="73728" time="0.010360" />
+            <item work="98304" time="0.012560" />
+            <item work="122880" time="0.015280" />
+            <item work="131072" time="0.017320" />
+        </task>
+        <task name="Atmospheres(High)::ComputeAirScatteringLUT::High" version="1" size="256" hash="9454ad9dfecb4ad645c720d6a49aa2710906b873">
+            <item work="99072" time="0.000080" />
+            <item work="128256" time="0.000120" />
+            <item work="131072" time="0.000160" />
+        </task>
+        <task name="Atmospheres(High)::ComputeAmbientScatteringLUT::High" version="1" size="256" hash="0050ab269bf8f4c149475bd73b10e1d1eeb7a01b">
+            <item work="256" time="0.001320" />
+        </task>
+        <task name="Atmospheres(High)::ComputeWaterScatteringLUT::High" version="1" size="256" hash="e202767adf1f24d3915f0983cccdd7fe4e758e9f">
+            <item work="24576" time="0.045280" />
+            <item work="49152" time="0.058560" />
+            <item work="73728" time="0.078480" />
+            <item work="98304" time="0.101200" />
+            <item work="122880" time="0.124280" />
+            <item work="131072" time="0.143520" />
+        </task>
+        <task name="Atmospheres(High)::ComputeExtinctionLUT::Low" version="1" size="256" hash="60c43e6cab000391c6f65cf9c16e1d3894439dc8">
+            <item work="8960" time="0.005320" />
+            <item work="32768" time="0.005760" />
+        </task>
+        <task name="Atmospheres(High)::ComputeAirScatteringLUT::Low" version="1" size="256" hash="9454ad9dfecb4ad645c720d6a49aa2710906b873">
+            <item work="109312" time="0.000080" />
+            <item work="129024" time="0.000120" />
+            <item work="131072" time="0.000160" />
+        </task>
+        <task name="Atmospheres(High)::ComputeAmbientScatteringLUT::Low" version="1" size="256" hash="0050ab269bf8f4c149475bd73b10e1d1eeb7a01b">
+            <item work="256" time="0.001160" />
+        </task>
+        <task name="Atmospheres(High)::ComputeWaterScatteringLUT::Low" version="1" size="256" hash="e202767adf1f24d3915f0983cccdd7fe4e758e9f">
+            <item work="24576" time="0.045120" />
+            <item work="49152" time="0.058480" />
+            <item work="73728" time="0.077800" />
+            <item work="98304" time="0.101160" />
+            <item work="122880" time="0.124360" />
+            <item work="131072" time="0.142680" />
+        </task>
+        <task name="Scatter.Quantize" version="1" size="1" hash="029818d96706b1a4cdce677d3244c828fd888578">
+            <item work="768" time="0.002840" />
+            <item work="1024" time="0.004440" />
+        </task>
+        <task name="Scatter.Spawn" version="1" size="1" hash="623d8af638402f4d79e7f8a50b22ddcecd2db93b">
+            <item work="768" time="0.004480" />
+            <item work="1024" time="0.005000" />
+        </task>
+        <task name="Scatter.MaskAcc" version="1" size="1" hash="ac97bffde8ed1f8aa73438e61ee958eef0eb548b">
+            <item work="256" time="0.003520" />
+            <item work="1024" time="0.003720" />
+        </task>
+        <task name="Scatter_Everywhere_AllSizes_BedRock" version="1" size="1" hash="b74120427bc8915974f9923e52d3ab3ad645ea9f">
+            <item work="768" time="0.003400" />
+            <item work="1024" time="0.003720" />
+        </task>
+        <task name="Scatter_Everywhere_AllSizes" version="1" size="1" hash="70887de4acc14d7eb3539ebe4cbd7e0e811daca8">
+            <item work="768" time="0.003560" />
+            <item work="1024" time="0.003960" />
+        </task>
+        <task name="Scatter_Everywhere_Huge_Scree" version="1" size="1" hash="b1e87b1133e5a6a03df070204bb501e285b12186">
+            <item work="512" time="0.003640" />
+            <item work="1024" time="0.004080" />
+        </task>
+        <task name="Scatter_Everywhere_Huge_Sand" version="1" size="1" hash="7c67dfc51b2b725a2a9e832c8e5a10d539d21a15">
+            <item work="256" time="0.003520" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Everywhere_Huge_Rock" version="1" size="1" hash="3b0dedb139fd989b0228535902c9d7b30aaa95ca">
+            <item work="512" time="0.003560" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Everywhere_Huge_BedRock" version="1" size="1" hash="a816df3e32d10479a6680c43de8bd7830dade9ef">
+            <item work="512" time="0.003520" />
+            <item work="1024" time="0.003760" />
+        </task>
+        <task name="Scatter_Everywhere_Huge" version="1" size="1" hash="fd52f8439d6f270a0a237fb872b3b95031eeacc1">
+            <item work="512" time="0.003560" />
+            <item work="1024" time="0.003960" />
+        </task>
+        <task name="Scatter_Everywhere_AllSizes_Scree" version="1" size="1" hash="9bd5d585504ae9f5b79499c76b0630c3c2196039">
+            <item work="256" time="0.003400" />
+            <item work="1024" time="0.003720" />
+        </task>
+        <task name="Scatter_Everywhere_AllSizes_Sand" version="1" size="1" hash="98f01daead94d49e40c781b870a7784cf47adf9f">
+            <item work="512" time="0.003560" />
+            <item work="1024" time="0.003800" />
+        </task>
+        <task name="Scatter_Everywhere_AllSizes_Rock" version="1" size="1" hash="96cb92354ad78a28d968e65b45237f6b6f0f2408">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003800" />
+        </task>
+        <task name="Scatter_Everywhere_Medium_Rock" version="1" size="1" hash="ff87edf9388f85fe35aacf82eaced71a51b3612d">
+            <item work="768" time="0.003600" />
+            <item work="1024" time="0.004280" />
+        </task>
+        <task name="Scatter_Everywhere_Medium_BedRock" version="1" size="1" hash="14532507c3a025df4256c6b0096a0354ab087aec">
+            <item work="512" time="0.003200" />
+            <item work="1024" time="0.003800" />
+        </task>
+        <task name="Scatter_Everywhere_Medium" version="1" size="1" hash="4c6eaac024ebdf9e9a367fb20bbb768e65b71245">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Everywhere_Large_Scree" version="1" size="1" hash="d3f145ce4b8cb4899e8fb4f300558d5dc9c914ba">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Everywhere_Large_Sand" version="1" size="1" hash="c7ed5e1e6973b80b295f08b8ae4383f5f983d11f">
+            <item work="512" time="0.003560" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Everywhere_Large_Rock" version="1" size="1" hash="d573fad7d12dc229ab193f479dec4b787f031966">
+            <item work="512" time="0.003560" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Everywhere_Large_BedRock" version="1" size="1" hash="db60e6923363f8506bdf4b1890de24e857191222">
+            <item work="512" time="0.003520" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Everywhere_Large" version="1" size="1" hash="32170978b22b32fff93f865780d07fca76047d83">
+            <item work="1024" time="0.003600" />
+        </task>
+        <task name="Scatter_Mid_Flats_AllSizes" version="1" size="1" hash="aa2e89fd367fe0f180ca388d1b362d54400cb70e">
+            <item work="1024" time="0.003560" />
+        </task>
+        <task name="Scatter_Everywhere_Small_Scree" version="1" size="1" hash="379e817fba6c1da414987a31603a7c1abafcefc4">
+            <item work="512" time="0.003680" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Everywhere_Small_Sand" version="1" size="1" hash="6d133c062f0111f0c29c1b4a5fbedcfb06a37968">
+            <item work="1024" time="0.003560" />
+        </task>
+        <task name="Scatter_Everywhere_Small_Rock" version="1" size="1" hash="3b5a33631ec719c31dede5f85ef9f0f2ac87b6c6">
+            <item work="1024" time="0.003240" />
+        </task>
+        <task name="Scatter_Everywhere_Small_BedRock" version="1" size="1" hash="f111585396d3e6d26e046cede853d8632f6c6798">
+            <item work="1024" time="0.003560" />
+        </task>
+        <task name="Scatter_Everywhere_Small" version="1" size="1" hash="1437e230951153f7e7a71314f635bd17d0993920">
+            <item work="1024" time="0.003720" />
+        </task>
+        <task name="Scatter_Everywhere_Medium_Scree" version="1" size="1" hash="e3dc75a85f6328a1e979ac4dbf1ab8815e07ca0d">
+            <item work="512" time="0.003640" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Everywhere_Medium_Sand" version="1" size="1" hash="5b5a985a38051cf0379dfdc26e721e9f278607e9">
+            <item work="256" time="0.003480" />
+            <item work="1024" time="0.003720" />
+        </task>
+        <task name="Scatter_Mid_Ridges_Large" version="1" size="1" hash="2cbadd647a7c9e9042f8a9044359e33d900bc226">
+            <item work="256" time="0.003480" />
+            <item work="768" time="0.003760" />
+            <item work="1024" time="0.004200" />
+        </task>
+        <task name="Scatter_Mid_Ridges_Medium" version="1" size="1" hash="320f1ed28d236cc8958f50cabd180520e342ebd5">
+            <item work="768" time="0.003600" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Mid_Ridges_Small" version="1" size="1" hash="5fff1ce00368905d6551b4f1e012b36d66b4f8f3">
+            <item work="512" time="0.003520" />
+            <item work="1024" time="0.003960" />
+        </task>
+        <task name="Scatter_Mid_Ridges_AllSizes" version="1" size="1" hash="6af15320e0e5471ad429355be7f13578beffc0f8">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Mid_Flats_Huge" version="1" size="1" hash="1b3a1655842637335b5afca2011597fcd6c54227">
+            <item work="512" time="0.003640" />
+            <item work="1024" time="0.004240" />
+        </task>
+        <task name="Scatter_Mid_Flats_Large" version="1" size="1" hash="011461bf171e83491b4dc8074ce7a60abe70a230">
+            <item work="1024" time="0.003800" />
+        </task>
+        <task name="Scatter_Mid_Flats_Medium" version="1" size="1" hash="df4d3c41734d97dcffc0bdf8b74f6e4d7cf4fadb">
+            <item work="1024" time="0.003600" />
+        </task>
+        <task name="Scatter_Mid_Flats_Small" version="1" size="1" hash="747df76a75a99419d55e56a6689e0e5ca41d21bf">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Organics_Medium_Sand" version="1" size="1" hash="c35209d5eb5496e2da506d0038aad3f2597dc9f1">
+            <item work="512" time="0.009040" />
+            <item work="768" time="0.009920" />
+            <item work="1024" time="0.011400" />
+        </task>
+        <task name="Scatter_Organics_Dense_Sand" version="1" size="1" hash="85cb1888db82a4e4e37d3a9faadd553350cdf193">
+            <item work="768" time="0.008840" />
+            <item work="1024" time="0.010160" />
+        </task>
+        <task name="Scatter_Mid_Valleys_Huge" version="1" size="1" hash="27cb39e7c22dea6c38947e7331810c38e1f6fe93">
+            <item work="1024" time="0.003600" />
+        </task>
+        <task name="Scatter_Mid_Valleys_Large" version="1" size="1" hash="1596a750a402cd1417316c66d4f61d371e7d1ec1">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Mid_Valleys_Medium" version="1" size="1" hash="5761c0a77fe036dc597b81c2806a3162633dbec2">
+            <item work="512" time="0.003640" />
+            <item work="1024" time="0.004040" />
+        </task>
+        <task name="Scatter_Mid_Valleys_Small" version="1" size="1" hash="d2c796c10f3da91591fe6a7e7b42410e138c2f5b">
+            <item work="768" time="0.005440" />
+            <item work="1024" time="0.005800" />
+        </task>
+        <task name="Scatter_Mid_Valleys_AllSizes" version="1" size="1" hash="fbdd7213e9fdb74d905658496363ca198a17f32f">
+            <item work="512" time="0.003600" />
+            <item work="1024" time="0.003840" />
+        </task>
+        <task name="Scatter_Mid_Ridges_Huge" version="1" size="1" hash="65b8edd36b96c9605bb9dc0c9f0f8fccd3b392f2">
+            <item work="512" time="0.003480" />
+            <item work="1024" time="0.003880" />
+        </task>
+        <task name="Scatter_Organics_Fumerolas" version="1" size="1" hash="31307f112eee4f973fb0a4036324d3a69b49e356">
+            <item work="512" time="0.015320" />
+            <item work="768" time="0.018800" />
+            <item work="1024" time="0.021840" />
+        </task>
+        <task name="Scatter_Organics_Fonticula" version="1" size="1" hash="261e603e017ce2fe3a87f6910f0a5c5b0b8804da">
+            <item work="512" time="0.026920" />
+            <item work="1024" time="0.039240" />
+        </task>
+        <task name="Scatter_Organics_Electricae" version="1" size="1" hash="d53aeb44c8c4431c991cddc0d50c63999b4fc432">
+            <item work="512" time="0.015280" />
+            <item work="768" time="0.018640" />
+            <item work="1024" time="0.021920" />
+        </task>
+        <task name="Scatter_Organics_Clypeus" version="1" size="1" hash="8d27222fdcb0ed31bdc42d8c2639fcc8611c50ec">
+            <item work="512" time="0.015400" />
+            <item work="768" time="0.018720" />
+            <item work="1024" time="0.021800" />
+        </task>
+        <task name="Scatter_Organics_Concha" version="1" size="1" hash="8d426c8f97b1fb139c894210f46575995a8930c8">
+            <item work="512" time="0.009200" />
+            <item work="768" time="0.011200" />
+            <item work="1024" time="0.012920" />
+        </task>
+        <task name="Scatter_Organics_Cactoida" version="1" size="1" hash="48c9d7b5f8be7bec5c780dee9a6acbb4e462817c">
+            <item work="512" time="0.027680" />
+            <item work="1024" time="0.039440" />
+        </task>
+        <task name="Scatter_Organics_Aleoids" version="1" size="1" hash="d3b63534a7087f7c394ec72fc0ec64b28f660100">
+            <item work="512" time="0.026840" />
+            <item work="1024" time="0.039360" />
+        </task>
+        <task name="Scatter_Organics_Sparse_Sand" version="1" size="1" hash="194ae83a9c19745c844941af2523a97b04bd1e55">
+            <item work="1024" time="0.005360" />
+        </task>
+        <task name="Scatter_Organics_BacterialMats" version="1" size="1" hash="3435c5c47723d2e32a2cf16a9d5c63cd3ed43873">
+            <item work="512" time="0.026840" />
+            <item work="1024" time="0.039480" />
+        </task>
+        <task name="Scatter_Organics_Tussocks" version="1" size="1" hash="7f245a3d4d3926f67b7158e5a8cca65c12af5fdd">
+            <item work="512" time="0.027480" />
+            <item work="1024" time="0.039240" />
+        </task>
+        <task name="Scatter_Organics_Tubus" version="1" size="1" hash="613dd54ea52666de8ceca8c2fd92668640eef974">
+            <item work="512" time="0.027440" />
+            <item work="1024" time="0.039400" />
+        </task>
+        <task name="Scatter_Organics_Stratum" version="1" size="1" hash="3f287ca98744905c3a537c3cc177d1c2f42347d5">
+            <item work="512" time="0.026800" />
+            <item work="1024" time="0.039280" />
+        </task>
+        <task name="Scatter_Organics_Shrubs" version="1" size="1" hash="d3faba737da2e4844648e25bf8156ef8c9a3f2c2">
+            <item work="256" time="0.014320" />
+            <item work="512" time="0.015360" />
+            <item work="768" time="0.018520" />
+            <item work="1024" time="0.021920" />
+        </task>
+        <task name="Scatter_Organics_Recepta" version="1" size="1" hash="589fb54b74688a38f0f0d3b466a88540c3e372d4">
+            <item work="512" time="0.027560" />
+            <item work="1024" time="0.039560" />
+        </task>
+        <task name="Scatter_Organics_Osseus" version="1" size="1" hash="664f52e9764cce7a13b37c76744cdfe508c17341">
+            <item work="512" time="0.026880" />
+            <item work="1024" time="0.039360" />
+        </task>
+        <task name="Scatter_Organics_Fungoids" version="1" size="1" hash="2d8fd9848e90bd72656b261356bb78a9b9350102">
+            <item work="512" time="0.016000" />
+            <item work="768" time="0.019480" />
+            <item work="1024" time="0.022880" />
+        </task>
+        <task name="Scatter_Concave_Wide" version="1" size="1" hash="0cf77c3210e044c8434e6fe5bc2b03936f4e60ee">
+            <item work="768" time="0.005080" />
+            <item work="1024" time="0.005480" />
+        </task>
+    </card>
+</cards>

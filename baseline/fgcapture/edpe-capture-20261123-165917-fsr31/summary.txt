@@ -1,0 +1,7 @@
+EDPE capture 2026-11-23 16:59:17  build fsr4-pr2-backend@4bc53c3  provider FSR 3.1.2
+phase 0 fg=off seconds=3 in-process frames=888 median=3.36 ms p99=4.54 ms max=13.40 ms
+phase 1 fg=off seconds=20 in-process frames=5945 median=3.36 ms p99=4.54 ms max=5.26 ms
+phase 2 fg=on  seconds=20 in-process frames=2970 median=6.65 ms p99=7.12 ms max=235.15 ms
+phase 3 fg=off seconds=40 in-process frames=11909 median=3.36 ms p99=4.56 ms max=46.76 ms
+phase 4 fg=on  seconds=20 in-process frames=2983 median=6.62 ms p99=7.17 ms max=234.94 ms
+phase 5 fg=off seconds=40 in-process frames=11922 median=3.35 ms p99=4.53 ms max=46.65 ms

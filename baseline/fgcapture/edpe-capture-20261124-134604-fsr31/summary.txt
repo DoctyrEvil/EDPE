@@ -1,0 +1,8 @@
+EDPE capture 2026-11-24 13:46:04  build fsr4-pr2-on-feat@b23fee7-fgfix  provider FSR 3.1.2
+phase 0 fg=off seconds=3 in-process frames=862 median=3.44 ms p99=4.72 ms max=15.66 ms
+phase 1 fg=off+menu seconds=15 in-process frames=4382 median=3.42 ms p99=4.57 ms max=5.21 ms
+phase 2 fg=off+nomenu seconds=20 in-process frames=5842 median=3.42 ms p99=3.93 ms max=5.73 ms
+phase 3 fg=off+menu seconds=20 in-process frames=5830 median=3.43 ms p99=4.54 ms max=5.58 ms
+phase 4 fg=on+nomenu seconds=15 in-process frames=2164 median=6.75 ms p99=9.23 ms max=235.59 ms
+phase 5 fg=off+nomenu seconds=20 in-process frames=5829 median=3.42 ms p99=3.91 ms max=62.33 ms
+phase 6 fg=off+menu seconds=20 in-process frames=5848 median=3.42 ms p99=4.56 ms max=5.36 ms

@@ -1,0 +1,8 @@
+EDPE capture 2026-11-24 12:53:58  build fsr4-pr2-backend@4bc53c3-fgfix-probe  provider FSR 4.1.2
+phase 0 fg=off seconds=3 in-process frames=480 median=6.09 ms p99=6.74 ms max=85.71 ms
+phase 1 fg=off+menu seconds=15 in-process frames=2469 median=6.08 ms p99=6.61 ms max=6.89 ms
+phase 2 fg=off+nomenu seconds=20 in-process frames=3299 median=6.06 ms p99=6.57 ms max=25.51 ms
+phase 3 fg=off+menu seconds=20 in-process frames=3290 median=6.08 ms p99=6.60 ms max=7.01 ms
+phase 4 fg=on+nomenu seconds=15 in-process frames=1559 median=9.34 ms p99=13.80 ms max=239.89 ms
+phase 5 fg=off+nomenu seconds=20 in-process frames=3292 median=6.06 ms p99=6.63 ms max=51.23 ms
+phase 6 fg=off+menu seconds=20 in-process frames=3285 median=6.09 ms p99=6.55 ms max=6.91 ms

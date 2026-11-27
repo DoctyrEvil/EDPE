@@ -1,0 +1,24 @@
+build: perf/fg-profiling@b635725 (FG async compute off), RX 7900 XTX, 1920x1080 -> 3840x2160 Performance, sharpness 0.50, windowed, 240 Hz
+
+edpe-capture-20261125-175451-fsr4
+start: 17:54:51.969 presentmon_pid=22096 total_seconds=113 provider=4
+
+ph  fg         secs present modes                         fps ft_med ft_p99 ft_max dsp_med dsp_p99  cadCV    lat fgActive  menu unshown last mode change
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+0   off           3 Comp Copy with GPU GDI:100%           158   6.02   6.68   17.7    6.01    6.26  0.016   34.0       0%  100%      0% 
+1   off+menu     15 Comp Copy with GPU GDI:100%           166   6.03   6.55    7.2    6.03    6.34  0.016   34.2       0%  100%      0% 
+2   off+nomenu    20 Comp Copy with GPU GDI:100%           166   6.01   6.49    7.1    6.01    6.37  0.016   34.3       0%    0%      0% 
+3   off+menu     20 Comp Copy with GPU GDI:100%           166   6.03   6.52    7.0    6.03    6.39  0.033   34.1       0%  100%      0% 
+4   on+nomenu    15 HW Independent Flip:100%, Comp Flip:0%    203   4.74   6.60   38.5    4.76    7.20  0.240    5.2     100%    0%      0% +0.3s
+5   off+nomenu    20 Comp Copy with GPU GDI:100%, HW Independent Flip:0%    166   6.00   6.59   10.5    6.17   16.53  0.259   40.9       0%    0%      7% +0.1s
+6   off+menu     20 Comp Copy with GPU GDI:100%           166   6.03   6.51    6.7    6.02    6.29  0.016   40.4       0%   90%      0% 
+
+GPU cost per phase (PresentMon GPUBusy, first 2 s of each phase skipped):
+ph name         swapchain          mode                        pres/s  ft_med busy_med gputime_med busy ms/s
+ 0 off          74D82F70           Composed: Copy with GPU GD     166    6.04     5.97        6.03       990
+ 1 off+menu     74D82F70           Composed: Copy with GPU GD     166    6.03     5.97        6.03       991
+ 2 off+nomenu   74D82F70           Composed: Copy with GPU GD     166    6.01     5.95        6.00       991
+ 3 off+menu     74D82F70           Composed: Copy with GPU GD     166    6.03     5.97        6.03       990
+ 4 on+nomenu/fg F4DDB6D0           Hardware: Independent Flip     207    4.74     4.58        4.66       974
+ 5 off+nomenu   74D82F70           Composed: Copy with GPU GD     166    6.00     5.95        6.01       991
+ 6 off+menu     74D82F70           Composed: Copy with GPU GD     166    6.03     5.96        6.02       991

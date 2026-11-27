@@ -1,0 +1,107 @@
+﻿EDPE log excerpt for bug report. Source: edpe.log (15,995 lines, Nov 21 2026 session, process EliteDangerous64.exe pid 9788). Lines are verbatim; line numbers refer to the full file.
+
+===== startup (lines 1-27) =====
+     1: [EliteDangerous64.exe:9788] EDPE: D3D11CreateDevice IAT hook installed in main executable
+     2: [EliteDangerous64.exe:9788] EDPE: input isolation hooks installed (SafeDirectInputProxy, ClipCursor, SetCursorPos, GetCursorPos)
+     3: [EliteDangerous64.exe:9788] EDPE: synced Elite graphics config (SSAAMultiplier=1.000000)
+     4: [EliteDangerous64.exe:9788] EDPE: DXGI factory created
+     5: [EliteDangerous64.exe:9788] EDPE: [DeviceCreate #1] D3D11CreateDevice: adapter=0000000000000000 ("null" luid=00000000:00000000) driverType=1 flags=0x0 sdk=0x7 featureLevels=[0xC000 0xB100 0xB000 ] thread=15960 stack=[00007FFC8D50A26D 00007FF72481E65F 00007FF72482751F 00007FF724AFD7F2 00007FF724B0DF52 00007FF7248E6B81 00007FF7248E6D6B 00007FF7248E4233 ]
+     6: [EliteDangerous64.exe:9788] EDPE: DXGI factory created
+     7: [EliteDangerous64.exe:9788] EDPE: D3D11 device created without output
+     8: [EliteDangerous64.exe:9788] EDPE: [DeviceCreate #2] D3D11CreateDevice: adapter=00000240BCD55EF0 ("AMD Radeon RX 7900 XTX" luid=00000000:2db8922b) driverType=0 flags=0x0 sdk=0x7 featureLevels=[0xC000 0xB100 0xB000 ] thread=15960 stack=[00007FFC8D50A26D 00007FF72481E7B8 00007FF72482751F 00007FF724AFD7F2 00007FF724B0DF52 00007FF7248E6B81 00007FF7248E6D6B 00007FF7248E4233 ]
+     9: [EliteDangerous64.exe:9788] EDPE: D3D11 device created device=00000240BCDB56F8 vtable=00007FFD49CD0D68 dsvMethod=00007FFD49B0ABC0
+    10: [EliteDangerous64.exe:9788] EDPE: deferred context hook available
+    11: [EliteDangerous64.exe:9788] EDPE: vertex/pixel shader signatures available
+    12: [EliteDangerous64.exe:9788] EDPE: sampler state hook available
+    13: [EliteDangerous64.exe:9788] EDPE: D3D11 device created device=00000240BCDB56F8 context=00000240BCD60DE0 adapter="AMD Radeon RX 7900 XTX" luid=00000000:2db8922b featureLevel=0xC000 flags=0x0 thread=15960
+    14: [EliteDangerous64.exe:9788] EDPE: registered primary D3D11 device
+    15: [EliteDangerous64.exe:9788] EDPE: swapchain created swapchain=00000240BCF98FB0 device=00000240BCDB56F8
+    16: [EliteDangerous64.exe:9788] EDPE: Present swapchain=00000240BCF98FB0 device=00000240BCDB56F8 matched known device (total known: 1)
+    17: [EliteDangerous64.exe:9788] EDPE: Present swapchain=00000240BCF98FB0 3840x2160 format=28 device=00000240BCDB56F8 context=00000240BCD60DE0 vtable=00007FFD49CD0D68 dsvMethod=00007FFD49B0ABC0
+    18: [EliteDangerous64.exe:9788] EDPE: Present bindings rtv=0000000000000000 rtvFormat=0 dsv=0000000000000000 viewFormat=0 textureFormat=0 depth=0x0 bind=0x0 samples=0
+    19: [EliteDangerous64.exe:9788] EDPE: context dispatch frame=1 context=00000240BCD60DE0 vtable=00000240CDA40000 slot12=00000240CDA410C0 slot33=00007FFC8D533840 slot53=00000240CDA41350
+    20: [EliteDangerous64.exe:9788] EDPE: OMSetRenderTargets DSV census armed
+    21: [EliteDangerous64.exe:9788] EDPE: Map/Unmap/UpdateSubresource hooks armed map=1 unmap=1 update=1
+    22: [EliteDangerous64.exe:9788] EDPE: D3D11 context state available=1 HRESULT=0x00000000
+    23: [EliteDangerous64.exe:9788] NVSDK_NGX_D3D11_Init failed: 0xBAD00001
+    24: [EliteDangerous64.exe:9788] EDPE: AMD FSR 3.1 D3D11 backend initialized successfully
+    25: [EliteDangerous64.exe:9788] EDPE: CreateSamplerState filter=21 mipBias=0.00 minLOD=0.00 maxLOD=340282346638528859811704183484516925440.00
+    26: [EliteDangerous64.exe:9788] EDPE: CreateSamplerState filter=0 mipBias=0.00 minLOD=0.00 maxLOD=340282346638528859811704183484516925440.00
+    27: [EliteDangerous64.exe:9788] EDPE: UpscalerManager initialized
+
+===== switch to FSR Native AA: one allocation each (lines 1525-1536) =====
+  1525: [EliteDangerous64.exe:9788] EDPE: upscaler backend changed to AMD FSR
+  1526: [EliteDangerous64.exe:9788] EDPE: upscaler mode changed to Native AA
+  1527: [EliteDangerous64.exe:9788] EDPE: HUD draw probe armed mask=0xF frame=121112
+  1528: [EliteDangerous64.exe:9788] EDPE: verified HUD shader pairs for Pass 35 cockpit holographic HUD:
+  1529: [EliteDangerous64.exe:9788]   VS=0x81216C77F90DEDD6 PS=0xAB82734FE19EFB9D (text/icons/gauges, 12 draws)
+  1530: [EliteDangerous64.exe:9788]   VS=0xB7790CBFC6554097 PS=0x8DEF46452FA459F5 (flight HUD vector lines)
+  1531: [EliteDangerous64.exe:9788]   VS=0x81216C77F90DEDD6 PS=0xA2965EC2931A39C8 (holo panels)
+  1532: [EliteDangerous64.exe:9788]   VS=0xE508648660A352B2 PS=0x63ABD86359B57D01 (target reticle sprite)
+  1533: [EliteDangerous64.exe:9788] EDPE: temporal color input created 3840x2160 format=28 (offscreen LDR scene target (no UI))
+  1534: [EliteDangerous64.exe:9788] EDPE: temporal path change frame=121112 src=00000240FEAC21F8 fmt=27 hdr=0 eval=1 comp=1 stage=1 compPath=2 hudDraws=0 [reason: compPath(1->2) ]
+  1535: [EliteDangerous64.exe:9788] EDPE: temporal path change frame=121113 src=00000240FEAC21F8 fmt=27 hdr=0 eval=1 comp=1 stage=1 compPath=1 hudDraws=29 [reason: compPath(2->1) ]
+  1536: [EliteDangerous64.exe:9788] EDPE DIAG: unmap candidate ignored frame=121121 in_scene=0 is_probe=1 passes=0 allow=0 staged=0 rDist=0.1364 rTrace=3.0000 det=1.000 depthB=0.0250
+
+===== switch to Performance 0.5: allocation runs begin (lines 2977-2992) =====
+  2977: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  2978: [EliteDangerous64.exe:9788] EDPE: Pass 52 bloom t2 temporally stabilized (960x540 hdr=t1 win=1 hud=1)
+  2979: [EliteDangerous64.exe:9788] EDPE: upscaler mode changed to Performance
+  2980: [EliteDangerous64.exe:9788] EDPE: temporal color input created 1920x1080 format=28 (low-res LDR scene target)
+  2981: [EliteDangerous64.exe:9788] EDPE: temporal path change frame=178166 src=00000241F84F1CB8 fmt=27 hdr=0 eval=1 comp=1 stage=1 compPath=1 hudDraws=30 [reason: src(00000240FEAC21F8->00000241F84F1CB8) ]
+  2982: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  2983: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  2984: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  2985: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  2986: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  2987: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  2988: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  2989: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  2990: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  2991: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  2992: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+
+===== mid-segment sample, same alternation (lines 4000-4011) =====
+  4000: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  4001: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  4002: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  4003: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  4004: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  4005: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  4006: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  4007: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  4008: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  4009: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+  4010: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  4011: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 1920x1080 R16G16B16A16_FLOAT
+
+===== switch to Quality 0.65 (lines 8587-8591) =====
+  8587: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 2496x1404 R16G16B16A16_FLOAT
+  8588: [EliteDangerous64.exe:9788] EDPE: Pass 52 bloom t2 temporally stabilized (1248x702 hdr=t1 win=1 hud=0)
+  8589: [EliteDangerous64.exe:9788] EDPE: upscaler mode changed to Quality
+  8590: [EliteDangerous64.exe:9788] EDPE: temporal color input created 2496x1404 format=28 (low-res LDR scene target)
+  8591: [EliteDangerous64.exe:9788] EDPE: temporal path change frame=208941 src=0000024386E6B338 fmt=27 hdr=0 eval=1 comp=1 stage=1 compPath=2 hudDraws=0 [reason: src(00000241F84F1CB8->0000024386E6B338) ]
+
+===== Quality alternation sample (lines 9000-9007) =====
+  9000: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  9001: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 2496x1404 R16G16B16A16_FLOAT
+  9002: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  9003: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 2496x1404 R16G16B16A16_FLOAT
+  9004: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  9005: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 2496x1404 R16G16B16A16_FLOAT
+  9006: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+  9007: [EliteDangerous64.exe:9788] EDPE: allocated HUD mask target 2496x1404 R16G16B16A16_FLOAT
+
+===== tools/analyze_edpe_log.py output (segments at each backend/mode change) =====
+segment                             lines HUD allocs  sizes                             frames           allocs/frame
+(launch state)                       1027          0  {}                                 1..102732         0.000
+TAA                                     0          0  {}                                 n/a               n/a
+TAA / Native AA                       512          1  {'3840x2160': 1}                   2..281355         0.000
+None (Bypass)                           0          0  {}                                 n/a               n/a
+None (Bypass) / Native                 38          0  {}                                 120405..280489    0.000
+AMD FSR                               595          0  {}                                 281361..371239    0.000
+AMD FSR / Native AA                  1478          1  {'1920x1080': 1}                   121112..279551    0.000
+AMD FSR / Performance                5609       4797  {'3840x2160': 2398, '1920x1080': 2398, '2496x1404': 1} 178166..208877    0.156
+AMD FSR / Quality                    6717       5525  {'2880x1620': 1, '2496x1404': 2762, '3840x2160': 2762} 208941..278833    0.079
+
+NOTE on the table above: the 'frames' and 'allocs/frame' columns are unreliable. The log has no timestamps and 'frame=' appears with several different counters, so spans overlap and are not comparable across segments. Only the HUD allocation COUNTS per segment are meaningful.

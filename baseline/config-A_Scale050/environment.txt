@@ -1,0 +1,13 @@
+﻿label: A_Scale050
+captured: 2026-11-21T15:44:01
+gpu: AMD Radeon RX 7900 XTX
+driver: 32.0.32029.2010 (11/17/2026 16:00:00)
+os: Microsoft Windows 10 Home 10.0.19045
+cpu: AMD Ryzen 7 5800X3D 8-Core Processor
+game folder files present: dxgi.dll=False, d3d11.dll=False, edpe.ini=False, edvr.ini=False
+relevant processes:
+
+ProcessId ParentProcessId Name                 CreationDate         
+--------- --------------- ----                 ------------         
+    22072           15912 EDLaunch.exe         11/21/2026 2:35:02 PM
+     9356            6168 EliteDangerous64.exe 11/21/2026 3:29:05 PM

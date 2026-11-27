@@ -1,0 +1,14 @@
+﻿label: D
+captured: 2026-11-21T14:48:14
+gpu: AMD Radeon RX 7900 XTX
+driver: 32.0.32029.2010 (11/17/2026 16:00:00)
+os: Microsoft Windows 10 Home 10.0.19045
+cpu: AMD Ryzen 7 5800X3D 8-Core Processor
+game folder files present: dxgi.dll=True, d3d11.dll=False, edpe.ini=True, edvr.ini=False
+dxgi.dll proxy: 9680896 bytes, modified 11/21/2026 14:33:16, SHA256 10956A0A09A7CEC851704A161A1E663669A744D081096458519543DFD5079268
+relevant processes:
+
+ProcessId ParentProcessId Name                 CreationDate         
+--------- --------------- ----                 ------------         
+    22072           15912 EDLaunch.exe         11/21/2026 2:35:02 PM
+     9788           20472 EliteDangerous64.exe 11/21/2026 2:36:18 PM

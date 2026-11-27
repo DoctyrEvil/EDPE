@@ -1,0 +1,15 @@
+FG switch check, 2026-11-25 16:43 onward
+build: fsr4-fg-teardown-fix@4b12507 (clean tree, no debug hook, DEV=0), RX 7900 XTX, 1920x1080 -> 3840x2160, windowed, 240 Hz
+Backend=4, Performance, FG on (AMD, x2).
+
+Sequence (manual, F5 menu, FG on): repeated upscaler switches among Bypass, AMD FSR, TAA and FSR 3.1.2 <-> FSR 4.1.2.
+
+Result: pass.
+- 27 "frame generation off for the upscaler change" lines across the switches; each FSR 4.1.2 selection re-created the engine
+  ("context ready", "first frame upscaled"); each leave logged "engine released".
+- FG came back after every switch (observed by the tester, on screen). The log has no FG start line with DEV=0.
+- No "threw an exception", no [ffx error], no "device lost", no DEVICE_ line.
+- Game exited cleanly (watchdog: exit code 0). No Display (TDR) events. No crash report, no minidump content.
+
+Not covered: the guard (provider throw) and the lost-device path never ran: nothing threw and the device was never removed.
+Not covered: a long session with FG on.

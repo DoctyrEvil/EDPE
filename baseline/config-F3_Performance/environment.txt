@@ -1,0 +1,10 @@
+﻿label: F3_Performance
+captured: 2026-11-22T00:06:32
+gpu: AMD Radeon RX 7900 XTX
+driver: 32.0.32029.2010 (11/17/2026 16:00:00)
+os: Microsoft Windows 10 Home 10.0.19045
+cpu: AMD Ryzen 7 5800X3D 8-Core Processor
+game folder files present: dxgi.dll=True, d3d11.dll=False, edpe.ini=True, edvr.ini=False
+dxgi.dll proxy: 9849856 bytes, modified 11/21/2026 17:13:59, SHA256 24D357439B0DB0122BEABD8E094E5B9C0195AA0A0D810B385C38D4C954D566D4
+relevant processes:
+
