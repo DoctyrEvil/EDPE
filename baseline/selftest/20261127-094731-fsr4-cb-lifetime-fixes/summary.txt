@@ -1,0 +1,17 @@
+Self-tests of fsr4-cb-lifetime-fixes@31b86c3 (#39 head with the three owner nits), 2026-11-27 09:38 to 09:46.
+Normal PR code plus the test hook and module (DEV=1). FG off. RX 7900 XTX, Performance, 1920x1080 -> 3840x2160. Reports 093851 (in ../20261127-093935-...), 094134, 094247 (sharpness 0.50) and 094551 (sharpness 0.00).
+
+Valid baseline comparison: 094551, sharpness 0.00, stress on, 10 of 10 passed. Median frame time, ms:
+  Bypass 2.56, AMD FSR 3.1.2 3.44, AMD FSR 4.1.2 5.80, Native TAA 3.02
+  Earlier sharpness 0.00 runs (92c54d1, 0071f82): 2.51 to 2.55, 3.39 to 3.41, 5.99 to 6.00, 3.02 to 3.06.
+  FSR 4.1.2 p99 6.70 ms, GPU timer 3.07 ms. Switch stress: 60 provider switches, longest frame 283.8 ms (limit 2000 ms). No excursion from baseline.
+
+Sharpness 0.50 runs (093851, 094134, 094247): FSR 4.1.2 median 6.68 to 6.71 ms, GPU timer 3.87 to 3.92 ms. The sharpen pass costs about 0.9 ms on this branch.
+  The earlier sharpness 0.50 runs (d1e3c53 6.03 ms, b635725 6.01 ms) were on integration builds that include deferred sharpening and the compute queue (3076085 and 387774b in d1e3c53; the restaged 83efed0 and 61ca77f in b635725), which this branch does not have.
+  Sharpness 0.50 on this branch is therefore not comparable with those runs, and the all-fixes run in ../20261127-010057-integ (a1f8872, sharpness 0.50, no deferred sharpening) has no valid baseline either.
+  The before and after table for commit 2 of #39 (92c54d1 against d1e3c53) is still a fair comparison, because both builds contained the same deferred sharpening.
+The 094134 report has two FAIL blocks (R2 FSR 4.1.2 stall 293.6 ms, R2 FSR 3.1.2 stall 643.0 ms); the cause was not investigated. The 094247 and 094551 runs have none.
+
+FSR 4 capture ../../fgcapture/edpe-capture-20261127-094347-fsr4 (scripted, in-process frame time): fg off 5.92 to 5.94 ms (p99 6.44 to 6.49 ms), fg on 9.37 ms (max 244.9 ms at startup), fg off after 6.04 to 6.05 ms. This branch has no judder fix (#41).
+
+Log of the 094134 to 094551 runs (edpe.log): no device lost, exception, FFX error or fail-safe line, map-bounce tripped=0 in all 347 markers, no crash report that day.

@@ -1,0 +1,11 @@
+Size-change test, combined test build integ/fsr4-teardown-cb@31da0cf (#40 at efa4087 + #39 at 31b86c3), 2026-11-27 11:35 to 11:39.
+Manual, F5 menu, FG on (AMD FSR FG). RX 7900 XTX, windowed. Test hook loaded (DEV=1), AutoRun off. Second game session of the day; edpe.log here is that session.
+
+Mode changes (render size changes) with FG on, from the FG state in the markers before and after each change:
+  Native AA -> Quality at log lines 900, 969 and 1110: fg=1 before and after. Shared depth and motion vector textures were freed while FG ran (the case covered by waitBeforeFree).
+  Other mode changes (lines 1015, 1322, 1482, 1489) happened with fg=0 and do not exercise the wait.
+The wait itself writes no log line, so the evidence is the absence of failure after a real size change.
+
+Also in the log: 8 "frame generation off for the upscaler change" lines, each followed by the backend or provider switch that triggered it.
+Result: no device lost, DEVICE_HUNG, page fault, exception, [ffx error] or fail-safe line; map-bounce tripped=0 in all 267 markers; fg=1 in 168 markers and fg=0 in 99; no crash report and no display-driver event; clean exit ("swap chain destroyed").
+Not exercised: the guard, the lost-device path and the 5 second wait on a hung device.

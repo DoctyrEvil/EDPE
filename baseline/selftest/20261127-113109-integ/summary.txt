@@ -1,0 +1,14 @@
+Combined test build integ/fsr4-teardown-cb@31da0cf, 2026-11-27 11:24 to 11:30.
+= #40 (fsr4-fg-teardown-fix@efa4087, 7 commits) + #39 (fsr4-cb-lifetime-fixes@31b86c3). Local branch, not pushed. Test hook and module loaded (DEV=1). RX 7900 XTX, Performance, 1920x1080 -> 3840x2160, sharpness 0.00.
+
+Self-test edpe-selftest-20261127-112417 (stress on): 10 of 10 passed. Median frame time, ms:
+  Bypass 2.51, AMD FSR 3.1.2 3.38, AMD FSR 4.1.2 5.95, Native TAA 3.00 (earlier sharpness 0.00 runs: 2.51 to 2.56, 3.39 to 3.44, 5.80 to 6.00, 3.02 to 3.06). No excursion.
+  60-switch stress (FSR 3.1.2 <-> 4.1.2): longest frame 287.3 ms (limit 2000 ms). Settle block 5.94 ms.
+
+Captures (baseline/fgcapture, in-process frame time, scripted FG off, menu, FG on, FG off, menu):
+  FSR 4.1.2 edpe-capture-20261127-112459-fsr4: 5.93 to 5.98 ms before FG, 9.28 ms with FG on (max 244.5 ms at startup), 5.90 to 5.91 ms after FG off.
+  FSR 3.1.2 edpe-capture-20261127-112707-fsr31: 3.35 to 3.40 ms before FG, 6.72 ms with FG on (max 240.6 ms at startup), 3.36 to 3.37 ms after FG off.
+  This build has no judder fix (#41).
+
+Log (edpe.log of this session): no device lost, exception, [ffx error] or fail-safe line, map-bounce tripped=0 in all 447 markers, no crash report, no display-driver event.
+  7 "frame generation off for the upscaler change" lines during manual switching with FG on; FG resumed after each (observed on screen).

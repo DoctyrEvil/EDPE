@@ -1,0 +1,8 @@
+EDPE capture 2026-11-27 11:27:07  build integ/fsr4-teardown-cb@31da0cf  provider FSR 3.1.2
+phase 0 fg=off seconds=3 in-process frames=880 median=3.40 ms p99=4.54 ms max=14.93 ms
+phase 1 fg=off+menu seconds=15 in-process frames=4467 median=3.36 ms p99=4.41 ms max=5.22 ms
+phase 2 fg=off+nomenu seconds=20 in-process frames=5971 median=3.35 ms p99=3.76 ms max=4.23 ms
+phase 3 fg=off+menu seconds=20 in-process frames=5918 median=3.38 ms p99=4.36 ms max=5.63 ms
+phase 4 fg=on+nomenu seconds=15 in-process frames=2129 median=6.72 ms p99=11.66 ms max=240.55 ms
+phase 5 fg=off+nomenu seconds=20 in-process frames=5940 median=3.36 ms p99=3.76 ms max=48.96 ms
+phase 6 fg=off+menu seconds=20 in-process frames=5938 median=3.37 ms p99=4.50 ms max=5.16 ms

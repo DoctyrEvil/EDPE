@@ -1,0 +1,37 @@
+EDPE self-test  2026-11-27 09:45:51
+build: fsr4-cb-lifetime-fixes@31b86c3
+mode: 4 (Performance)  sharpness: 0.00  render 1920x1080 -> output 3840x2160
+settings: warm=120 hold=600 rounds=2 stress=on
+
+Summary (mean of per-block median frame time; spread = max-min across rounds, a drift indicator)
+  Bypass (no reconstruction)   mean 2.56 ms  spread 0.08 ms  p99 2.91 ms  gpu 2.05 ms  (2 blocks)
+  AMD FSR 3.1.2                mean 3.44 ms  spread 0.09 ms  p99 4.38 ms  gpu 0.61 ms  (2 blocks)
+  AMD FSR 4.1.2                mean 5.80 ms  spread 0.04 ms  p99 6.70 ms  gpu 3.07 ms  (2 blocks)
+  Native TAA                   mean 3.02 ms  spread 0.00 ms  p99 4.29 ms  gpu 0.31 ms  (2 blocks)
+
+Blocks
+SKIP  NVIDIA DLSS                            frames=0 median=0.00 ms p99=0.00 ms max=0.00 ms gpu=0.00 ms switches=0
+      unavailable: NVIDIA DLSS unavailable: detected AMD GPU (AMD Radeon RX 7900 XTX); skipping NGX init
+PASS  R1 Bypass (no reconstruction)          frames=600 median=2.60 ms p99=2.98 ms max=3.03 ms gpu=3.50 ms switches=0
+      active: Bypass (no reconstruction)
+PASS  R1 AMD FSR 3.1.2                       frames=600 median=3.48 ms p99=4.20 ms max=4.82 ms gpu=0.61 ms switches=0
+      active: FSR 3.1.2
+PASS  R1 AMD FSR 4.1.2                       frames=600 median=5.82 ms p99=6.74 ms max=7.12 ms gpu=3.10 ms switches=0
+      active: FSR 4.1.2
+PASS  R1 Native TAA                          frames=600 median=3.02 ms p99=4.31 ms max=4.48 ms gpu=0.31 ms switches=0
+      active: Native TAA
+PASS  R2 Native TAA                          frames=600 median=3.02 ms p99=4.26 ms max=4.38 ms gpu=0.31 ms switches=0
+      active: Native TAA
+PASS  R2 AMD FSR 4.1.2                       frames=600 median=5.78 ms p99=6.67 ms max=7.25 ms gpu=3.04 ms switches=0
+      active: FSR 4.1.2
+PASS  R2 AMD FSR 3.1.2                       frames=600 median=3.39 ms p99=4.56 ms max=5.14 ms gpu=0.61 ms switches=0
+      active: FSR 3.1.2
+PASS  R2 Bypass (no reconstruction)          frames=600 median=2.52 ms p99=2.83 ms max=2.90 ms gpu=0.60 ms switches=0
+      active: Bypass (no reconstruction)
+PASS  switch stress (FSR 3.1.2 <-> 4.1.2)    frames=600 median=3.18 ms p99=281.40 ms max=283.79 ms gpu=1.24 ms switches=60
+      60 provider switches, longest frame 283.8 ms (limit 2000 ms)
+PASS  settle after stress                    frames=600 median=5.78 ms p99=6.72 ms max=7.00 ms gpu=3.07 ms switches=0
+      active: FSR 4.1.2
+
+result: 10 passed, 0 failed, 1 skipped
+final provider: FSR 4.1.2
