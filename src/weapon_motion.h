@@ -27,6 +27,19 @@ inline constexpr uint32_t kWeaponSignatureMask = 0xFF00FFFFu;
 inline constexpr uint32_t kWeaponStencilBit = 0x10u;
 inline constexpr uint32_t kCockpitStencilBit = 0x80u;
 inline constexpr uint32_t kDynamicViewmodelStencilMask = kWeaponStencilBit | kCockpitStencilBit;
+
+// The dynamic viewmodel stencil rule, kept in one place: on foot the masked stencil reference must be exactly the
+// weapon bit; in a ship it must have any viewmodel bit (weapon or cockpit).
+inline constexpr bool viewmodelStencilRefMatches(uint32_t stencilRef, bool onFoot) {
+    const uint32_t masked = stencilRef & kDynamicViewmodelStencilMask;
+    return onFoot ? masked == kWeaponStencilBit : masked != 0u;
+}
+
+// True when the reference could match in either mode. Used as a cheap first test that does not need to know
+// whether the player is on foot.
+inline constexpr bool viewmodelStencilRefPossible(uint32_t stencilRef) {
+    return viewmodelStencilRefMatches(stencilRef, true) || viewmodelStencilRefMatches(stencilRef, false);
+}
 inline constexpr float kDefaultWorldNearM = 0.025f;
 inline constexpr float kDefaultWeaponNearM = 0.0675f;
 inline constexpr uint32_t kWeaponSoPoolBytes = 24u * 1024u * 1024u; // 24 MiB bounded pool (16-32 MiB range)
@@ -92,9 +105,9 @@ public:
                                              bool onFoot);
 
     // Cheap first test with the same outcome as the stencil part of isOpaqueVisibleViewmodelDraw: false when no
-    // depth-stencil state is bound or the stencil reference has no viewmodel bit (on foot the masked reference must
-    // be the weapon bit, in a ship it must be non-zero, so a zero masked reference fails both). One state query
-    // instead of the full set, so callers can reject most draws before doing anything else.
+    // depth-stencil state is bound or the stencil reference cannot match in either mode
+    // (viewmodelStencilRefPossible). One state query instead of the full set, so callers can reject most draws
+    // before doing anything else.
     static bool hasViewmodelStencilRef(ID3D11DeviceContext* context);
 
     // Begin a new frame: swap current/previous SO pools and clear draw records.
