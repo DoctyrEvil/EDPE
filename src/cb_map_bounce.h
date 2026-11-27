@@ -161,6 +161,12 @@ public:
     // Returns the cached RAM slot pointer if bounced, or realPtr untouched otherwise.
     // fastScan (UnmapFastPath): skip the compare-exchange on slots whose key already shows they cannot match. The
     // result is the same; it only avoids locked operations that would fail.
+    //
+    // A relaxed load is enough. A slot only changes hands through the compare-exchange, which stays acq_rel and
+    // re-checks the key, so the load is a filter, never the decision. Map and Unmap of one resource run on the
+    // immediate context's thread (the callers bounce immediate-context maps only), so onUnmap always sees the key
+    // its own onMap stored. A stale read on another slot can only skip a free slot in onMap, which then passes the
+    // map through unbounced as if the pool were full, or skip a slot that does not hold this resource in onUnmap.
     void* onMap(uintptr_t resource, uintptr_t context, void* realPtr,
                 uint32_t byteWidth, bool isWriteDiscard, uint64_t frame, bool fastScan = false) {
         if (resource == 0 || resource == kBusyKey || !realPtr) return realPtr;
@@ -202,6 +208,7 @@ public:
     bool onUnmap(uintptr_t resource, uintptr_t context, bool fastScan = false) {
         if (resource == 0 || resource == kBusyKey) return false;
         for (auto& slot : slots_) {
+            // fastScan: see onMap for why a relaxed load is enough here.
             if (fastScan && slot.key.load(std::memory_order_relaxed) != resource) continue;
             uintptr_t expected = resource;
             if (slot.key.compare_exchange_strong(expected, kBusyKey, std::memory_order_acq_rel)) {
