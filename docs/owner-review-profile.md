@@ -8,6 +8,7 @@ Purpose: review our own changes the way the repo owner (`filispeen`) does, befor
 - Reviews are numbered, name exact files and functions, and propose a concrete fix. The tone is approving ("looks good", "ready to merge"), but they do not merge until every blocking point is addressed.
 - Each round reads deeper than the last. PR 1 and PR 2 drew comments on config, UI text and CI. #39 drew line-level comments on atomics, ownership and memory ordering. Expect that depth on any low-level change.
 - They verify a fix against every site it touches ("checks out across every write site"), so a fix applied in one place and not its siblings will be found.
+- They read a helper as if it could be called from anywhere, not only from today's callers. A precondition that every caller happens to satisfy is still checked inside the helper (#39 nit: a null resource).
 - They separate blocking points from "non-blocking nits, fine to leave". They accept a reasoned "no" if it is justified and documented in code (PR 1, `FreeUnusedSDKs()`; #39, the ownership `exchange`).
 - They ask for evidence as questions: "is it always reset?", "have you tested it with…?". Answer with what was verified, or say it was not tested.
 
@@ -38,9 +39,11 @@ Each principle has the owner evidence in brief and the questions to ask of our o
 - [ ] Is it gated with `src/gpu_vendor.h`, initialized lazily and released symmetrically?
 
 ### 5. Defend at boundaries; prefer the robust form over the clever one
-- Evidence: a hardcoded SDK version replaced by reading it from the DLL, with a fallback (PR 1). A misleading path-length error replaced by correct sizing (PR 1). `refs == 1` instead of `<= 1`, with a watchdog as the fallback if a wrapper reports another count (#39). A hard size check where memory could be overrun, independent of earlier classification (#39).
+- Evidence: a hardcoded SDK version replaced by reading it from the DLL, with a fallback (PR 1). A misleading path-length error replaced by correct sizing (PR 1). `refs == 1` instead of `<= 1`, with a watchdog as the fallback if a wrapper reports another count (#39). A hard size check where memory could be overrun, independent of earlier classification (#39). A helper that called `Release` on null when a null resource met an empty target, although its only caller already checked, and the same gap in its sibling cache helpers (#39 nit).
 - [ ] Do we rely on a third-party return value, refcount or cast? Is it safe under wrappers and overlays (RenderDoc, the debug layer, DXVK, Proton), and is that tested or listed as not tested?
 - [ ] Is there a hard bound at the point of damage, not only an upstream check?
+- [ ] Is every helper safe for its whole input domain (null, empty, zero, stale), even when all current callers check first? Does it start with the same early return as its sibling helpers?
+- [ ] Can an empty or default slot compare equal to a null or default input? What does the helper then read or release? Did our own change (for example no longer clearing a field) make a stale value reachable for such an input?
 
 ### 6. Concurrency, ownership and comments that match the code
 - Evidence: a store after a CAS overwrote a new owner's entry; a pointer set to null and restored was briefly invisible (#39). Two members held the same COM object, and the question was whether one is released before the other's refcount check and on every early return (#39). A comment promised "written before published" while the code used relaxed ordering (#39 nit).
