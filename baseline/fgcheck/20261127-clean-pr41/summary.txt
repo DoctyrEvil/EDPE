@@ -1,0 +1,6 @@
+Clean build of #41 on its own: fsr4-pr3-fg-judder@377687c (2 commits), no test module, DEV=0. 2026-11-27 12:54 to 12:56.
+Manual session, one game run (edpe.log here). RX 7900 XTX, Performance, sharpness 0.00, windowed. Checked from the log only: the scripted capture needs the test module, and no PresentMon capture was taken on this build.
+
+Log: 4 "game window re-evaluated after the overlay window was destroyed" lines, 0 "re-evaluation failed" lines. FSR 4.1.2 context started twice (98 ms and 92 ms). Upscaler backend and provider switches appear between the teardowns.
+No device lost, exception, [ffx error] or DEVICE_HUNG line; no crash report; no bugcheck or display-driver event; clean exit ("swap chain destroyed").
+FG state is not visible in this build's log. This build has no FG teardown fixes (#40): an upscaler switch with FG on is the sequence that bluescreened the #39-only build.

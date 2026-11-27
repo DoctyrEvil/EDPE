@@ -1,0 +1,792 @@
+[EliteDangerous64.exe:11788] EDPE: input isolation hooks installed (SafeDirectInputProxy, ClipCursor, SetCursorPos, GetCursorPos)
+[EliteDangerous64.exe:11788] EDPE: D3D11CreateDevice IAT hook installed in main executable
+[EliteDangerous64.exe:11788] EDPE: synced Elite graphics config (SSAAMultiplier=0.500000)
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE: [DeviceCreate #1] D3D11CreateDevice: adapter=0000000000000000 ("null" luid=00000000:00000000) driverType=1 flags=0x0 sdk=0x7 featureLevels=[0xC000 0xB100 0xB000 ] thread=3732 stack=[00007FFB5117A39A 00007FF7469CE65F 00007FF7469D751F 00007FF746CAD7F2 00007FF746CBDF52 00007FF746A96B81 00007FF746A96D6B 00007FF746A94233 ]
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE: D3D11 device created without output
+[EliteDangerous64.exe:11788] EDPE: [DeviceCreate #2] D3D11CreateDevice: adapter=00000195F27715D0 ("AMD Radeon RX 7900 XTX" luid=00000000:0000afa4) driverType=0 flags=0x0 sdk=0x7 featureLevels=[0xC000 0xB100 0xB000 ] thread=3732 stack=[00007FFB5117A39A 00007FF7469CE7B8 00007FF7469D751F 00007FF746CAD7F2 00007FF746CBDF52 00007FF746A96B81 00007FF746A96D6B 00007FF746A94233 ]
+[EliteDangerous64.exe:11788] EDPE: D3D11 device created device=00000195F2792538 vtable=00007FFC2A7D0D68 dsvMethod=00007FFC2A60ABC0
+[EliteDangerous64.exe:11788] EDPE: deferred context hook available
+[EliteDangerous64.exe:11788] EDPE: vertex/pixel shader signatures available
+[EliteDangerous64.exe:11788] EDPE: sampler state hook available
+[EliteDangerous64.exe:11788] EDPE: D3D11 device created device=00000195F2792538 context=00000195F27937E0 adapter="AMD Radeon RX 7900 XTX" luid=00000000:0000afa4 featureLevel=0xC000 flags=0x0 thread=3732
+[EliteDangerous64.exe:11788] EDPE: registered primary D3D11 device
+[EliteDangerous64.exe:11788] EDPE: swapchain created swapchain=00000195F29EEB80 device=00000195F2792538
+[EliteDangerous64.exe:11788] EDPE: Present swapchain=00000195F29EEB80 device=00000195F2792538 matched known device (total known: 1)
+[EliteDangerous64.exe:11788] EDPE: Present swapchain=00000195F29EEB80 3840x2160 format=28 device=00000195F2792538 context=00000195F27937E0 vtable=00007FFC2A7D0D68 dsvMethod=00007FFC2A60ABC0
+[EliteDangerous64.exe:11788] EDPE: Present bindings rtv=0000000000000000 rtvFormat=0 dsv=0000000000000000 viewFormat=0 textureFormat=0 depth=0x0 bind=0x0 samples=0
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=1 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: OMSetRenderTargets DSV census armed
+[EliteDangerous64.exe:11788] EDPE: Map/Unmap/UpdateSubresource hooks armed map=1 unmap=1 update=1
+[EliteDangerous64.exe:11788] EDPE: Cobra view-constant refresh prologue/witness mismatch; using D3D11 CB fallback
+[EliteDangerous64.exe:11788] EDPE: D3D11 context state available=1 HRESULT=0x00000000
+[EliteDangerous64.exe:11788] NVIDIA DLSS unavailable: detected AMD GPU (AMD Radeon RX 7900 XTX); skipping NGX init
+[EliteDangerous64.exe:11788] EDPE: AMD FSR 3.1 D3D11 backend initialized successfully
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE D3D12Bridge: D3D12 device created through ID3D12DeviceFactory (requested SDK version 616, runtime reports 616)
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE FSR4: AMD's runtime offers FSR 4.1.2, 3.1.6, 2.3.4; using 4.1.2
+[EliteDangerous64.exe:11788] EDPE FSR4: engine initialized (agilitySdk=1)
+[EliteDangerous64.exe:11788] EDPE: FSR 4 available; the D3D11 FSR 3.1.2 path stays the fallback
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=21 mipBias=0.00 minLOD=0.00 maxLOD=340282346638528859811704183484516925440.00
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=0 mipBias=0.00 minLOD=0.00 maxLOD=340282346638528859811704183484516925440.00
+[EliteDangerous64.exe:11788] EDPE: UpscalerManager initialized
+[EliteDangerous64.exe:11788] EDPE: upscaler backend changed to AMD FSR
+[EliteDangerous64.exe:11788] EDPE: upscaler mode changed to Performance
+[EliteDangerous64.exe:11788] EDPE: ProggyForever vector font initialized (ProggyForever.ttf)
+[EliteDangerous64.exe:11788] EDPE: Dear ImGui ready; F5 toggles menu
+[EliteDangerous64.exe:11788] EDPE: wrapped DirectInput SysMouse with SafeDirectInputDevice8WProxy
+[EliteDangerous64.exe:11788] EDPE: wrapped DirectInput SysKeyboard with SafeDirectInputDevice8WProxy
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=0 mipBias=0.00 minLOD=0.00 maxLOD=12.00
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=20 mipBias=0.00 minLOD=0.00 maxLOD=12.00
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=21 mipBias=0.00 minLOD=0.00 maxLOD=12.00
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=85 mipBias=0.00 minLOD=0.00 maxLOD=12.00
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=21 mipBias=1.00 minLOD=0.00 maxLOD=12.00
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=2 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=3 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=4 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=5 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=6 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=7 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: context dispatch frame=8 context=00000195F27937E0 vtable=00000195F3480010 slot12=00000195F34820C0 slot33=00007FFB511AC590 slot53=00000195F3482350
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=10 streak=10 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=600 streak=600 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=1200 streak=1200 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=20 mipBias=0.00 minLOD=0.00 maxLOD=0.00
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=1800 streak=1800 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=2400 streak=2400 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=3000 streak=3000 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=3600 streak=3600 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=4200 streak=4200 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=4800 streak=4800 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=5400 streak=5400 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=6000 streak=6000 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=6600 streak=6600 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: hook OMSetRenderTargets this=00000195F27937E0 type=immediate slotAddr=00000195F3480118
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=0 mipBias=0.00 minLOD=0.00 maxLOD=0.00
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=7200 streak=7200 (scene color/depth not observed)
+[EliteDangerous64.exe:11788] EDPE: HUD draw probe armed mask=0xF frame=7392
+[EliteDangerous64.exe:11788] EDPE: verified HUD shader pairs for Pass 35 cockpit holographic HUD:
+[EliteDangerous64.exe:11788]   VS=0x81216C77F90DEDD6 PS=0xAB82734FE19EFB9D (text/icons/gauges, 12 draws)
+[EliteDangerous64.exe:11788]   VS=0xB7790CBFC6554097 PS=0x8DEF46452FA459F5 (flight HUD vector lines)
+[EliteDangerous64.exe:11788]   VS=0x81216C77F90DEDD6 PS=0xA2965EC2931A39C8 (holo panels)
+[EliteDangerous64.exe:11788]   VS=0xE508648660A352B2 PS=0x63ABD86359B57D01 (target reticle sprite)
+[EliteDangerous64.exe:11788] EDPE: DSV bind #0 phase=first view=000001966E00C7F8 3840x2160 textureFormat=19 viewFormat=20 bind=0x48 samples=1 rtvCount=8 rtv0=000001966E00C538 color=3840x2160 colorFormat=24 colorBind=0xA8
+[EliteDangerous64.exe:11788] EDPE: Pass 52 bloom miss hdr=t0 scene=3840x2160 hasBloomSlotSrv=0
+[EliteDangerous64.exe:11788] EDPE: blocked built-in FXAA pass while temporal reconstruction is active
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7392 (mrt_frame=7392, hdr0_frame=7392, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: DSV bind #1 phase=first view=000001966E582438 1920x1080 textureFormat=19 viewFormat=20 bind=0x48 samples=1 rtvCount=8 rtv0=000001966E5822B8 color=1920x1080 colorFormat=24 colorBind=0xA8
+[EliteDangerous64.exe:11788] EDPE: CB map-bounce auto-enabled (slow write-combined CB reads detected)
+[EliteDangerous64.exe:11788] EDPE: Pass 52 bloom t1 temporally stabilized (960x540 hdr=t0 win=1 hud=0)
+[EliteDangerous64.exe:11788] EDPE: scene constant buffer target discovered via Map()
+[EliteDangerous64.exe:11788] EDPE: DSV bind #2 phase=first view=00000195FFA129B8 3840x2160 textureFormat=19 viewFormat=20 bind=0x48 samples=1 rtvCount=8 rtv0=00000195FFA12838 color=3840x2160 colorFormat=28 colorBind=0xA8
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7453 (mrt_frame=7453, hdr0_frame=7453, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7514 (mrt_frame=7514, hdr0_frame=7514, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7575 (mrt_frame=7575, hdr0_frame=7575, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=7588 streak=7800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7636 (mrt_frame=7636, hdr0_frame=7636, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7697 (mrt_frame=7697, hdr0_frame=7697, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7758 (mrt_frame=7758, hdr0_frame=7758, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7819 (mrt_frame=7819, hdr0_frame=7819, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7880 (mrt_frame=7880, hdr0_frame=7880, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=7888 streak=8400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 7941 (mrt_frame=7941, hdr0_frame=7941, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8002 (mrt_frame=8002, hdr0_frame=8002, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8063 (mrt_frame=8063, hdr0_frame=8063, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8124 (mrt_frame=8124, hdr0_frame=8124, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8185 (mrt_frame=8185, hdr0_frame=8185, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=8188 streak=9000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8246 (mrt_frame=8246, hdr0_frame=8246, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8307 (mrt_frame=8307, hdr0_frame=8307, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8368 (mrt_frame=8368, hdr0_frame=8368, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8429 (mrt_frame=8429, hdr0_frame=8429, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=8467 streak=9600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8490 (mrt_frame=8490, hdr0_frame=8490, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8551 (mrt_frame=8551, hdr0_frame=8551, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8612 (mrt_frame=8612, hdr0_frame=8612, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=8667 streak=10200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8673 (mrt_frame=8673, hdr0_frame=8673, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8734 (mrt_frame=8734, hdr0_frame=8734, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8795 (mrt_frame=8795, hdr0_frame=8795, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8856 (mrt_frame=8856, hdr0_frame=8856, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=8867 streak=10800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8917 (mrt_frame=8917, hdr0_frame=8917, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 8978 (mrt_frame=8978, hdr0_frame=8978, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9039 (mrt_frame=9039, hdr0_frame=9039, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=9067 streak=11400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9100 (mrt_frame=9100, hdr0_frame=9100, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9161 (mrt_frame=9161, hdr0_frame=9161, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9222 (mrt_frame=9222, hdr0_frame=9222, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=9267 streak=12000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9283 (mrt_frame=9283, hdr0_frame=9283, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9344 (mrt_frame=9344, hdr0_frame=9344, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9405 (mrt_frame=9405, hdr0_frame=9405, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9466 (mrt_frame=9466, hdr0_frame=9466, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=9467 streak=12600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9527 (mrt_frame=9527, hdr0_frame=9527, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9588 (mrt_frame=9588, hdr0_frame=9588, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9649 (mrt_frame=9649, hdr0_frame=9649, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=9667 streak=13200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9710 (mrt_frame=9710, hdr0_frame=9710, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9771 (mrt_frame=9771, hdr0_frame=9771, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9832 (mrt_frame=9832, hdr0_frame=9832, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=9867 streak=13800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9893 (mrt_frame=9893, hdr0_frame=9893, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 9954 (mrt_frame=9954, hdr0_frame=9954, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10015 (mrt_frame=10015, hdr0_frame=10015, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=10067 streak=14400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10076 (mrt_frame=10076, hdr0_frame=10076, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10137 (mrt_frame=10137, hdr0_frame=10137, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10198 (mrt_frame=10198, hdr0_frame=10198, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10259 (mrt_frame=10259, hdr0_frame=10259, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=10267 streak=15000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10320 (mrt_frame=10320, hdr0_frame=10320, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10381 (mrt_frame=10381, hdr0_frame=10381, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10442 (mrt_frame=10442, hdr0_frame=10442, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=10467 streak=15600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10503 (mrt_frame=10503, hdr0_frame=10503, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10564 (mrt_frame=10564, hdr0_frame=10564, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10625 (mrt_frame=10625, hdr0_frame=10625, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=10667 streak=16200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10686 (mrt_frame=10686, hdr0_frame=10686, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10747 (mrt_frame=10747, hdr0_frame=10747, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10808 (mrt_frame=10808, hdr0_frame=10808, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=10867 streak=16800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10869 (mrt_frame=10869, hdr0_frame=10869, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10930 (mrt_frame=10930, hdr0_frame=10930, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 10991 (mrt_frame=10991, hdr0_frame=10991, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11052 (mrt_frame=11052, hdr0_frame=11052, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=11067 streak=17400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11113 (mrt_frame=11113, hdr0_frame=11113, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11174 (mrt_frame=11174, hdr0_frame=11174, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11235 (mrt_frame=11235, hdr0_frame=11235, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=11267 streak=18000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11296 (mrt_frame=11296, hdr0_frame=11296, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11357 (mrt_frame=11357, hdr0_frame=11357, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11418 (mrt_frame=11418, hdr0_frame=11418, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=11467 streak=18600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11479 (mrt_frame=11479, hdr0_frame=11479, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11540 (mrt_frame=11540, hdr0_frame=11540, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11601 (mrt_frame=11601, hdr0_frame=11601, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11662 (mrt_frame=11662, hdr0_frame=11662, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=11667 streak=19200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11723 (mrt_frame=11723, hdr0_frame=11723, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11784 (mrt_frame=11784, hdr0_frame=11784, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11845 (mrt_frame=11845, hdr0_frame=11845, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=11867 streak=19800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11906 (mrt_frame=11906, hdr0_frame=11906, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 11967 (mrt_frame=11967, hdr0_frame=11967, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12028 (mrt_frame=12028, hdr0_frame=12028, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=12067 streak=20400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12089 (mrt_frame=12089, hdr0_frame=12089, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12150 (mrt_frame=12150, hdr0_frame=12150, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12211 (mrt_frame=12211, hdr0_frame=12211, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=12267 streak=21000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12272 (mrt_frame=12272, hdr0_frame=12272, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12333 (mrt_frame=12333, hdr0_frame=12333, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12394 (mrt_frame=12394, hdr0_frame=12394, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12455 (mrt_frame=12455, hdr0_frame=12455, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=12467 streak=21600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12516 (mrt_frame=12516, hdr0_frame=12516, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12577 (mrt_frame=12577, hdr0_frame=12577, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12638 (mrt_frame=12638, hdr0_frame=12638, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=12667 streak=22200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12699 (mrt_frame=12699, hdr0_frame=12699, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12760 (mrt_frame=12760, hdr0_frame=12760, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12821 (mrt_frame=12821, hdr0_frame=12821, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=12867 streak=22800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12882 (mrt_frame=12882, hdr0_frame=12882, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 12943 (mrt_frame=12943, hdr0_frame=12943, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13004 (mrt_frame=13004, hdr0_frame=13004, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13065 (mrt_frame=13065, hdr0_frame=13065, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=13067 streak=23400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13126 (mrt_frame=13126, hdr0_frame=13126, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13187 (mrt_frame=13187, hdr0_frame=13187, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13248 (mrt_frame=13248, hdr0_frame=13248, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=13267 streak=24000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13309 (mrt_frame=13309, hdr0_frame=13309, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13370 (mrt_frame=13370, hdr0_frame=13370, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13431 (mrt_frame=13431, hdr0_frame=13431, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=13467 streak=24600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13492 (mrt_frame=13492, hdr0_frame=13492, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13553 (mrt_frame=13553, hdr0_frame=13553, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13614 (mrt_frame=13614, hdr0_frame=13614, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=13667 streak=25200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13675 (mrt_frame=13675, hdr0_frame=13675, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13736 (mrt_frame=13736, hdr0_frame=13736, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13797 (mrt_frame=13797, hdr0_frame=13797, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13858 (mrt_frame=13858, hdr0_frame=13858, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=13867 streak=25800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13919 (mrt_frame=13919, hdr0_frame=13919, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 13980 (mrt_frame=13980, hdr0_frame=13980, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14041 (mrt_frame=14041, hdr0_frame=14041, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=14067 streak=26400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14102 (mrt_frame=14102, hdr0_frame=14102, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14163 (mrt_frame=14163, hdr0_frame=14163, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14224 (mrt_frame=14224, hdr0_frame=14224, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=14267 streak=27000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14285 (mrt_frame=14285, hdr0_frame=14285, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14346 (mrt_frame=14346, hdr0_frame=14346, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14407 (mrt_frame=14407, hdr0_frame=14407, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=14467 streak=27600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14468 (mrt_frame=14468, hdr0_frame=14468, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14529 (mrt_frame=14529, hdr0_frame=14529, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14590 (mrt_frame=14590, hdr0_frame=14590, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14651 (mrt_frame=14651, hdr0_frame=14651, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=14667 streak=28200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14712 (mrt_frame=14712, hdr0_frame=14712, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14773 (mrt_frame=14773, hdr0_frame=14773, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14834 (mrt_frame=14834, hdr0_frame=14834, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=14867 streak=28800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14895 (mrt_frame=14895, hdr0_frame=14895, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 14956 (mrt_frame=14956, hdr0_frame=14956, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15017 (mrt_frame=15017, hdr0_frame=15017, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=15067 streak=29400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15078 (mrt_frame=15078, hdr0_frame=15078, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15139 (mrt_frame=15139, hdr0_frame=15139, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15200 (mrt_frame=15200, hdr0_frame=15200, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15261 (mrt_frame=15261, hdr0_frame=15261, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=15267 streak=30000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15322 (mrt_frame=15322, hdr0_frame=15322, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15383 (mrt_frame=15383, hdr0_frame=15383, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15444 (mrt_frame=15444, hdr0_frame=15444, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=15467 streak=30600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15505 (mrt_frame=15505, hdr0_frame=15505, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15566 (mrt_frame=15566, hdr0_frame=15566, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15627 (mrt_frame=15627, hdr0_frame=15627, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=15667 streak=31200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15688 (mrt_frame=15688, hdr0_frame=15688, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15749 (mrt_frame=15749, hdr0_frame=15749, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15810 (mrt_frame=15810, hdr0_frame=15810, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=15867 streak=31800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15871 (mrt_frame=15871, hdr0_frame=15871, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15932 (mrt_frame=15932, hdr0_frame=15932, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 15993 (mrt_frame=15993, hdr0_frame=15993, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16054 (mrt_frame=16054, hdr0_frame=16054, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=16067 streak=32400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16115 (mrt_frame=16115, hdr0_frame=16115, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16176 (mrt_frame=16176, hdr0_frame=16176, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16237 (mrt_frame=16237, hdr0_frame=16237, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=16267 streak=33000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16298 (mrt_frame=16298, hdr0_frame=16298, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16359 (mrt_frame=16359, hdr0_frame=16359, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16420 (mrt_frame=16420, hdr0_frame=16420, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16481 (mrt_frame=16481, hdr0_frame=16481, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=16523 streak=33600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16542 (mrt_frame=16542, hdr0_frame=16542, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16603 (mrt_frame=16603, hdr0_frame=16603, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16664 (mrt_frame=16664, hdr0_frame=16664, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16725 (mrt_frame=16725, hdr0_frame=16725, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16786 (mrt_frame=16786, hdr0_frame=16786, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=16823 streak=34200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16847 (mrt_frame=16847, hdr0_frame=16847, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16908 (mrt_frame=16908, hdr0_frame=16908, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 16969 (mrt_frame=16969, hdr0_frame=16969, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17030 (mrt_frame=17030, hdr0_frame=17030, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17091 (mrt_frame=17091, hdr0_frame=17091, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=17123 streak=34800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17152 (mrt_frame=17152, hdr0_frame=17152, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17213 (mrt_frame=17213, hdr0_frame=17213, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17274 (mrt_frame=17274, hdr0_frame=17274, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17335 (mrt_frame=17335, hdr0_frame=17335, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17396 (mrt_frame=17396, hdr0_frame=17396, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=17423 streak=35400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17457 (mrt_frame=17457, hdr0_frame=17457, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17518 (mrt_frame=17518, hdr0_frame=17518, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17579 (mrt_frame=17579, hdr0_frame=17579, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17640 (mrt_frame=17640, hdr0_frame=17640, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17701 (mrt_frame=17701, hdr0_frame=17701, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=17723 streak=36000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17762 (mrt_frame=17762, hdr0_frame=17762, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17823 (mrt_frame=17823, hdr0_frame=17823, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17884 (mrt_frame=17884, hdr0_frame=17884, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 17945 (mrt_frame=17945, hdr0_frame=17945, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18006 (mrt_frame=18006, hdr0_frame=18006, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=18023 streak=36600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18067 (mrt_frame=18067, hdr0_frame=18067, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18128 (mrt_frame=18128, hdr0_frame=18128, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18189 (mrt_frame=18189, hdr0_frame=18189, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18250 (mrt_frame=18250, hdr0_frame=18250, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18311 (mrt_frame=18311, hdr0_frame=18311, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=18323 streak=37200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18372 (mrt_frame=18372, hdr0_frame=18372, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18433 (mrt_frame=18433, hdr0_frame=18433, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18494 (mrt_frame=18494, hdr0_frame=18494, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18555 (mrt_frame=18555, hdr0_frame=18555, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18616 (mrt_frame=18616, hdr0_frame=18616, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=18623 streak=37800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18677 (mrt_frame=18677, hdr0_frame=18677, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18738 (mrt_frame=18738, hdr0_frame=18738, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18799 (mrt_frame=18799, hdr0_frame=18799, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18860 (mrt_frame=18860, hdr0_frame=18860, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18921 (mrt_frame=18921, hdr0_frame=18921, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=18923 streak=38400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 18982 (mrt_frame=18982, hdr0_frame=18982, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19043 (mrt_frame=19043, hdr0_frame=19043, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: DSV bind #3 phase=first view=00000196FCBE4A38 3840x2160 textureFormat=44 viewFormat=45 bind=0x48 samples=1 rtvCount=8 rtv0=00000196FCBE45F8 color=3840x2160 colorFormat=28 colorBind=0x28
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19104 (mrt_frame=19104, hdr0_frame=19104, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19165 (mrt_frame=19165, hdr0_frame=19165, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=19223 streak=39000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19226 (mrt_frame=19226, hdr0_frame=19226, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19287 (mrt_frame=19287, hdr0_frame=19287, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19348 (mrt_frame=19348, hdr0_frame=19348, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19409 (mrt_frame=19409, hdr0_frame=19409, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19470 (mrt_frame=19470, hdr0_frame=19470, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=19523 streak=39600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19531 (mrt_frame=19531, hdr0_frame=19531, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19592 (mrt_frame=19592, hdr0_frame=19592, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19653 (mrt_frame=19653, hdr0_frame=19653, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19714 (mrt_frame=19714, hdr0_frame=19714, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19775 (mrt_frame=19775, hdr0_frame=19775, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=19823 streak=40200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19836 (mrt_frame=19836, hdr0_frame=19836, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19897 (mrt_frame=19897, hdr0_frame=19897, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 19958 (mrt_frame=19958, hdr0_frame=19958, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20019 (mrt_frame=20019, hdr0_frame=20019, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20080 (mrt_frame=20080, hdr0_frame=20080, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=20123 streak=40800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20141 (mrt_frame=20141, hdr0_frame=20141, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20202 (mrt_frame=20202, hdr0_frame=20202, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20263 (mrt_frame=20263, hdr0_frame=20263, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20324 (mrt_frame=20324, hdr0_frame=20324, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20385 (mrt_frame=20385, hdr0_frame=20385, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=20423 streak=41400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20446 (mrt_frame=20446, hdr0_frame=20446, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20507 (mrt_frame=20507, hdr0_frame=20507, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20568 (mrt_frame=20568, hdr0_frame=20568, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20629 (mrt_frame=20629, hdr0_frame=20629, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20690 (mrt_frame=20690, hdr0_frame=20690, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=20723 streak=42000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20751 (mrt_frame=20751, hdr0_frame=20751, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20812 (mrt_frame=20812, hdr0_frame=20812, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20873 (mrt_frame=20873, hdr0_frame=20873, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20934 (mrt_frame=20934, hdr0_frame=20934, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 20995 (mrt_frame=20995, hdr0_frame=20995, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=21023 streak=42600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21056 (mrt_frame=21056, hdr0_frame=21056, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21117 (mrt_frame=21117, hdr0_frame=21117, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21178 (mrt_frame=21178, hdr0_frame=21178, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21239 (mrt_frame=21239, hdr0_frame=21239, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21300 (mrt_frame=21300, hdr0_frame=21300, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=21323 streak=43200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21361 (mrt_frame=21361, hdr0_frame=21361, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21422 (mrt_frame=21422, hdr0_frame=21422, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21483 (mrt_frame=21483, hdr0_frame=21483, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21544 (mrt_frame=21544, hdr0_frame=21544, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21605 (mrt_frame=21605, hdr0_frame=21605, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=21623 streak=43800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21666 (mrt_frame=21666, hdr0_frame=21666, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21727 (mrt_frame=21727, hdr0_frame=21727, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21788 (mrt_frame=21788, hdr0_frame=21788, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21849 (mrt_frame=21849, hdr0_frame=21849, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21910 (mrt_frame=21910, hdr0_frame=21910, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=21923 streak=44400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 21971 (mrt_frame=21971, hdr0_frame=21971, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22032 (mrt_frame=22032, hdr0_frame=22032, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22093 (mrt_frame=22093, hdr0_frame=22093, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22154 (mrt_frame=22154, hdr0_frame=22154, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22215 (mrt_frame=22215, hdr0_frame=22215, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=22223 streak=45000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22276 (mrt_frame=22276, hdr0_frame=22276, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22337 (mrt_frame=22337, hdr0_frame=22337, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22398 (mrt_frame=22398, hdr0_frame=22398, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22459 (mrt_frame=22459, hdr0_frame=22459, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22520 (mrt_frame=22520, hdr0_frame=22520, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=22523 streak=45600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22581 (mrt_frame=22581, hdr0_frame=22581, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22642 (mrt_frame=22642, hdr0_frame=22642, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22703 (mrt_frame=22703, hdr0_frame=22703, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22764 (mrt_frame=22764, hdr0_frame=22764, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=22823 streak=46200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22825 (mrt_frame=22825, hdr0_frame=22825, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22886 (mrt_frame=22886, hdr0_frame=22886, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 22947 (mrt_frame=22947, hdr0_frame=22947, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23008 (mrt_frame=23008, hdr0_frame=23008, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23069 (mrt_frame=23069, hdr0_frame=23069, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=23123 streak=46800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23130 (mrt_frame=23130, hdr0_frame=23130, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23191 (mrt_frame=23191, hdr0_frame=23191, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23252 (mrt_frame=23252, hdr0_frame=23252, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23313 (mrt_frame=23313, hdr0_frame=23313, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23374 (mrt_frame=23374, hdr0_frame=23374, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=23423 streak=47400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23435 (mrt_frame=23435, hdr0_frame=23435, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23496 (mrt_frame=23496, hdr0_frame=23496, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23557 (mrt_frame=23557, hdr0_frame=23557, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23618 (mrt_frame=23618, hdr0_frame=23618, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23679 (mrt_frame=23679, hdr0_frame=23679, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=23723 streak=48000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23740 (mrt_frame=23740, hdr0_frame=23740, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23801 (mrt_frame=23801, hdr0_frame=23801, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23862 (mrt_frame=23862, hdr0_frame=23862, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23923 (mrt_frame=23923, hdr0_frame=23923, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 23984 (mrt_frame=23984, hdr0_frame=23984, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=24023 streak=48600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24045 (mrt_frame=24045, hdr0_frame=24045, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24106 (mrt_frame=24106, hdr0_frame=24106, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24167 (mrt_frame=24167, hdr0_frame=24167, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24228 (mrt_frame=24228, hdr0_frame=24228, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24289 (mrt_frame=24289, hdr0_frame=24289, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=24323 streak=49200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24350 (mrt_frame=24350, hdr0_frame=24350, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24411 (mrt_frame=24411, hdr0_frame=24411, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24472 (mrt_frame=24472, hdr0_frame=24472, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24533 (mrt_frame=24533, hdr0_frame=24533, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24594 (mrt_frame=24594, hdr0_frame=24594, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=24623 streak=49800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24655 (mrt_frame=24655, hdr0_frame=24655, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24716 (mrt_frame=24716, hdr0_frame=24716, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24777 (mrt_frame=24777, hdr0_frame=24777, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24838 (mrt_frame=24838, hdr0_frame=24838, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24899 (mrt_frame=24899, hdr0_frame=24899, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=24923 streak=50400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 24960 (mrt_frame=24960, hdr0_frame=24960, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25021 (mrt_frame=25021, hdr0_frame=25021, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25082 (mrt_frame=25082, hdr0_frame=25082, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25143 (mrt_frame=25143, hdr0_frame=25143, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25204 (mrt_frame=25204, hdr0_frame=25204, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=25223 streak=51000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25265 (mrt_frame=25265, hdr0_frame=25265, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25326 (mrt_frame=25326, hdr0_frame=25326, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25387 (mrt_frame=25387, hdr0_frame=25387, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25448 (mrt_frame=25448, hdr0_frame=25448, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25509 (mrt_frame=25509, hdr0_frame=25509, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=25523 streak=51600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25570 (mrt_frame=25570, hdr0_frame=25570, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25631 (mrt_frame=25631, hdr0_frame=25631, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25692 (mrt_frame=25692, hdr0_frame=25692, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25753 (mrt_frame=25753, hdr0_frame=25753, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25814 (mrt_frame=25814, hdr0_frame=25814, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=25823 streak=52200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25875 (mrt_frame=25875, hdr0_frame=25875, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25936 (mrt_frame=25936, hdr0_frame=25936, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 25997 (mrt_frame=25997, hdr0_frame=25997, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26058 (mrt_frame=26058, hdr0_frame=26058, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26119 (mrt_frame=26119, hdr0_frame=26119, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=26123 streak=52800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26180 (mrt_frame=26180, hdr0_frame=26180, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26241 (mrt_frame=26241, hdr0_frame=26241, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26302 (mrt_frame=26302, hdr0_frame=26302, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26363 (mrt_frame=26363, hdr0_frame=26363, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=26423 streak=53400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26424 (mrt_frame=26424, hdr0_frame=26424, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26485 (mrt_frame=26485, hdr0_frame=26485, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26546 (mrt_frame=26546, hdr0_frame=26546, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26607 (mrt_frame=26607, hdr0_frame=26607, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26668 (mrt_frame=26668, hdr0_frame=26668, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=26723 streak=54000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26729 (mrt_frame=26729, hdr0_frame=26729, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26790 (mrt_frame=26790, hdr0_frame=26790, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26851 (mrt_frame=26851, hdr0_frame=26851, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26912 (mrt_frame=26912, hdr0_frame=26912, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 26973 (mrt_frame=26973, hdr0_frame=26973, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=27023 streak=54600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27034 (mrt_frame=27034, hdr0_frame=27034, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27095 (mrt_frame=27095, hdr0_frame=27095, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27156 (mrt_frame=27156, hdr0_frame=27156, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27217 (mrt_frame=27217, hdr0_frame=27217, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27278 (mrt_frame=27278, hdr0_frame=27278, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=27323 streak=55200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27339 (mrt_frame=27339, hdr0_frame=27339, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27400 (mrt_frame=27400, hdr0_frame=27400, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27461 (mrt_frame=27461, hdr0_frame=27461, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27522 (mrt_frame=27522, hdr0_frame=27522, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27583 (mrt_frame=27583, hdr0_frame=27583, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=27623 streak=55800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27644 (mrt_frame=27644, hdr0_frame=27644, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27705 (mrt_frame=27705, hdr0_frame=27705, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27766 (mrt_frame=27766, hdr0_frame=27766, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27827 (mrt_frame=27827, hdr0_frame=27827, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27888 (mrt_frame=27888, hdr0_frame=27888, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=27923 streak=56400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 27949 (mrt_frame=27949, hdr0_frame=27949, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28010 (mrt_frame=28010, hdr0_frame=28010, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28071 (mrt_frame=28071, hdr0_frame=28071, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28132 (mrt_frame=28132, hdr0_frame=28132, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28193 (mrt_frame=28193, hdr0_frame=28193, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=28223 streak=57000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28254 (mrt_frame=28254, hdr0_frame=28254, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28315 (mrt_frame=28315, hdr0_frame=28315, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28376 (mrt_frame=28376, hdr0_frame=28376, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28437 (mrt_frame=28437, hdr0_frame=28437, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28498 (mrt_frame=28498, hdr0_frame=28498, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=28523 streak=57600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28559 (mrt_frame=28559, hdr0_frame=28559, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28620 (mrt_frame=28620, hdr0_frame=28620, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28681 (mrt_frame=28681, hdr0_frame=28681, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28742 (mrt_frame=28742, hdr0_frame=28742, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28803 (mrt_frame=28803, hdr0_frame=28803, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=28823 streak=58200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28864 (mrt_frame=28864, hdr0_frame=28864, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28925 (mrt_frame=28925, hdr0_frame=28925, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 28986 (mrt_frame=28986, hdr0_frame=28986, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29047 (mrt_frame=29047, hdr0_frame=29047, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29108 (mrt_frame=29108, hdr0_frame=29108, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=29123 streak=58800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29169 (mrt_frame=29169, hdr0_frame=29169, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29230 (mrt_frame=29230, hdr0_frame=29230, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29291 (mrt_frame=29291, hdr0_frame=29291, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29352 (mrt_frame=29352, hdr0_frame=29352, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29413 (mrt_frame=29413, hdr0_frame=29413, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=29423 streak=59400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29474 (mrt_frame=29474, hdr0_frame=29474, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29535 (mrt_frame=29535, hdr0_frame=29535, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29596 (mrt_frame=29596, hdr0_frame=29596, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29657 (mrt_frame=29657, hdr0_frame=29657, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29718 (mrt_frame=29718, hdr0_frame=29718, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=29723 streak=60000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29779 (mrt_frame=29779, hdr0_frame=29779, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29840 (mrt_frame=29840, hdr0_frame=29840, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29901 (mrt_frame=29901, hdr0_frame=29901, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 29962 (mrt_frame=29962, hdr0_frame=29962, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=30023 streak=60600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30023 (mrt_frame=30023, hdr0_frame=30023, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30084 (mrt_frame=30084, hdr0_frame=30084, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30145 (mrt_frame=30145, hdr0_frame=30145, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30206 (mrt_frame=30206, hdr0_frame=30206, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30267 (mrt_frame=30267, hdr0_frame=30267, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=30323 streak=61200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30328 (mrt_frame=30328, hdr0_frame=30328, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30389 (mrt_frame=30389, hdr0_frame=30389, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30450 (mrt_frame=30450, hdr0_frame=30450, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30511 (mrt_frame=30511, hdr0_frame=30511, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30572 (mrt_frame=30572, hdr0_frame=30572, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=30623 streak=61800 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30633 (mrt_frame=30633, hdr0_frame=30633, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30694 (mrt_frame=30694, hdr0_frame=30694, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30755 (mrt_frame=30755, hdr0_frame=30755, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30816 (mrt_frame=30816, hdr0_frame=30816, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30877 (mrt_frame=30877, hdr0_frame=30877, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=30923 streak=62400 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30938 (mrt_frame=30938, hdr0_frame=30938, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 30999 (mrt_frame=30999, hdr0_frame=30999, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31060 (mrt_frame=31060, hdr0_frame=31060, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31121 (mrt_frame=31121, hdr0_frame=31121, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31182 (mrt_frame=31182, hdr0_frame=31182, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=31223 streak=63000 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31243 (mrt_frame=31243, hdr0_frame=31243, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31304 (mrt_frame=31304, hdr0_frame=31304, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31365 (mrt_frame=31365, hdr0_frame=31365, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31426 (mrt_frame=31426, hdr0_frame=31426, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31487 (mrt_frame=31487, hdr0_frame=31487, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=31523 streak=63600 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31548 (mrt_frame=31548, hdr0_frame=31548, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31609 (mrt_frame=31609, hdr0_frame=31609, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31670 (mrt_frame=31670, hdr0_frame=31670, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31731 (mrt_frame=31731, hdr0_frame=31731, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31792 (mrt_frame=31792, hdr0_frame=31792, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=31823 streak=64200 (no main camera latched this frame)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31853 (mrt_frame=31853, hdr0_frame=31853, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31914 (mrt_frame=31914, hdr0_frame=31914, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 31975 (mrt_frame=31975, hdr0_frame=31975, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: zero jitter writes on scene frame 32036 (mrt_frame=32036, hdr0_frame=32036, has_staged=0, staged_frame=18446744073709551615)
+[EliteDangerous64.exe:11788] EDPE: projection jitter applied #1 frame=1 pixel=(-0.2500, 0.1667) ndc=(-0.000260417, -0.000308642) verified_ndc=(-0.000260417, -0.000308642)
+[EliteDangerous64.exe:11788] EDPE: repaired clustered lighting compute CB0 UvToView jitter phase
+[EliteDangerous64.exe:11788] EDPE: tryTemporalUpscale executing frame=32058 render=1920x1080 output=3840x2160
+[EliteDangerous64.exe:11788] EDPE: temporal color input created 1920x1080 format=28 (low-res LDR scene target)
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE FSR4: context ready provider=4.1.2 render=1920x1080 output=3840x2160 colorFmt=28 hdr=0 agility=1 (98 ms)
+[EliteDangerous64.exe:11788] EDPE FSR4: first frame upscaled through the D3D12 bridge
+[EliteDangerous64.exe:11788] EDPE: AMD FSR reconstructed 1920x1080 -> 3840x2160 in 109.569 ms (#1)
+[EliteDangerous64.exe:11788] EDPE: temporal path change frame=32058 src=000001966E511EF8 fmt=27 hdr=0 eval=1 comp=1 stage=1 compPath=2 hudDraws=0 [reason: init]
+[EliteDangerous64.exe:11788] EDPE: injected projection jitter into 192/208-byte CB0 transpose block
+[EliteDangerous64.exe:11788] EDPE: Pass 52 bloom t2 temporally stabilized (960x540 hdr=t1 win=1 hud=0)
+[EliteDangerous64.exe:11788] EDPE: DSV bind #4 phase=first view=000001971B96F7F8 256x256 textureFormat=19 viewFormat=20 bind=0x48 samples=1 rtvCount=8 rtv0=000001971B96E578 color=256x256 colorFormat=24 colorBind=0xA8
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32093
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32094
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32095
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32096
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32098
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32105
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32106
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32107
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32108
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32109
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=32111
+[EliteDangerous64.exe:11788] EDPE: DSV bind #5 phase=first view=000001972A4653B8 3840x2160 textureFormat=44 viewFormat=45 bind=0x48 samples=1 rtvCount=8 rtv0=000001972A4640F8 color=3840x2160 colorFormat=28 colorBind=0x28
+[EliteDangerous64.exe:11788] EDPE: DSV bind #6 phase=first view=000001972A462E38 512x512 textureFormat=53 viewFormat=55 bind=0x48 samples=1 rtvCount=8 rtv0=0000000000000000 color=0x0 colorFormat=0 colorBind=0x0
+[EliteDangerous64.exe:11788] EDPE: repaired deferred lighting/shadow CB2 (row-major) full camera block jitter phase
+[EliteDangerous64.exe:11788] EDPE: allocated HUD mask target 3840x2160 R16G16B16A16_FLOAT
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=33189
+[EliteDangerous64.exe:11788] EDPE: DSV bind #7 phase=first view=000001971B9694F8 1920x1080 textureFormat=40 viewFormat=40 bind=0x40 samples=1 rtvCount=1 rtv0=000001971B9691F8 color=1920x1080 colorFormat=10 colorBind=0x28
+[EliteDangerous64.exe:11788] EDPE: WeaponMotion active matched=2 captured=2
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33190 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=-1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera used block_cam_ok frame=33190
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33191 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33191 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33191 deg=0.00 streak=1 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33192 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33192 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33192 deg=0.00 streak=2 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33193 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=-1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33193 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=42.9918 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33193 deg=0.00 streak=3 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33194 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=40.4554 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33194 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=40.4554 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33194 deg=0.00 streak=4 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33195 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=40.4554 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33195 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=40.4554 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33196 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=107.5039 rTrace=-1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33196 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=107.5039 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33197 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=106.4148 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33197 deg=0.00 streak=1 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33198 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=106.4148 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33198 deg=0.00 streak=2 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33199 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=112.3468 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33199 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=106.4148 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33199 deg=0.00 streak=3 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33200 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9640 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33200 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9640 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33201 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9640 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33201 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9640 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33201 deg=0.00 streak=1 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33202 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9640 rTrace=-1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33202 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9640 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33202 deg=0.00 streak=2 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33203 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=106.1058 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33203 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=106.1058 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33203 deg=0.00 streak=3 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33204 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=106.1058 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33204 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=106.1058 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33204 deg=0.00 streak=4 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33205 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=106.1058 rTrace=-1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33205 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=106.1058 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33206 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=62.5617 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33206 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=62.5617 rTrace=1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33207 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=104.0661 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33207 deg=0.00 streak=1 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33208 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=62.5617 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33208 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=104.0661 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33208 deg=0.00 streak=2 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33209 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=104.0661 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33209 in_scene=0 is_probe=0 passes=1 allow=0 staged=0 rDist=104.0661 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera teleportPositionHold frame=33209 deg=0.00 streak=3 parseOk=1
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33210 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.5734 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] (X2) EDPE DIAG: unmap candidate ignored frame=33210 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.5734 rTrace=-0.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33211 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.5734 rTrace=-1.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33211 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.5734 rTrace=3.0000 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera step frame=33211 deg=0.00 prev=0.00 dist=10.4115 res=10.4115 cam(R=-0.2000,U=10.2389,F=1.8774) parseOk=1 probe=0 block=0 gbuf=3 prevFb=0
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera step frame=33212 deg=0.00 prev=0.00 dist=0.0000 res=10.4115 cam(R=0.0000,U=0.0000,F=0.0000) parseOk=1 probe=0 block=0 gbuf=2 prevFb=0
+[EliteDangerous64.exe:11788] EDPE: DSV bind #8 phase=first view=000001972A457D78 256x256 textureFormat=19 viewFormat=20 bind=0x48 samples=1 rtvCount=8 rtv0=000001971B96E578 color=256x256 colorFormat=24 colorBind=0xA8
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera fallback frame=33217 streak=1 unmaps=13 parseFail=11 probe=0 filterFail=0 stageDenied=0 gbufDone=2 blockOnly=0 rDist=0.000 rTrace=0.0000
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera fallback frame=33218 streak=2 unmaps=13 parseFail=6 probe=0 filterFail=5 stageDenied=0 gbufDone=2 blockOnly=0 rDist=49.384 rTrace=-0.9465
+[EliteDangerous64.exe:11788] EDPE: DSV bind #9 phase=first view=000001972A4646B8 3840x2160 textureFormat=44 viewFormat=45 bind=0x48 samples=1 rtvCount=8 rtv0=000001972A463B38 color=3840x2160 colorFormat=28 colorBind=0x28
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33310 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=56.5506 rTrace=-0.9987 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: DSV bind #10 phase=first view=000001966E5808F8 1024x1024 textureFormat=53 viewFormat=55 bind=0x48 samples=1 rtvCount=8 rtv0=000001966E580D38 color=1024x1024 colorFormat=26 colorBind=0x28
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33430 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=48.5270 rTrace=0.5041 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: DSV bind #11 phase=first view=000001971B969938 256x256 textureFormat=53 viewFormat=55 bind=0x48 samples=1 rtvCount=8 rtv0=0000000000000000 color=0x0 colorFormat=0 colorBind=0x0
+[EliteDangerous64.exe:11788] EDPE: DSV bind #12 phase=first view=0000019774496FB8 612x280 textureFormat=19 viewFormat=20 bind=0x48 samples=1 rtvCount=8 rtv0=0000019774499C78 color=612x280 colorFormat=24 colorBind=0xA8
+[EliteDangerous64.exe:11788] EDPE: blocked built-in SMAA pass while temporal reconstruction is active
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33550 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=69.9486 rTrace=-0.4529 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33670 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=56.3899 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33790 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=62.6314 rTrace=0.5019 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=33910 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=67.8545 rTrace=-0.4587 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34030 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=67.4306 rTrace=2.8593 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34150 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=84.1460 rTrace=-0.9666 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34270 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=84.7486 rTrace=-0.0109 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34390 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=95.7591 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34510 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=12.3906 rTrace=0.5034 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34630 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=22.6723 rTrace=-0.4531 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34750 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=30.6112 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34870 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=18.4963 rTrace=-0.0105 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: CreateSamplerState filter=21 mipBias=0.00 minLOD=0.00 maxLOD=0.00
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=34990 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=27.1249 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: queued input routed to Dear ImGui
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35110 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=40.3705 rTrace=-0.9672 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35230 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=56.5506 rTrace=-0.4552 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35350 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=48.3733 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35470 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=69.9486 rTrace=-0.9669 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35590 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=56.3899 rTrace=-0.4563 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35710 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.3546 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] (X5) EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35830 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=67.8545 rTrace=-0.9679 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE FG: game window re-evaluated after the overlay window was destroyed
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=35950 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=67.4306 rTrace=-0.0107 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36070 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=82.8212 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36190 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=84.7486 rTrace=0.4998 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: AMD FSR provider switched to FSR 3.1.2
+[EliteDangerous64.exe:11788] EDPE: FSR 4 engine released while FSR 4 is not selected; it initializes again when selected
+[EliteDangerous64.exe:11788] EDPE: upscaler backend changed to TAA
+[EliteDangerous64.exe:11788] EDPE: upscaler mode changed to Native AA
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36310 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=95.7591 rTrace=-0.4561 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36430 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9813 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36550 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=22.6723 rTrace=-0.9673 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36670 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=30.6112 rTrace=-0.4533 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36790 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=18.4963 rTrace=0.5039 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=36910 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=27.1249 rTrace=-0.4505 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] (X4) EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37030 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=37.8085 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37150 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=56.5506 rTrace=-0.9672 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37270 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=48.3733 rTrace=-0.4577 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37390 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=60.3904 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE FG: game window re-evaluated after the overlay window was destroyed
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37510 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=56.3899 rTrace=-0.9670 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37630 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.3546 rTrace=-0.4557 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37750 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=83.8987 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37870 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=67.4306 rTrace=0.5021 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=37990 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=82.8212 rTrace=-0.4520 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: upscaler backend changed to AMD FSR
+[EliteDangerous64.exe:11788] EDPE: upscaler mode changed to Performance
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38110 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=83.5945 rTrace=2.8627 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38230 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=95.7591 rTrace=-0.9685 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38350 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9813 rTrace=-0.4510 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] (X4) EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38470 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=18.4963 rTrace=2.8609 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38590 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=30.6112 rTrace=-0.9668 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38710 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=12.3906 rTrace=2.8598 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE FG: game window re-evaluated after the overlay window was destroyed
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38830 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=27.1249 rTrace=-0.9669 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=38950 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=37.8085 rTrace=-0.4554 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39070 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=51.3218 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39190 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=48.3733 rTrace=-0.9669 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: AMD FSR provider switched to FSR 4
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE D3D12Bridge: D3D12 device created through ID3D12DeviceFactory (requested SDK version 616, runtime reports 616)
+[EliteDangerous64.exe:11788] EDPE FSR4: AMD's runtime offers FSR 4.1.2, 3.1.6, 2.3.4; using 4.1.2
+[EliteDangerous64.exe:11788] EDPE FSR4: engine initialized (agilitySdk=1)
+[EliteDangerous64.exe:11788] EDPE: FSR 4 available; the D3D11 FSR 3.1.2 path stays the fallback
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE FSR4: context ready provider=4.1.2 render=1920x1080 output=3840x2160 colorFmt=28 hdr=0 agility=1 (92 ms)
+[EliteDangerous64.exe:11788] EDPE FSR4: first frame upscaled through the D3D12 bridge
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39310 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=60.3904 rTrace=-0.4577 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39430 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=54.5808 rTrace=2.8610 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39550 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=61.3546 rTrace=-0.9678 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] (X4) EDPE: DXGI factory created
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39670 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=83.8987 rTrace=-0.4530 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE FG: game window re-evaluated after the overlay window was destroyed
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39790 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=65.2123 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=39910 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=82.8212 rTrace=-0.9662 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40030 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=83.5945 rTrace=-0.0096 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40150 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=85.1403 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40270 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=100.9813 rTrace=-0.9676 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40390 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=18.4963 rTrace=-0.0117 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40510 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=27.1249 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40630 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=12.3906 rTrace=-0.0109 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40750 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=22.6723 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40870 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=37.8085 rTrace=-0.9669 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=40990 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=51.3218 rTrace=-0.4538 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41110 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=55.8956 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41230 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=60.3904 rTrace=-0.9670 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41350 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=54.5808 rTrace=-0.0114 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41470 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=73.1038 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41590 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=83.8987 rTrace=-0.9674 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41710 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=65.2123 rTrace=-0.4542 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41830 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=81.5870 rTrace=-0.9988 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=41950 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=83.5945 rTrace=0.4998 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=42070 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=85.1403 rTrace=-0.4586 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=42190 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=95.8160 rTrace=-0.9989 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=42310 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=18.4963 rTrace=0.5027 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=42430 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=27.1249 rTrace=-0.4540 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=42550 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=12.3906 rTrace=0.5028 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: unmap candidate ignored frame=42670 in_scene=0 is_probe=0 passes=0 allow=0 staged=0 rDist=22.6723 rTrace=-0.4526 det=1.000 depthB=0.0250
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera fallback frame=42698 streak=1 unmaps=1 parseFail=0 probe=1 filterFail=0 stageDenied=0 gbufDone=0 blockOnly=0 rDist=0.000 rTrace=-0.9465
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera probeOrientationOnly frame=42699 deg=166.72 parseOk=1 probe=0
+[EliteDangerous64.exe:11788] EDPE DIAG: commitMainCamera step frame=42699 deg=166.72 prev=0.00 dist=0.0000 res=0.0000 cam(R=0.0000,U=0.0000,F=0.0000) parseOk=1 probe=0 block=0 gbuf=1 prevFb=1
+[EliteDangerous64.exe:11788] EDPE: reconstruction skipped frame=43473 streak=10 (no scene MRT pass this frame)
+[EliteDangerous64.exe:11788] EDPE: swap chain destroyed; shutting overlay down
+[EliteDangerous64.exe:11788] EDPE: HUD draw probe frame=18446744073709551615 mask=0xF rearmed=0x0 restored=0xF reverted=0x0 draws=0 hudCopy=0 afterHud=0 glassAfterHud=0 glassReplay=0 glassDeclined=0 missingHash=0 overflow=0
