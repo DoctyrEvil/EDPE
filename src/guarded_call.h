@@ -7,18 +7,24 @@
 #pragma once
 
 #include <atomic>
+#include <exception>
 
 namespace edpe {
 
-// Returns call()'s result. If call throws, sets *threw (when not null), runs onThrow() (for logging) and returns
-// errorCode. The flag is only ever set here; clearing it is the caller's decision.
+// Returns call()'s result. If call throws, sets *threw (when not null), runs onThrow(what) (for logging) and returns
+// errorCode. what is the exception's what() text, or nullptr when the thrown object is not a std::exception. The flag
+// is only ever set here; clearing it is the caller's decision.
 template <typename Code, typename Call, typename OnThrow>
 Code callGuarded(Code errorCode, std::atomic<bool>* threw, Call&& call, OnThrow&& onThrow) {
     try {
         return call();
+    } catch (const std::exception& e) {
+        if (threw) threw->store(true);
+        onThrow(e.what());
+        return errorCode;
     } catch (...) {
         if (threw) threw->store(true);
-        onThrow();
+        onThrow(static_cast<const char*>(nullptr));
         return errorCode;
     }
 }

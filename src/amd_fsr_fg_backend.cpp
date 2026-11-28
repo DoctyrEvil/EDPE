@@ -52,9 +52,13 @@ void logFfxError(const wchar_t* stage, uint32_t rc) {
 // A provider call that throws is turned into an error code the caller handles (see guarded_call.h).
 template <typename Call>
 ffxReturnCode_t callFfxGuarded(const wchar_t* stage, std::atomic<bool>* threw, Call&& call) {
-    return callGuarded<ffxReturnCode_t>(FFX_API_RETURN_ERROR, threw, std::forward<Call>(call), [&] {
-        wchar_t buf[256]{};
-        std::swprintf(buf, 256, L"EDPE AmdFsrFg: %ls threw an exception", stage);
+    return callGuarded<ffxReturnCode_t>(FFX_API_RETURN_ERROR, threw, std::forward<Call>(call), [&](const char* what) {
+        wchar_t buf[384]{};
+        if (what && what[0]) {
+            std::swprintf(buf, 384, L"EDPE AmdFsrFg: %ls threw an exception: %.200hs", stage, what);
+        } else {
+            std::swprintf(buf, 384, L"EDPE AmdFsrFg: %ls threw an exception", stage);
+        }
         EdpeLog(buf);
     });
 }

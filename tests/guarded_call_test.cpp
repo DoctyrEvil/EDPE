@@ -5,6 +5,7 @@
 #include <atomic>
 #include <cstdio>
 #include <stdexcept>
+#include <string>
 
 using namespace edpe;
 
@@ -26,7 +27,7 @@ void testPassThrough() {
     std::atomic<bool> threw{false};
     int calls = 0;
     int logged = 0;
-    const unsigned rc = callGuarded<unsigned>(kError, &threw, [&] { ++calls; return 7u; }, [&] { ++logged; });
+    const unsigned rc = callGuarded<unsigned>(kError, &threw, [&] { ++calls; return 7u; }, [&](const char*) { ++logged; });
     CHECK(rc == 7u);
     CHECK(calls == 1);       // the call runs exactly once
     CHECK(!threw);           // nothing threw, so the flag is untouched
@@ -37,15 +38,26 @@ void testStdExceptionBecomesError() {
     std::atomic<bool> threw{false};
     int logged = 0;
     const unsigned rc = callGuarded<unsigned>(
-        kError, &threw, []() -> unsigned { throw std::runtime_error("device removed"); }, [&] { ++logged; });
+        kError, &threw, []() -> unsigned { throw std::runtime_error("device removed"); }, [&](const char*) { ++logged; });
     CHECK(rc == kError);
     CHECK(threw);
     CHECK(logged == 1);      // reported once
 }
 
+void testWhatIsPassedToTheLogger() {
+    std::string seen = "unset";
+    callGuarded<unsigned>(
+        kError, nullptr, []() -> unsigned { throw std::runtime_error("device removed"); },
+        [&](const char* what) { seen = what ? what : "null"; });
+    CHECK(seen == "device removed");   // a std::exception reports its what() text
+    callGuarded<unsigned>(kError, nullptr, []() -> unsigned { throw 42; },
+                          [&](const char* what) { seen = what ? what : "null"; });
+    CHECK(seen == "null");             // anything else reports nullptr
+}
+
 void testNonStdExceptionBecomesError() {
     std::atomic<bool> threw{false};
-    const unsigned rc = callGuarded<unsigned>(kError, &threw, []() -> unsigned { throw 42; }, [] {});
+    const unsigned rc = callGuarded<unsigned>(kError, &threw, []() -> unsigned { throw 42; }, [](const char*) {});
     CHECK(rc == kError);     // catch (...) also covers exceptions that do not derive from std::exception
     CHECK(threw);
 }
@@ -53,17 +65,17 @@ void testNonStdExceptionBecomesError() {
 void testNullFlagIsAccepted() {
     int logged = 0;
     const unsigned rc = callGuarded<unsigned>(
-        kError, nullptr, []() -> unsigned { throw std::runtime_error("x"); }, [&] { ++logged; });
+        kError, nullptr, []() -> unsigned { throw std::runtime_error("x"); }, [&](const char*) { ++logged; });
     CHECK(rc == kError);
     CHECK(logged == 1);
 }
 
 void testFlagIsOnlySetNeverCleared() {
     std::atomic<bool> threw{false};
-    callGuarded<unsigned>(kError, &threw, []() -> unsigned { throw 1; }, [] {});
+    callGuarded<unsigned>(kError, &threw, []() -> unsigned { throw 1; }, [](const char*) {});
     CHECK(threw);
     // A later call that works must not clear the fault: only the owner decides when it is cleared.
-    const unsigned rc = callGuarded<unsigned>(kError, &threw, [] { return 3u; }, [] {});
+    const unsigned rc = callGuarded<unsigned>(kError, &threw, [] { return 3u; }, [](const char*) {});
     CHECK(rc == 3u);
     CHECK(threw);
 }
@@ -71,8 +83,8 @@ void testFlagIsOnlySetNeverCleared() {
 void testErrorValueIsReturnedForEnumCodes() {
     enum class Rc { Ok, Error };
     std::atomic<bool> threw{false};
-    const Rc ok = callGuarded<Rc>(Rc::Error, &threw, [] { return Rc::Ok; }, [] {});
-    const Rc bad = callGuarded<Rc>(Rc::Error, &threw, []() -> Rc { throw 1; }, [] {});
+    const Rc ok = callGuarded<Rc>(Rc::Error, &threw, [] { return Rc::Ok; }, [](const char*) {});
+    const Rc bad = callGuarded<Rc>(Rc::Error, &threw, []() -> Rc { throw 1; }, [](const char*) {});
     CHECK(ok == Rc::Ok);
     CHECK(bad == Rc::Error);
 }
@@ -82,6 +94,7 @@ void testErrorValueIsReturnedForEnumCodes() {
 int main() {
     testPassThrough();
     testStdExceptionBecomesError();
+    testWhatIsPassedToTheLogger();
     testNonStdExceptionBecomesError();
     testNullFlagIsAccepted();
     testFlagIsOnlySetNeverCleared();
