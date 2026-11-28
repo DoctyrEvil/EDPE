@@ -100,3 +100,13 @@ edpe-selftest-20261127-141223-mode4.json
 edpe-selftest-20261127-141223-mode4.txt
 edpe-selftest-20261127-141752-mode4.json
 edpe-selftest-20261127-141752-mode4.txt
+edpe-selftest-20261127-143247-mode4.json
+edpe-selftest-20261127-143247-mode4.txt
+edpe-selftest-20261127-165202-mode4.json
+edpe-selftest-20261127-165202-mode4.txt
+edpe-selftest-20261127-171947-mode4.json
+edpe-selftest-20261127-171947-mode4.txt
+edpe-selftest-20261128-101746-mode4.json
+edpe-selftest-20261128-101746-mode4.txt
+edpe-capture-20261127-143406-fsr4
+edpe-capture-20261127-143615-fsr31

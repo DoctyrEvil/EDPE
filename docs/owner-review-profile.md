@@ -32,6 +32,7 @@ Each principle has the owner evidence in brief and the questions to ask of our o
 - [ ] Does each structure have one way to mark an entry invalid, and does no writer clear data another thread may already own?
 - [ ] Is any check-then-act on shared state done as one atomic operation, with the old value returned for logging?
 - [ ] Does every path that classifies the same object use the same test?
+- [ ] Does an insert into a set-associative cache loop over all ways for a match before it claims an empty way, as the sibling insert helper does? (#39 nit: an evicted way 0 made a resource already in way 1 get inserted again.)
 
 ### 4. No cost when a feature is idle
 - Evidence: an idle D3D12 device kept alive all session was rejected, including side effects such as RenderDoc captures and loading signed DLLs only to refuse them on non-AMD GPUs (PR 2).

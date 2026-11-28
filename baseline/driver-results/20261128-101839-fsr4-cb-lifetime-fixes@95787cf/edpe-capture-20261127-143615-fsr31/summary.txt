@@ -1,0 +1,8 @@
+EDPE capture 2026-11-27 14:36:15  build perf/fsr4-fastpath@f09fa92  provider FSR 3.1.2
+phase 0 fg=off seconds=3 in-process frames=890 median=3.36 ms p99=4.64 ms max=13.37 ms
+phase 1 fg=off+menu seconds=15 in-process frames=4434 median=3.39 ms p99=4.48 ms max=5.18 ms
+phase 2 fg=off+nomenu seconds=20 in-process frames=5954 median=3.36 ms p99=4.38 ms max=5.70 ms
+phase 3 fg=off+menu seconds=20 in-process frames=5941 median=3.37 ms p99=4.48 ms max=5.14 ms
+phase 4 fg=on+nomenu seconds=15 in-process frames=2178 median=6.71 ms p99=9.36 ms max=237.25 ms
+phase 5 fg=off+nomenu seconds=20 in-process frames=5897 median=3.38 ms p99=4.51 ms max=49.26 ms
+phase 6 fg=off+menu seconds=20 in-process frames=5927 median=3.38 ms p99=4.54 ms max=5.41 ms
