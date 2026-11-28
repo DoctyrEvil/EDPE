@@ -126,7 +126,9 @@ struct AmdFsrFgBackend::Impl {
 
     static ffxReturnCode_t fgDispatchCallback(ffxDispatchDescFrameGeneration* params, void* pUserCtx) {
         auto* self = static_cast<Impl*>(pUserCtx);
-        if (!self || !params || !self->ffx.Dispatch || !self->fgCtx || self->faulted) {
+        // faulted first: destroyFgContextOnly() clears fgCtx from another thread once a fault is set, so a faulted
+        // backend must not read it.
+        if (!self || !params || !self->ffx.Dispatch || self->faulted || !self->fgCtx) {
             return FFX_API_RETURN_ERROR_PARAMETER;
         }
         return callFfxGuarded(L"ffxDispatch(FrameGeneration callback)", &self->faulted,
