@@ -385,9 +385,21 @@ bool FgRuntime::ensureBridgeResources(ID3D11Device* dev11,
     auto& bridge = presenter_.bridge();
     const DXGI_FORMAT cleanOutFmt = canonicalNonSrgbFormat(bbFormat);
 
+    // A size change (for example a new upscaler render size) frees shared textures that earlier frame generation
+    // work on the D3D12 queue may still read. Wait for that queue once before the first one is freed; freeing them
+    // early made the GPU page fault and hung the frame generation device.
+    bool waitedForGpu = false;
+    auto waitBeforeFree = [&](bool exists) {
+        if (exists && !waitedForGpu) {
+            bridge.waitGpuIdle();
+            waitedForGpu = true;
+        }
+    };
+
     for (uint32_t i = 0; i < kSharedSlotCount; ++i) {
         if (!sharedHudless_[i].isValid() || sharedHudless_[i].width != outW ||
             sharedHudless_[i].height != outH || sharedHudless_[i].format != cleanOutFmt) {
+            waitBeforeFree(sharedHudless_[i].isValid());
             sharedHudless_[i].reset();
             if (!bridge.createSharedTexture(
                     outW, outH, cleanOutFmt,
@@ -404,6 +416,7 @@ bool FgRuntime::ensureBridgeResources(ID3D11Device* dev11,
         }
 
         if (!sharedUi_[i].isValid() || sharedUi_[i].width != outW || sharedUi_[i].height != outH) {
+            waitBeforeFree(sharedUi_[i].isValid());
             sharedUiUav_[i].Reset();
             sharedUi_[i].reset();
             if (!bridge.createSharedTexture(
@@ -427,6 +440,7 @@ bool FgRuntime::ensureBridgeResources(ID3D11Device* dev11,
         }
 
         if (!sharedDepth_[i].isValid() || sharedDepth_[i].width != renderW || sharedDepth_[i].height != renderH) {
+            waitBeforeFree(sharedDepth_[i].isValid());
             sharedDepthUav_[i].Reset();
             sharedDepth_[i].reset();
             if (!bridge.createSharedTexture(
@@ -450,6 +464,7 @@ bool FgRuntime::ensureBridgeResources(ID3D11Device* dev11,
         }
 
         if (!sharedMvec_[i].isValid() || sharedMvec_[i].width != renderW || sharedMvec_[i].height != renderH) {
+            waitBeforeFree(sharedMvec_[i].isValid());
             sharedMvec_[i].reset();
             if (!bridge.createSharedTexture(
                     renderW, renderH, DXGI_FORMAT_R16G16_FLOAT,
@@ -539,6 +554,34 @@ void FgRuntime::shutdown() {
     joinProbeThread();
     std::lock_guard<std::recursive_mutex> lock(mutex_);
     shutdownLocked(false);
+}
+
+void FgRuntime::restartForUpscalerChange() {
+    std::lock_guard<std::recursive_mutex> lock(mutex_);
+    if (!presenter_.isInitialized()) return;
+    EdpeLog(L"EDPE FG: frame generation off for the upscaler change; it starts again on the next frame");
+    shutdownLocked();
+}
+
+// When the frame generation D3D12 device is removed (GPU hang or reset), turn frame generation off and keep it off
+// until it is selected again. Without this, every frame reopened shared textures on the dead device and the game
+// eventually stopped responding.
+bool FgRuntime::handleDeviceLostLocked() {
+    if (!presenter_.isInitialized()) return false;
+    ID3D12Device* device = presenter_.bridge().d3d12Device();
+    const HRESULT reason = device ? device->GetDeviceRemovedReason() : S_OK;
+    if (SUCCEEDED(reason)) return false;
+    wchar_t message[256];
+    swprintf_s(message,
+        L"EDPE FG: frame generation D3D12 device lost (reason 0x%08X); frame generation is off until it is selected again",
+        static_cast<unsigned>(reason));
+    EdpeLog(message);
+    failedBackend_ = configuredBackend_;
+    telemetry_.initFailed = true;
+    std::wcsncpy(telemetry_.statusMessage,
+                 L"Off: the frame generation GPU device was lost. Select frame generation again to retry.", 255);
+    shutdownLocked();
+    return true;
 }
 
 void FgRuntime::onResize(IDXGISwapChain* gameSwapChain) {
@@ -763,6 +806,9 @@ void FgRuntime::onPresent(IDXGISwapChain* gameSwapChain,
     cachedCtx11_ = ctx11;
     cachedCtx4_ = ctx4;
     cachedScHwnd_ = scHwnd;
+    if (handleDeviceLostLocked()) {
+        return;
+    }
 
     if (manager_.selectedBackend() != configuredBackend_) {
         if (auto* b = manager_.getBackend(FrameGenerationBackend::NvidiaDlssG)) {
