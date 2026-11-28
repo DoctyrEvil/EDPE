@@ -33,7 +33,7 @@ Throwaway worktree, build archive and game-file backups. Default: $env:LOCALAPPD
 Where Collect writes results. Default: .\edpe-test-results
 
 .PARAMETER ExternalDir
-The external\ folder (SDKs, imgui) shared with the worktree through a junction. Default: <RepoDir>\external.
+The external\ folder (SDKs, imgui) shared with the worktree through a junction. Default: <RepoDir>\external, or the main checkout's external\ when RepoDir is a linked worktree.
 
 .PARAMETER Backend
 Upscaler selected at game start: Bypass, DLSS, FSR3, TAA or FSR4. Default FSR4.
@@ -211,6 +211,14 @@ function Invoke-Build([string]$repo, [string]$sha) {
 
     # 2. external\ holds the SDKs and imgui and is not tracked: share the checkout's copy with a junction.
     $ext = if ($ExternalDir) { $ExternalDir } else { Join-Path $repo 'external' }
+    if (-not (Test-Path $ext) -and -not $ExternalDir) {
+        # A linked worktree has no external\ of its own: use the one in the main checkout of the same repository.
+        $common = (& git -C $repo rev-parse --git-common-dir 2>$null)
+        if ($LASTEXITCODE -eq 0 -and $common) {
+            $main = Split-Path ([IO.Path]::GetFullPath([IO.Path]::Combine($repo, $common))) -Parent
+            if (Test-Path (Join-Path $main 'external')) { $ext = Join-Path $main 'external' }
+        }
+    }
     if (-not (Test-Path $ext)) { throw "external folder not found: $ext. Run 'git submodule update --init --recursive' and fetch the SDKs as BUILD.md describes, or pass -ExternalDir." }
     $link = Join-Path $wt 'external'
     $isJunction = (Test-Path $link) -and ((Get-Item $link -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)
