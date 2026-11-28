@@ -127,6 +127,10 @@ public:
 
     virtual void resetHistory() = 0;
 
+    // True once a provider call threw. The backend then refuses every evaluate(), so the owner has to tear it
+    // down; the flag clears when the backend is initialized again with no context left.
+    virtual bool isFaulted() const { return false; }
+
     virtual void setDebugView(bool /*enabled*/) {}
     virtual bool isDebugViewEnabled() const { return false; }
 };

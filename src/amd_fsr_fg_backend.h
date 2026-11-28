@@ -32,6 +32,7 @@ public:
                   uint32_t* outGeneratedFrames) override;
 
     void resetHistory() override;
+    bool isFaulted() const override;
 
     // Optional debug overlay flags (tear lines / pacing lines / motion-flow debug view).
     void setDebugFlags(bool tearLines, bool pacingLines, bool debugView);

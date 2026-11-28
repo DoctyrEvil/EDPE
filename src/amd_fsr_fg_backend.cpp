@@ -364,6 +364,14 @@ void AmdFsrFgBackend::shutdown() {
 #endif
 }
 
+bool AmdFsrFgBackend::isFaulted() const {
+#if defined(EDPE_ENABLE_FFX_FG) && EDPE_ENABLE_FFX_FG
+    return impl_->faulted;
+#else
+    return false;
+#endif
+}
+
 bool AmdFsrFgBackend::evaluate(ID3D12GraphicsCommandList* cmdList,
                                const FrameGenerationInputs& inputs,
                                bool enabled,

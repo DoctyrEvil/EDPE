@@ -520,6 +520,20 @@ bool FgRuntime::handleDeviceLostLocked() {
     return true;
 }
 
+// A provider call that threw without a device loss leaves the backend refusing every frame. Turn frame generation off
+// the same way as for a lost device, so the wrapped swap chain goes away and the UI says why.
+bool FgRuntime::handleBackendFaultLocked() {
+    const IFrameGenerationBackend* backend = manager_.activeBackend();
+    if (!backend || !backend->isFaulted()) return false;
+    EdpeLog(L"EDPE FG: the frame generation provider failed; frame generation is off until it is selected again");
+    shutdownLocked();
+    failedBackend_ = configuredBackend_;
+    telemetry_.initFailed = true;
+    std::wcsncpy(telemetry_.statusMessage,
+                 L"Off: the frame generation provider failed. Select frame generation again to retry.", 255);
+    return true;
+}
+
 void FgRuntime::onResize(IDXGISwapChain* gameSwapChain) {
     std::lock_guard<std::recursive_mutex> lock(mutex_);
     if (!trackedSwapChain_ || trackedSwapChain_ == gameSwapChain) {
@@ -853,7 +867,12 @@ void FgRuntime::onPresent(IDXGISwapChain* gameSwapChain,
     }
     std::wcsncpy(telemetry_.statusMessage, mgrDiag.statusMessage, 255);
 
-    if (presentedOk && SUCCEEDED(presentHr)) {
+    // After the status copy above, so the failure message is not overwritten. This frame was presented already.
+    const bool backendFaulted = handleBackendFaultLocked();
+
+    if (backendFaulted) {
+        if (outPresentedViaProxy) *outPresentedViaProxy = presentedOk && SUCCEEDED(presentHr);
+    } else if (presentedOk && SUCCEEDED(presentHr)) {
         if (outPresentedViaProxy) *outPresentedViaProxy = true;
     } else {
         // Fail open back to native D3D11 swapchain if proxy presentation ever fails.

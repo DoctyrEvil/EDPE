@@ -134,6 +134,7 @@ private:
     void releaseBridgeResources();
     void shutdownLocked();
     bool handleDeviceLostLocked();
+    bool handleBackendFaultLocked();
     const wchar_t* backendUnavailableReasonLocked(FrameGenerationBackend backend) const;
 
     mutable std::recursive_mutex mutex_;
