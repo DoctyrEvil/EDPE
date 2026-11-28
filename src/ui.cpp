@@ -1880,11 +1880,13 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
                                       (upscaler.getBackend() == edpe::UpscalerBackend::Taa) ? 3 : 0;
 
             if (ImGui::Combo("Upscaler Backend", &current_backend_idx, upscaler_items, IM_ARRAYSIZE(upscaler_items))) {
-                // Frame generation goes off first (waiting for its GPU work) and starts again on the next frame,
-                // after the switch, the same as turning it off, switching and turning it back on by hand.
-                edpe::FgRuntime::instance().restartForUpscalerChange();
+                // When the backend really changes, frame generation goes off first (waiting for its GPU work) and
+                // starts again on the next frame, the same as turning it off, switching and turning it back on by
+                // hand. Choosing a backend that is unavailable changes nothing and leaves frame generation running.
+                auto restartFgForSwitch = [] { edpe::FgRuntime::instance().restartForUpscalerChange(); };
                 if (current_backend_idx == 4) {
                     if (fsr4_available) {
+                        restartFgForSwitch();
                         const bool was_fsr = (upscaler.getBackend() == edpe::UpscalerBackend::AmdFsr);
                         upscaler.setFsr4Selected(true);
                         // Reselecting FSR 4 while it is selected but not running retries its initialization.
@@ -1896,6 +1898,7 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
                     }
                 } else if (current_backend_idx == 1) {
                     if (nvidia_available) {
+                        restartFgForSwitch();
                         upscaler.setFsr4Selected(false);
                         upscaler.setBackend(edpe::UpscalerBackend::NvidiaDlss);
                         upscaler.setMode(edpe::UpscaleMode::NativeAA);
@@ -1904,6 +1907,7 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
                     }
                 } else if (current_backend_idx == 2) {
                     if (amd_available) {
+                        restartFgForSwitch();
                         const bool was_fsr = (upscaler.getBackend() == edpe::UpscalerBackend::AmdFsr);
                         upscaler.setFsr4Selected(false);
                         upscaler.setBackend(edpe::UpscalerBackend::AmdFsr);
@@ -1912,12 +1916,14 @@ void UiOnPresent(IDXGISwapChain* swap_chain, UINT flags) {
                         cfg.save();
                     }
                 } else if (current_backend_idx == 3) {
+                    restartFgForSwitch();
                     upscaler.setFsr4Selected(false);
                     upscaler.setBackend(edpe::UpscalerBackend::Taa);
                     upscaler.setMode(edpe::UpscaleMode::NativeAA);
                     cfg.upscalerBackend = 3;
                     cfg.save();
                 } else {
+                    restartFgForSwitch();
                     upscaler.setFsr4Selected(false);
                     upscaler.setBackend(edpe::UpscalerBackend::None);
                     upscaler.setMode(edpe::UpscaleMode::Native);
