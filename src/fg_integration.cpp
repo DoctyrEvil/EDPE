@@ -511,11 +511,12 @@ bool FgRuntime::handleDeviceLostLocked() {
         L"EDPE FG: frame generation D3D12 device lost (reason 0x%08X); frame generation is off until it is selected again",
         static_cast<unsigned>(reason));
     EdpeLog(message);
+    // Latch the failure after the teardown, so nothing that the teardown resets can clear it.
+    shutdownLocked();
     failedBackend_ = configuredBackend_;
     telemetry_.initFailed = true;
     std::wcsncpy(telemetry_.statusMessage,
                  L"Off: the frame generation GPU device was lost. Select frame generation again to retry.", 255);
-    shutdownLocked();
     return true;
 }
 

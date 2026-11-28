@@ -464,6 +464,9 @@ bool D3D11D3D12Bridge::waitOnD3D11(ID3D11DeviceContext4* ctx4, uint64_t d12DoneF
 void D3D11D3D12Bridge::waitGpuIdle() {
     ID3D12CommandQueue* q = activeQueue();
     if (!q || !fence12_ || !fenceEvent_) return;
+    // A removed device never completes the fence, so there is no work left to wait for. Skipping the wait keeps
+    // teardown after a device loss from stalling for the full timeout below on every call.
+    if (device12_ && FAILED(device12_->GetDeviceRemovedReason())) return;
     const uint64_t target = ++fenceValue_;
     if (SUCCEEDED(q->Signal(fence12_.Get(), target)) &&
         fence12_->GetCompletedValue() < target) {
